@@ -1,0 +1,18 @@
+<Addin id          = "sConsole"              
+       author      = "Rasmus Pedersen"
+       copyright   = "MIT X11"
+       url         = "http://www.sundown.dk/"
+       description = ""	   
+       version     = "1.0">
+	<Runtime>
+		<Import assembly="sConsole.dll"/>
+	</Runtime>
+	
+	<Dependencies>
+		<Addin id="Sorento" version="1.0"/>
+	</Dependencies>
+					
+	<Extension path = "/SorentoLib/Resolver/Ajaxes">
+		<Type type="sConsole.Addin.Ajax"/>
+	</Extension>			
+</Addin>

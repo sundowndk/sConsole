@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "web", "web\web.mdproj", "{EDED5866-DB06-4F34-94E1-470AB771690E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sConsole", "sConsole\sConsole.csproj", "{A58DB02E-1361-428E-A295-A1A4D41DC863}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{EDED5866-DB06-4F34-94E1-470AB771690E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDED5866-DB06-4F34-94E1-470AB771690E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = web\web.mdproj
+	EndGlobalSection
+EndGlobal

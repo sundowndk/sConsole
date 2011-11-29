@@ -1,0 +1,21 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/html/sconsole/css/default.css">
+    <Files>
+      <File FileName="web/html/sconsole/css/default.css" Line="110" Column="2" />
+      <File FileName="web/cgi-bin/Lib/data/sconsole/content/includes/header.stpl" Line="110" Column="141" />
+      <File FileName="web/cgi-bin/Lib/data/sconsole/content/dashboard.stpl" Line="4" Column="23" />
+      <File FileName="web/cgi-bin/Lib/data/sconsole/content/includes/body.stpl" Line="1" Column="1" />
+      <File FileName="sConsole/sConsole.addin.xml" Line="16" Column="23" />
+      <File FileName="sConsole/sConsole.Addin/Ajax.cs" Line="53" Column="21" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="55" Column="6" />
+      <File FileName="web/javascript.jsb" Line="27" Column="1" />
+      <File FileName="web/javascript/runtime.js" Line="1" Column="1" />
+      <File FileName="web/cgi-bin/Lib/data/sconsole/content/includes/css.stpl" Line="6" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

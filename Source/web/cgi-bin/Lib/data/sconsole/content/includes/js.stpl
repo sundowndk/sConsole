@@ -1,0 +1,6 @@
+#! CONSOLE
+<script language="JavaScript" type="text/javascript" src="js/sconsole.js"></script>
+
+#! SNDK
+<script language="JavaScript" type="text/javascript" src="includes/sndk/js/sndk.js"></script>
+

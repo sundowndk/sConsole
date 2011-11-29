@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ItemType>GenericProject</ItemType>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EDED5866-DB06-4F34-94E1-470AB771690E}</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="build.sh bin/Debug" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>.\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="cgi-bin\" />
+    <Folder Include="html\" />
+    <Folder Include="javascript\" />
+    <Folder Include="javascript\modal\" />
+    <Folder Include="javascript\modal\chooser\" />
+    <Folder Include="html\sconsole\" />
+    <Folder Include="html\sconsole\css\" />
+    <Folder Include="html\sconsole\debug\" />
+    <Folder Include="html\sconsole\xml\" />
+    <Folder Include="html\sconsole\debug\" />
+    <Folder Include="html\sconsole\xml\chooser\" />
+    <Folder Include="html\sconsole\xml\users\" />
+    <Folder Include="cgi-bin\Lib\" />
+    <Folder Include="cgi-bin\Lib\data\" />
+    <Folder Include="cgi-bin\Lib\data\sconsole\" />
+    <Folder Include="cgi-bin\Lib\data\sconsole\content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="javascript\modal\chooser\base.js" />
+    <None Include="javascript\modal\chooser\usergroup.js" />
+    <None Include="javascript\modal\error.js" />
+    <None Include="javascript\modal\init.js" />
+    <None Include="javascript\modal\question.js" />
+    <None Include="javascript\modal\warning.js" />
+    <None Include="javascript\modal\window.js" />
+    <None Include="javascript\helpers.js" />
+    <None Include="javascript.jsb" />
+    <None Include="javascript\snapin.js" />
+    <None Include="build.sh" />
+    <None Include="html\sconsole\xml\chooser\usergroup.xml" />
+    <None Include="html\sconsole\xml\users\usergroups_edit.xml" />
+    <None Include="html\sconsole\xml\users\users.xml" />
+    <None Include="html\sconsole\xml\users\users_crerate.xml" />
+    <None Include="html\sconsole\xml\users\users_edit.xml" />
+    <None Include="html\sconsole\xml\users\users_edit_change_password.xml" />
+    <None Include="html\sconsole\css\default.css" />
+    <None Include="html\sconsole\xml\index.xml" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\body.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\css.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\header.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\init.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\js.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\includes\meta.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\users\index.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\users\index_script.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\dashboard.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\dashboard_script.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\index.stpl" />
+    <None Include="cgi-bin\Lib\data\sconsole\content\index_script.stpl" />
+    <None Include="html\sconsole\xml\ui.xml" />
+    <None Include="javascript\runtime.js" />
+  </ItemGroup>
+</Project>

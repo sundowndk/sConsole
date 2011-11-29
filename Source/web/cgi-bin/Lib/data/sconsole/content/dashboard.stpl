@@ -1,0 +1,12 @@
+<%Include ("includes/init.stpl")%>
+
+<%title = "CONSOLE | DASHBOARD"%>
+<%contentxml = "ui.xml"%>
+
+<html>			
+	<%Include ($header)%>
+
+	<%Include ("dashboard_script.stpl")%>
+
+	<%Include ($body)%>	
+</html>
