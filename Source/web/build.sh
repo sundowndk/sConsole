@@ -13,7 +13,7 @@ OUTPUTDIR="$1"
 ####################################################
 echo "Cleaning previous build..."
 rm "$OUTPUTDIR/html/sconsole/" -r
-rm "$OUTPUTDIR/cgi-bin/Lib/data/sconsole/content/" -r
+rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/content/" -r
 
 ####################################################
 # SETUP                                            #
@@ -21,7 +21,6 @@ rm "$OUTPUTDIR/cgi-bin/Lib/data/sconsole/content/" -r
 echo "Setting up build structur..."
 mkdir "$OUTPUTDIR/html/sconsole/"
 mkdir "$OUTPUTDIR/html/sconsole/js"
-#mkdir "$OUTPUTDIR/cgi-bin/Lib//sconsole/"
 
 ####################################################
 # CGI-BIN                                          #

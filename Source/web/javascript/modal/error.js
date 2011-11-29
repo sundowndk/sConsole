@@ -1,6 +1,6 @@
 error : function (attributes)
 {
-	var modal = new sorento.console.modal.window (attributes);
+	var modal = new sConsole.modal.window (attributes);
 	
 	var action = function ()
 	{

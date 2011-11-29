@@ -1,0 +1,422 @@
+<script language="JavaScript">					
+	// #######################################################################################################################################
+	// # USERS
+	// #######################################################################################################################################		
+	var users =
+	{
+		// ###################################################################################################################################
+		// # USERS.CREATE
+		// ###################################################################################################################################		
+		create : function ()
+		{
+			// CREATE			
+			var create =	function ()
+							{
+								var item = get ();
+								if (sorentoLib.user.isUsernameInUse (item["username"]))
+								{								
+									sConsole.modal.error ({title: "User allready exists", text: "A user with username '"+ item["username"] +"' allready exists.", buttonLabel: "Ok"});
+									return;										
+								}
+								else if (sorentoLib.user.isEmailInUse (item["email"]))
+								{
+									sConsole.modal.error ({title: "User allready exists", text: "A user with email '"+ item["email"] +"' allready exists.", buttonLabel: "Ok"});	
+									return;
+								}
+								else
+								{
+									item = sorentoLib.user.create (item["username"], item["email"]);
+									sorentoLib.user.save (item);
+																											
+									users.edit (item, "new");			
+									
+									UI.elements.content.users.addItem (sorentoLib.user.load (item["id"]));
+									
+									UI.modal.usersCreate.dispose ();
+								}																		
+							};			
+		
+			// REFRESH
+			var refresh =	function ()
+							{
+								if ((UI.modal.usersCreate.getUIElement ("username").getAttribute ("value") != "") && (UI.modal.usersCreate.getUIElement ("email").getAttribute ("value") != ""))
+								{
+									UI.modal.usersCreate.getUIElement ("create").setAttribute ("disabled", false);
+								}
+								else
+								{
+									UI.modal.usersCreate.getUIElement ("create").setAttribute ("disabled", true);
+								}										
+							};
+							
+			// GET
+			var get =		function ()
+							{
+								var item = new Array ();
+								item["username"] = UI.modal.usersCreate.getUIElement ("username").getAttribute ("value");
+								item["email"] = UI.modal.usersCreate.getUIElement ("email").getAttribute ("value");
+								return item;
+							};
+
+			// INIT
+			UI.modal.usersCreate = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/users_create.xml"});
+			UI.modal.usersCreate.show ();		
+							
+			UI.modal.usersCreate.getUIElement ("username").setAttribute ("onChange", refresh);
+			UI.modal.usersCreate.getUIElement ("email").setAttribute ("onChange", refresh);
+			
+			UI.modal.usersCreate.getUIElement ("create").setAttribute ("onClick", create);
+			UI.modal.usersCreate.getUIElement ("close").setAttribute ("onClick", UI.modal.usersCreate.dispose);		
+		},
+		
+		// ###################################################################################################################################
+		// # USERS.EDIT
+		// ###################################################################################################################################			
+		edit : function (Item, Mode)
+		{			
+			// DEFAULTS						
+			if (!Item) Item = sorentoLib.user.load (UI.elements.content.users.getItem ()["id"]);
+			if (!Mode) Mode = "edit"; 								
+		
+			// ##################################################################################################################################
+			// # USERS.EDIT.USERGROUP
+			// ##################################################################################################################################
+			var usergroup =
+			{
+				// ##############################################################################################################################
+				// # USERS.EDIT.USERGROUP.ADD
+				// ##############################################################################################################################		
+				add : function ()
+				{
+					var onDone =	function (usergroup)
+									{
+										UI.modal.usersEdit.getUIElement ("usergroups").addItem (usergroup);											
+									};
+				
+					sConsole.modal.chooser.usergroup ({onDone: onDone});
+				},
+									
+				// ##############################################################################################################################
+				// # USERS.EDIT.USERGROUP.REMOVE
+				// ##############################################################################################################################		
+				remove : function ()
+				{
+					UI.modal.usersEdit.getUIElement ("usergroups").removeItem ();
+				}				
+			};
+			
+			var changePassword = function ()
+			{
+				var onChange =	function ()
+								{
+									if ((UI.modal.changePassword.getUIElement ("new").getAttribute ("value") != "") && (UI.modal.changePassword.getUIElement ("repeat").getAttribute ("value") != ""))
+									{
+										if (UI.modal.changePassword.getUIElement ("new").getAttribute ("value") == UI.modal.changePassword.getUIElement ("repeat").getAttribute ("value"))
+										{
+											UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", false);
+										}
+										else
+										{
+											UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", true);
+										}											
+									}	
+									else
+									{
+										UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", true);
+									}
+								};
+								
+				var change =	function ()
+								{
+									sorentoLib.user.changePassword (Item["id"], UI.modal.changePassword.getUIElement ("new").getAttribute ("value"));
+								
+									UI.modal.changePassword.dispose ();
+								};
+				
+				// INIT									
+				sConsole.modal.create ({tag: "changePassword", SUIXML: "/console/xml/settings/users/users_edit_change_password.xml"});
+									
+				UI.modal.changePassword.getUIElement ("new").setAttribute ("onChange", onChange);
+				UI.modal.changePassword.getUIElement ("repeat").setAttribute ("onChange", onChange);
+				
+				UI.modal.changePassword.getUIElement ("change").setAttribute ("onClick", change);
+				UI.modal.changePassword.getUIElement ("close").setAttribute ("onClick", UI.modal.changePassword.dispose);
+				
+				UI.modal.changePassword.show ();
+			};
+			
+					
+			// SAVE
+			var save = 		function ()
+							{
+								var item = get ();						
+								sorentoLib.user.save (item);
+								
+								switch (Mode)
+								{										
+									case "edit":
+									{
+										UI.elements.content.users.setItem (sorentoLib.user.load (item["id"]));
+										break;
+									}
+								}									
+																	
+								
+																	
+								UI.modal.usersEdit.dispose ();		
+							};
+					
+			// ONCHANGE	
+			var onChange =	function ()
+							{
+								if (sConsole.helpers.compareItems ({array1: Item, array2: get ()}))
+								{
+									UI.modal.usersEdit.getUIElement ("save").setAttribute ("disabled", false);
+								}
+								else
+								{
+									UI.modal.usersEdit.getUIElement ("save").setAttribute ("disabled", true);									
+								}	
+								
+								if (UI.modal.usersEdit.getUIElement ("usergroups").getItem ())
+								{
+									UI.modal.usersEdit.getUIElement ("usergroupsremove").setAttribute ("disabled", false);
+								}
+								else
+								{
+									UI.modal.usersEdit.getUIElement ("usergroupsremove").setAttribute ("disabled", true);
+								}
+							};
+						
+			// SET	
+			var set =		function ()
+							{
+								UI.modal.usersEdit.getUIElement ("username").setAttribute ("value", Item["username"]);
+								UI.modal.usersEdit.getUIElement ("realname").setAttribute ("value", Item["realname"]);
+								UI.modal.usersEdit.getUIElement ("email").setAttribute ("value", Item["email"]);			
+								UI.modal.usersEdit.getUIElement ("status").setAttribute ("selectedItemByValue", Item["status"]);
+								UI.modal.usersEdit.getUIElement ("usergroups").setItems (Item["usergroups"]);																	
+							};
+					
+			// GET		
+			var get = 		function ()
+							{
+								var item = {};
+								item["id"] = Item["id"];
+								item["username"] = Item["username"];
+								item["realname"] = UI.modal.usersEdit.getUIElement ("realname").getAttribute ("value");
+								item["email"] = UI.modal.usersEdit.getUIElement ("email").getAttribute ("value");
+								item["status"] = UI.modal.usersEdit.getUIElement ("status").getAttribute ("selectedItem").value									
+								item["usergroups"] = UI.modal.usersEdit.getUIElement ("usergroups").getItems ();								
+								return item;								
+							};
+		
+			// INIT
+			UI.modal.usersEdit = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/users_edit.xml"});
+										
+			UI.modal.usersEdit.getUIElement ("usergroupsadd").setAttribute ("onClick", usergroup.add);
+			UI.modal.usersEdit.getUIElement ("usergroupsremove").setAttribute ("onClick", usergroup.remove);
+			
+			UI.modal.usersEdit.getUIElement ("username").setAttribute ("onChange", onChange);
+			UI.modal.usersEdit.getUIElement ("realname").setAttribute ("onChange", onChange);
+			UI.modal.usersEdit.getUIElement ("email").setAttribute ("onChange", onChange);
+			UI.modal.usersEdit.getUIElement ("status").setAttribute ("onChange", onChange);
+			UI.modal.usersEdit.getUIElement ("usergroups").setAttribute ("onChange", onChange);
+			
+			UI.modal.usersEdit.getUIElement ("changepassword").setAttribute ("onClick", changePassword);
+			
+			UI.modal.usersEdit.getUIElement ("save").setAttribute ("onClick", save);
+			UI.modal.usersEdit.getUIElement ("close").setAttribute ("onClick", UI.modal.usersEdit.dispose);		
+			
+			// SET
+			set ();
+			
+			// SHOW
+			UI.modal.usersEdit.show ();		
+		},
+		
+		// ###################################################################################################################################
+		// # USERS.DELETE
+		// ###################################################################################################################################			
+		delete : function ()
+		{
+			var action =	function (result)
+							{
+								if (result == 1)
+								{
+									if (sorentoLib.user.delete (UI.elements.content.users.getItem ()["id"]))
+									{
+										UI.elements.content.users.removeItem ();
+									}										
+								}
+							};
+		
+			sConsole.modal.question ({title: "Delete user", text: "Do you really want to delete this user ?", buttonLabel: "Yes|No", onDone: action});				
+		}				
+	}
+	
+	// #######################################################################################################################################
+	// # USERGROUPS
+	// #######################################################################################################################################		
+	var usergroups =
+	{
+		// ###################################################################################################################################
+		// # USERGROUPS.CREATE
+		// ###################################################################################################################################	
+		create : function ()
+		{
+			usergroups.edit (sorentoLib.usergroup.new (), "new");			
+		},
+	
+		// ###################################################################################################################################
+		// # USERGROUPS.EDIT
+		// ###################################################################################################################################		
+		edit : function (Item, Mode)
+		{			
+			// DEFAULTS						
+			if (!Item) Item = sorentoLib.usergroup.load (UI.elements.content.usergroups.getItem ()["id"]);
+			if (!Mode) Mode = "edit"; 								
+							
+			// SAVE
+			var save = 		function ()
+							{
+								var item = get ();						
+								sorentoLib.usergroup.save (item);
+								
+								switch (Mode)
+								{
+									case "new":
+									{																																																						
+										UI.elements.content.usergroups.addItem (sorentoLib.usergroup.load (item["id"]));
+										break;
+									}
+										
+									case "edit":
+									{
+										UI.elements.content.usergroups.setItem (sorentoLib.usergroup.load (item["id"]));
+										break;
+									}
+								}									
+																																										
+								UI.modal.usergroupsEdit.dispose ();		
+							};
+					
+			// ONCHANGE	
+			var onChange =	function ()
+							{
+								if ((sConsole.helpers.compareItems ({array1: Item, array2: get ()})) && (UI.modal.usergroupsEdit.getUIElement ("name").getAttribute ("value") != ""))
+								{
+									UI.modal.usergroupsEdit.getUIElement ("save").setAttribute ("disabled", false);
+								}
+								else
+								{
+									UI.modal.usergroupsEdit.getUIElement ("save").setAttribute ("disabled", true);									
+								}									
+							};
+						
+			// SET	
+			var set =		function ()
+							{
+								UI.modal.usergroupsEdit.getUIElement ("name").setAttribute ("value", Item["name"]);
+							};
+					
+			// GET		
+			var get = 		function ()
+							{
+								var item = {};
+								item["id"] = Item["id"];								
+								item["name"] = UI.modal.usergroupsEdit.getUIElement ("name").getAttribute ("value");
+								return item;								
+							};
+		
+			// INIT
+			UI.modal.usergroupsEdit = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/usergroups_edit.xml"});
+													
+			UI.modal.usergroupsEdit.getUIElement ("name").setAttribute ("onChange", onChange);
+									
+			UI.modal.usergroupsEdit.getUIElement ("save").setAttribute ("onClick", save);
+			UI.modal.usergroupsEdit.getUIElement ("close").setAttribute ("onClick", UI.modal.usergroupsEdit.dispose);		
+			
+			// SET
+			set ();
+			
+			// SHOW
+			UI.modal.usergroupsEdit.show ();		
+		},
+		
+		// ###################################################################################################################################
+		// # USERGROUPS.DELETE
+		// ###################################################################################################################################			
+		delete : function ()
+		{
+			var action =	function (result)
+							{
+								if (result == 1)
+								{
+									if (sorentoLib.usergroup.delete (UI.elements.content.usergroups.getItem ()["id"]))
+									{
+										UI.elements.content.usergroups.removeItem ();
+									}										
+								}
+							};
+		
+			sConsole.modal.question ({title: "Delete usergroup", text: "Do you really want to delete this usergroup ?", buttonLabel: "Yes|No", onDone: action});	
+		}		
+	}		
+	
+	// ##########################################################################################################################################
+	// # UI
+	// ##########################################################################################################################################		
+	UI.init = 		function ()
+					{			
+						UI.elements.content.users.setAttribute ("onChange", UI.refresh);
+						UI.elements.content.usergroups.setAttribute ("onChange", UI.refresh);							
+						
+						UI.elements.content.userscreate.setAttribute ("onClick", users.create);
+						UI.elements.content.usersedit.setAttribute ("onClick", users.edit);
+						UI.elements.content.usersdelete.setAttribute ("onClick", users.delete);							
+
+						UI.elements.content.usergroupscreate.setAttribute ("onClick", usergroups.create);
+						UI.elements.content.usergroupsedit.setAttribute ("onClick", usergroups.edit);
+						UI.elements.content.usergroupsdelete.setAttribute ("onClick", usergroups.delete);							
+					 										 																 										 																 										 										
+						UI.refresh ();
+						UI.update ();
+						SNDK.SUI.init ();
+					};
+	
+	UI.update =		function ()
+					{		
+						UI.elements.content.users.setItems (sorentoLib.user.list ());	
+						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
+					};
+				
+	UI.refresh = 	function ()
+					{			
+						if (UI.elements.content.users.getItem ())
+		 				{
+		 					UI.elements.content.usersedit.setAttribute ("disabled", false);
+		 					UI.elements.content.usersdelete.setAttribute ("disabled", false);
+		 				}
+		 				else
+		 				{
+		 					UI.elements.content.usersedit.setAttribute ("disabled", true);
+		 					UI.elements.content.usersdelete.setAttribute ("disabled", true);
+		 				}
+		 				
+		 				var usergroup = UI.elements.content.usergroups.getItem ();
+						if ((usergroup) && (usergroup.type != "BuildIn"))
+		 				{
+	 						UI.elements.content.usergroupsedit.setAttribute ("disabled", false);
+		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", false);	 				
+		 				}
+		 				else
+		 				{
+		 					UI.elements.content.usergroupsedit.setAttribute ("disabled", true);
+		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", true);
+		 				}			 				
+					};
+	
+	UI.init ();		
+</script>
+

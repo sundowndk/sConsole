@@ -2,7 +2,7 @@ create : function (_attributes)
 {
 	if (!_attributes["tag"]) _attributes["tag"] = SNDK.tools.newGuid ();
 
-	UI.modal[_attributes.tag] = new sorento.console.modal.window (_attributes);
+	UI.modal[_attributes.tag] = new sConsole.modal.window (_attributes);
 	
 },
 
@@ -62,14 +62,14 @@ window : function (_attributes)
 	function construct ()
 	{		
 		_elements["container"] = SNDK.tools.newElement ("div", "Modal", _id, document.body);	
-		_elements["container"].style.zIndex = 101 * sorento.console.modal.depth;
+		_elements["container"].style.zIndex = 101 * sConsole.modal.depth;
 		
 		_elements["content"] = SNDK.tools.newElement ("div", "", null, _elements["container"]);
 
 																		
 																						
 		_elements["shade"] = SNDK.tools.newElement ("div", "ModalWindowShade", _id + "_shade", document.documentElement);
-		_elements["shade"].style.zIndex = 100 * sorento.console.modal.depth;
+		_elements["shade"].style.zIndex = 100 * sConsole.modal.depth;
 		_elements["shade"].style.display = "none";
 
 		_elements["container"].style.display = "none";
@@ -79,7 +79,7 @@ window : function (_attributes)
 		SNDK.tools.changeOpacityByObject (_elements["container"], 0);								
 		SNDK.tools.changeOpacityByObject (_elements["shade"], 0);					
 	
-		sorento.console.modal.depth++;
+		sConsole.modal.depth++;
 		_initialized = true;
 						
 		if (_attributes.SUIXML != null)
@@ -214,7 +214,7 @@ window : function (_attributes)
 	// ------------------------------------				
 	function dispose ()
 	{
-		sorento.console.modal.depth--;
+		sConsole.modal.depth--;
 		
 		
 		if (_temp.controls > 0)

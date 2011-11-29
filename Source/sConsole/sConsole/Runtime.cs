@@ -100,7 +100,7 @@ namespace sConsole
 					users.Attributes.Append (userslabel);
 
 					XmlAttribute usershref = result.CreateAttribute ("href");
-					usershref.Value = "/console/users/";
+					usershref.Value = "/console/settings/users/";
 					users.Attributes.Append (usershref);
 					
 					settings.AppendChild (users);

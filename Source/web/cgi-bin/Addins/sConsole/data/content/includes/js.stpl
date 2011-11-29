@@ -1,0 +1,9 @@
+#! CONSOLE
+<script language="JavaScript" type="text/javascript" src="<%Write ($path)%>/js/sconsole.js"></script>
+
+#! SORENTOLIB
+<script language="JavaScript" type="text/javascript" src="<%Write ($path)%>/includes/sorentolib/js/sorentolib.js"></script>
+
+#! SNDK
+<script language="JavaScript" type="text/javascript" src="<%Write ($path)%>/includes/sndk/js/sndk.js"></script>
+

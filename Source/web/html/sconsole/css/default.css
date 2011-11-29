@@ -74,8 +74,8 @@ Login
 	margin: 					0px;
 	padding:					0px;
 	
-	font-size: 					30px;
-	line-height:				25px;
+	font-size: 					17px;
+	line-height:				20px;
 	text-align: 				center;	
 	color: 						#ffffff;
 }
@@ -100,15 +100,10 @@ Sidebar
 	height: 					100%;
 
 	background: 				url('images/background.gif') repeat-y;
-	
-	
-
-
 }
 
 .navigation
 {
-	
 }
 
 .content
@@ -143,94 +138,83 @@ display: inline;
 	height: 100%;
 }
 
+
+/* --------------------------------------------------------------------------------------------------------------
+Sidebar
+-------------------------------------------------------------------------------------------------------------- */
 .InformationPad
 {	
-padding-top: 20px;
+	padding-top: 				20px;
 
-	height: 170px;
+	height: 					170px;
 	
 	background: 				url('images/bg-sidebar.gif') repeat-y;
 	
-	color: #aaaaaa;
+	color: 						#aaaaaa;
 	
 	
 }
 
 .InformationPad h1
 {
-	margin: 0px;
+	margin: 					0px;
+	font-size: 					32px;
 	
-	
-	
-	text-align: center;
-	font-size: 60px;
-	color: #ffffff;
-
-	line-height: 45px;
-	
-
+	text-align: 				center;	
+	line-height: 				30px;
+	color: 						#ffffff;
 }
 
 .InformationPad h2
 {
-	margin: 0px;
+	margin: 					0px;
 	
-	font-size: 13px;
-	text-align: center;
-	
-	color: #ffffff;
-
+	font-size: 					13px;
+	text-align: 				center;		
+	color: 						#ffffff;
 }
 
 .InformationPad .Version
 {
-	text-align: right;
-	padding-right: 32px;
-	font-weight: bold;
-	font-size: 9px;	
-	color: #ffffff;
+	padding-right: 				39px;
 
+	font-size: 					9px;	
+	font-weight: 				bold;
+	text-align: 				right;	
+	color: 						#ffffff;
 }
 
 .InformationPad .Notification
 {
-	padding-top: 25px;
+	padding-top: 				25px;
+	padding-right: 				15px;
 
-
-	padding-right: 15px;
-
-	font-size: 11px;
-		
-
-	text-align: right;
+	font-size: 					11px;
+	text-align: 				right;
 }
 
 .InformationPad a
-{
-	color: #dddddd;
-	text-decoration: none;
+{	
+	text-decoration: 			none;
+	color: 						#dddddd;
+	
+	cursor:						pointer;
 }
 
 .InformationPad a:hover
 {
-	color: #ffffff;	
+	color: 						#ffffff;	
 }
 
 
 .InformationPad .Actions
 {
-	padding-top: 10px;
+	padding-top: 				10px;
+	padding-right: 				15px;
 
-
-	padding-right: 15px;
-
-	font-size: 11px;
-	
-	
-
-	text-align: right;
+	font-size: 					11px;
+	text-align: 				right;
 }
-
 
 /* --------------------------------------------------------------------------------------------------------------
 SimplaMenu
