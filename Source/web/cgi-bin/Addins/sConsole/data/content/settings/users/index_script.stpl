@@ -59,7 +59,7 @@
 							};
 
 			// INIT
-			UI.modal.usersCreate = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/users_create.xml"});
+			UI.modal.usersCreate = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/settings/users/users_create.xml"});
 			UI.modal.usersCreate.show ();		
 							
 			UI.modal.usersCreate.getUIElement ("username").setAttribute ("onChange", refresh);
@@ -134,7 +134,7 @@
 								};
 				
 				// INIT									
-				sConsole.modal.create ({tag: "changePassword", SUIXML: "/console/xml/settings/users/users_edit_change_password.xml"});
+				sConsole.modal.create ({tag: "changePassword", SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/settings/users/users_edit_change_password.xml"});
 									
 				UI.modal.changePassword.getUIElement ("new").setAttribute ("onChange", onChange);
 				UI.modal.changePassword.getUIElement ("repeat").setAttribute ("onChange", onChange);
@@ -168,7 +168,7 @@
 					
 			// ONCHANGE	
 			var onChange =	function ()
-							{
+							{							
 								if (sConsole.helpers.compareItems ({array1: Item, array2: get ()}))
 								{
 									UI.modal.usersEdit.getUIElement ("save").setAttribute ("disabled", false);
@@ -207,12 +207,12 @@
 								item["realname"] = UI.modal.usersEdit.getUIElement ("realname").getAttribute ("value");
 								item["email"] = UI.modal.usersEdit.getUIElement ("email").getAttribute ("value");
 								item["status"] = UI.modal.usersEdit.getUIElement ("status").getAttribute ("selectedItem").value									
-								item["usergroups"] = UI.modal.usersEdit.getUIElement ("usergroups").getItems ();								
+								item["usergroups"] = UI.modal.usersEdit.getUIElement ("usergroups").getItems ();	
 								return item;								
 							};
 		
 			// INIT
-			UI.modal.usersEdit = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/users_edit.xml"});
+			UI.modal.usersEdit = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/settings/users/users_edit.xml"});
 										
 			UI.modal.usersEdit.getUIElement ("usergroupsadd").setAttribute ("onClick", usergroup.add);
 			UI.modal.usersEdit.getUIElement ("usergroupsremove").setAttribute ("onClick", usergroup.remove);
@@ -330,7 +330,7 @@
 							};
 		
 			// INIT
-			UI.modal.usergroupsEdit = new sConsole.modal.window ({SUIXML: "/console/xml/settings/users/usergroups_edit.xml"});
+			UI.modal.usergroupsEdit = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/settings/users/usergroups_edit.xml"});
 													
 			UI.modal.usergroupsEdit.getUIElement ("name").setAttribute ("onChange", onChange);
 									

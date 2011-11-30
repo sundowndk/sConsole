@@ -41,7 +41,7 @@ usergroup : function (attributes)
 	suixml += '					<listview tag="usergroups" width="100%" height="100%" focus="true">';
 	suixml += '						<column tag="id" />';
 	suixml += '						<column tag="name" label="Name" width="200px" visible="true" />';
-	suixml += '						<column tag="accesslevel" label="Accesslevel" width="200px" visible="true" />';
+	suixml += '						<column tag="type" label="Type" width="60px" visible="true" />';
 	suixml += '					</listview>';
 	suixml += '				</panel>';
 	suixml += '			</layoutbox>';
@@ -49,9 +49,9 @@ usergroup : function (attributes)
 	suixml += '	</layoutbox>';
 	suixml += '</sui>';
 
-	var chooser = new sorento.console.modal.chooser.base ({suiXML: suixml, title: "Choose usergroup", buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
+	var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: "Choose usergroup", buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
 	
-	chooser.getUIElement ("usergroups").setItems (sorento.usergroup.list ());
+	chooser.getUIElement ("usergroups").setItems (sorentoLib.usergroup.list ());
 	chooser.getUIElement ("usergroups").setAttribute ("onChange", onChange);
 				
 	chooser.show ();			

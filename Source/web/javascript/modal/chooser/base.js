@@ -49,7 +49,7 @@ base : function (attributes)
 	// ------------------------------------	
 	function construct ()
 	{
-		_temp.modal = new sorento.console.modal.window (_attributes);		
+		_temp.modal = new sConsole.modal.window (_attributes);		
 	
 		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "400px"});
 		var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});

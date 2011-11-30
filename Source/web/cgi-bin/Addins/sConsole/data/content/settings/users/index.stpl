@@ -1,12 +1,10 @@
 <%Include ("../../includes/init.stpl")%>
 
-<%title = "console | settings | users"%>
-<%contentxml = SorentoLib.Services.Config.GetString ("core", "sessiontimeout") + "settings/users/users.xml"%>
+<%$title = "console | settings | users"%>
+<%$contentxml = SorentoLib.Services.Config.GetString ("sconsole", "url") + "xml/settings/users/users.xml"%>
 
 <html>			
-	<%Include ($header)%>
-	
-	<%Include ("index_script.stpl")%>
-	
+	<%Include ($header)%>	
+	<%Include ("index_script.stpl")%>	
 	<%Include ($body)%>	
 </html>

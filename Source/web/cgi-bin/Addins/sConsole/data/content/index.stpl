@@ -4,7 +4,7 @@
 <%nobody = true%>
 
 <%title = "CONSOLE | LOGIN"%>
-<%contentxml = "index.xml"%>
+<%contentxml = SorentoLib.Services.Config.GetString ("sconsole", "url") + "xml/index.xml"%>
 
 <html>			
 	<%Include ($header)%>

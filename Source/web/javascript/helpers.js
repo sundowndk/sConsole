@@ -40,21 +40,21 @@ compareItems : function (options)
 				if (defaults[key].length != current[key].length && defaults[key].length != null && current[key].length != null)
 				{
 					
-					console.log ("LENGTH:"+ path+"_"+key +" | "+ defaults[key].length +" != "+ current[key].length)	
+				//	console.log ("LENGTH:"+ path+"_"+key +" | "+ defaults[key].length +" != "+ current[key].length)	
 				
 					return true;
 				}							
 				else if (defaults[key].constructor == Array)
 				{
-					if (sorento.helpers.compareItems ({array1: defaults[key], array2: current[key], path: newpath, exceptions: exceptions}))
+					if (sConsole.helpers.compareItems ({array1: defaults[key], array2: current[key], path: newpath, exceptions: exceptions}))
 					{
-						console.log ("CHILD:"+ path+"_"+key)							
+					//	console.log ("CHILD:"+ path+"_"+key)							
 						return true;
 					}								
 				}
-				else if (sorento.helpers.compareItems ({array1: defaults[key], array2: current[key], path: newpath, exceptions: exceptions}))
+				else if (sConsole.helpers.compareItems ({array1: defaults[key], array2: current[key], path: newpath, exceptions: exceptions}))
 				{							
-					console.log ("CHILD:"+ path+"_"+key)							
+				//	console.log ("CHILD:"+ path+"_"+key)							
 					return true;
 				}
 			}
@@ -62,7 +62,7 @@ compareItems : function (options)
 			{
 				if (defaults[key] != null)
 				{
-				console.log ("STRING:"+ path+"_"+key +" "+ defaults[key] +" != "+ current[key])							
+			//	console.log ("STRING:"+ path+"_"+key +" "+ defaults[key] +" != "+ current[key])							
 				return true;
 				}
 			}	

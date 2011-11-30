@@ -38,8 +38,7 @@
 		// ##########################################################################################################################################		
 		session:
 		{
-			<%timeout = sorentoLib.Services.Config.GetString ("core", "sessiontimeout")%>
-			timeout: <%write ($timeout)%> * 1000,				
+			timeout: <%write (SorentoLib.Services.Config.GetInt ("core", "sessiontimeout") * 1000)%>,
 
 			// ##########################################################################################################################################
 			// # UI.SESSION.TIMEDOUT
@@ -53,17 +52,16 @@
 			// # UI.SESSION.SHUTDOWN
 			// ##########################################################################################################################################						
 			shutdown : function (timeout)
-			{
-				sorentoLib.session.logout ()
+			{				
 				SNDK.cookie.set ("simplamenu-selected", "dashboard:undefined", 0, "/", "", "");
 			
 				if (timeout)
 				{
-					setTimeout (function () {SNDK.tools.setURL ("/console/?error=2");}, 250);
+					setTimeout (function () {SNDK.tools.setURL ("<%Write ($url)%>?error=2");}, 250);
 				}
 				else
 				{					
-					setTimeout (function () {SNDK.tools.reloadURL ();}, 250);
+					setTimeout (function () {sorentoLib.session.logout ();SNDK.tools.reloadURL ();}, 250);					
 				}
 			},
 				
@@ -88,25 +86,21 @@
 	<%$session = SorentoLib.Session.Current%>
 									
 	<%if ($nobody == false)%>	
-		UI.elements.body = SNDK.SUI.builder.construct ({URL: "<%Write ($path)%>xml/ui.xml"});
-		UI.elements.content = SNDK.SUI.builder.construct ({URL: "<%Write ($path)%>xml/<%Write ($contentxml)%>", appendTo: UI.elements.body["ui"].getPanel ("content")});
+		UI.elements.body = SNDK.SUI.builder.construct ({URL: "<%Write ($url)%>xml/ui.xml"});
+		UI.elements.content = SNDK.SUI.builder.construct ({URL: "<%Write ($contentxml)%>", appendTo: UI.elements.body["ui"].getPanel ("content")});
 			
 		setTimeout (UI.session.timedOut, UI.session.timeout);			
 								
 		<%if ($session.LoggedIn == false)%>	
-			<%Redirect ("/console/")%>
+			<%Redirect ($url)%>
 		<%else%>
 			<%$user = $session.User%>
-		<%endif%>
-			
+		<%endif%>			
+		
+		UI.elements.menu = SNDK.widgets.simplaMenu ({XML: SNDK.tools.getXmlDocFromString (sConsole.runtime.getMenuXML ()), stylesheet: "SimplaMenu", appendTo: "navigation"});
 	<%else%>
 		<%if ($session.LoggedIn == true)%>	
-			<%Redirect ("/console/dashboard")%>
-		<%endif%>
-		
-	<%endif%>
-						
-	<%if ($nomenu == false)%>						
-		UI.elements.menu = SNDK.widgets.simplaMenu ({XML: SNDK.tools.getXmlDocFromString (sConsole.runtime.getMenuXML ()), stylesheet: "SimplaMenu", appendTo: "navigation"});			
-	<%endif%>		
+			<%Redirect ($url +"dashboard")%>
+		<%endif%>		
+	<%endif%>						
 </script>
