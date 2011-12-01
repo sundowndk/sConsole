@@ -107,42 +107,7 @@
 			
 			var changePassword = function ()
 			{
-				var onChange =	function ()
-								{
-									if ((UI.modal.changePassword.getUIElement ("new").getAttribute ("value") != "") && (UI.modal.changePassword.getUIElement ("repeat").getAttribute ("value") != ""))
-									{
-										if (UI.modal.changePassword.getUIElement ("new").getAttribute ("value") == UI.modal.changePassword.getUIElement ("repeat").getAttribute ("value"))
-										{
-											UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", false);
-										}
-										else
-										{
-											UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", true);
-										}											
-									}	
-									else
-									{
-										UI.modal.changePassword.getUIElement ("change").setAttribute ("disabled", true);
-									}
-								};
-								
-				var change =	function ()
-								{
-									sorentoLib.user.changePassword (Item["id"], UI.modal.changePassword.getUIElement ("new").getAttribute ("value"));
-								
-									UI.modal.changePassword.dispose ();
-								};
-				
-				// INIT									
-				sConsole.modal.create ({tag: "changePassword", SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/settings/users/users_edit_change_password.xml"});
-									
-				UI.modal.changePassword.getUIElement ("new").setAttribute ("onChange", onChange);
-				UI.modal.changePassword.getUIElement ("repeat").setAttribute ("onChange", onChange);
-				
-				UI.modal.changePassword.getUIElement ("change").setAttribute ("onClick", change);
-				UI.modal.changePassword.getUIElement ("close").setAttribute ("onClick", UI.modal.changePassword.dispose);
-				
-				UI.modal.changePassword.show ();
+				sConsole.modal.edit.changePassword ({userid: Item["id"]});			
 			};
 			
 					

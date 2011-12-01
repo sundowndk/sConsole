@@ -38,6 +38,9 @@
     <Folder Include="cgi-bin\Addins\sConsole\data\content\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\" />
     <Folder Include="html\sconsole\xml\settings\" />
+    <Folder Include="javascript\modal\edit\" />
+    <Folder Include="html\sconsole\xml\modal\" />
+    <Folder Include="html\sconsole\xml\modal\edit\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -69,9 +72,13 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index_script.stpl" />
     <None Include="html\sconsole\xml\settings\users\usergroups_edit.xml" />
-    <None Include="html\sconsole\xml\settings\users\users.xml" />
     <None Include="html\sconsole\xml\settings\users\users_edit.xml" />
     <None Include="html\sconsole\xml\settings\users\users_edit_change_password.xml" />
     <None Include="html\sconsole\xml\settings\users\users_create.xml" />
+    <None Include="html\sconsole\xml\settings\users\index.xml" />
+    <None Include="javascript\modal\edit\profile.js" />
+    <None Include="html\sconsole\xml\modal\edit\profile.xml" />
+    <None Include="html\sconsole\xml\modal\edit\profile_change_password.xml" />
+    <None Include="javascript\modal\edit\changepassword.js" />
   </ItemGroup>
 </Project>

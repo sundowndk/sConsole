@@ -86,6 +86,13 @@
 	<%$session = SorentoLib.Session.Current%>
 									
 	<%if ($nobody == false)%>	
+		function setName ()
+		{			
+			var user = sorentoLib.session.getCurrent ().user;
+			
+			document.getElementById ("name").innerHTML = user.realname.split (" ")[0];
+		}
+	
 		UI.elements.body = SNDK.SUI.builder.construct ({URL: "<%Write ($url)%>xml/ui.xml"});
 		UI.elements.content = SNDK.SUI.builder.construct ({URL: "<%Write ($contentxml)%>", appendTo: UI.elements.body["ui"].getPanel ("content")});
 			

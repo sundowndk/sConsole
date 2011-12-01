@@ -11,6 +11,10 @@
 					<js file="javascript/modal/chooser/base.js" />
 					<js file="javascript/modal/chooser/usergroup.js" />
 				</class>
+				<class name="edit">
+					<js file="javascript/modal/edit/profile.js" />
+					<js file="javascript/modal/edit/changepassword.js" />
+				</class>
 			</class>			
 			<class name="snapIn">
 				<js file="javascript/snapin.js" />
