@@ -52,7 +52,7 @@ namespace sConsole
 			result.AppendChild (root);
 			
 			#region DASHBOARD
-//			if (session.User.Authenticate (Runtime.UsergroupSupporter))
+			if (session.User.Authenticate (SorentoLib.Runtime.UsergroupUser) || session.User.Authenticate (SorentoLib.Runtime.UsergroupModerator) || session.User.Authenticate (SorentoLib.Runtime.UsergroupAuthor) || session.User.Authenticate (SorentoLib.Runtime.UsergroupEditor) || session.User.Authenticate (SorentoLib.Runtime.UsergroupAdministrator))
 			{
 				XmlElement dashboard = result.CreateElement ("", "category", "");
 
@@ -73,7 +73,7 @@ namespace sConsole
 			#endregion
 						
 			#region SETTINGS
-//			if (session.User.Authenticate (SorentoLib.Runtime.UsergroupUser))
+			if (session.User.Authenticate (SorentoLib.Runtime.UsergroupAdministrator))
 			{
 				XmlElement settings = result.CreateElement ("", "category", "");
 								
@@ -106,6 +106,27 @@ namespace sConsole
 					settings.AppendChild (users);
 				}
 				#endregion
+				
+				#region DATABASE
+				{
+					XmlElement item = result.CreateElement ("", "item", "");
+								
+					XmlAttribute itemtag = result.CreateAttribute ("tag");
+					itemtag.Value = "database";
+					item.Attributes.Append (itemtag);
+			
+					XmlAttribute itemlabel = result.CreateAttribute ("title");
+					itemlabel.Value = "Database";
+					item.Attributes.Append (itemlabel);
+
+					XmlAttribute itemhref = result.CreateAttribute ("href");
+					itemhref.Value = "/console/settings/database/";
+					item.Attributes.Append (itemhref);
+					
+					settings.AppendChild (item);
+				}
+				#endregion
+				
 			}
 			#endregion
 						

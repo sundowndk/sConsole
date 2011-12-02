@@ -1,0 +1,84 @@
+<sui>
+	<container title="Database" icon="Icon32Edit" stylesheet="SUIContainerNoBorder">		
+		<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+				<panel size="*">
+					<layoutbox type="horizontal">			
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Connector"/>
+								</panel>					
+								<panel size="*">
+									<dropbox tag="connector" width="100%"/>
+								</panel>					
+							</layoutbox>
+						</panel>
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Hostname"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="hostname" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Database"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="database" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Prefix"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="prefix" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Username"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="username" width="100%" />
+								</panel>					
+							</layoutbox>
+						</panel>
+						<panel size="%elementheight%">
+							<layoutbox type="vertical">
+								<panel size="100px">
+									<label text="Password"/>
+								</panel>					
+								<panel size="*">
+									<textbox tag="password" width="100%" password="true" />
+								</panel>					
+							</layoutbox>
+						</panel>
+					
+					
+					
+					
+					</layoutbox>
+				</panel>
+				<panel size="45px">
+					<layoutbox type="vertical" stylesheet="LayoutboxNoborder">
+						<panel size="*">								
+						</panel>
+						<panel size="210px">
+							<button tag="save" label="Save" width="100px" disabled="true"/>
+							<button tag="close" label="Close" width="100px" />
+						</panel>						
+					</layoutbox>
+				</panel>
+			</layoutbox>				
+	</container>	
+</sui>

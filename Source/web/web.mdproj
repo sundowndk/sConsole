@@ -41,6 +41,8 @@
     <Folder Include="javascript\modal\edit\" />
     <Folder Include="html\sconsole\xml\modal\" />
     <Folder Include="html\sconsole\xml\modal\edit\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\settings\database\" />
+    <Folder Include="html\sconsole\xml\settings\database\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -80,5 +82,8 @@
     <None Include="html\sconsole\xml\modal\edit\profile.xml" />
     <None Include="html\sconsole\xml\modal\edit\profile_change_password.xml" />
     <None Include="javascript\modal\edit\changepassword.js" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index_script.stpl" />
+    <None Include="html\sconsole\xml\settings\database\index.xml" />
   </ItemGroup>
 </Project>
