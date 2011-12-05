@@ -78,55 +78,75 @@ namespace sConsole
 				XmlElement settings = result.CreateElement ("", "category", "");
 								
 				XmlAttribute settingstag = result.CreateAttribute ("tag");
-				settingstag.Value = "settings";
+				settingstag.Value = "engine";
 				settings.Attributes.Append (settingstag);
 			
 				XmlAttribute settingslabel = result.CreateAttribute ("title");
-				settingslabel.Value = "Settings";
+				settingslabel.Value = "Engine";
 				settings.Attributes.Append (settingslabel);
 				
 				root.AppendChild (settings);
-				
-				#region USERS
-				{
-					XmlElement users = result.CreateElement ("", "item", "");
-								
-					XmlAttribute userstag = result.CreateAttribute ("tag");
-					userstag.Value = "users";
-					users.Attributes.Append (userstag);
-			
-					XmlAttribute userslabel = result.CreateAttribute ("title");
-					userslabel.Value = "Users";
-					users.Attributes.Append (userslabel);
 
-					XmlAttribute usershref = result.CreateAttribute ("href");
-					usershref.Value = "/console/settings/users/";
-					users.Attributes.Append (usershref);
-					
-					settings.AppendChild (users);
-				}
-				#endregion
 				
-				#region DATABASE
+				#region Settings
 				{
 					XmlElement item = result.CreateElement ("", "item", "");
 								
 					XmlAttribute itemtag = result.CreateAttribute ("tag");
-					itemtag.Value = "database";
+					itemtag.Value = "settings";
 					item.Attributes.Append (itemtag);
 			
 					XmlAttribute itemlabel = result.CreateAttribute ("title");
-					itemlabel.Value = "Database";
+					itemlabel.Value = "Settings";
 					item.Attributes.Append (itemlabel);
 
 					XmlAttribute itemhref = result.CreateAttribute ("href");
-					itemhref.Value = "/console/settings/database/";
+					itemhref.Value = "/console/settings/settings/";
+					item.Attributes.Append (itemhref);
+					
+					settings.AppendChild (item);
+				}
+				#endregion					
+							
+				#region ACCESS
+				{
+					XmlElement item = result.CreateElement ("", "item", "");
+								
+					XmlAttribute itemtag = result.CreateAttribute ("tag");
+					itemtag.Value = "access";
+					item.Attributes.Append (itemtag);
+			
+					XmlAttribute itemlabel = result.CreateAttribute ("title");
+					itemlabel.Value = "Access";
+					item.Attributes.Append (itemlabel);
+
+					XmlAttribute itemhref = result.CreateAttribute ("href");
+					itemhref.Value = "/console/engine/access/";
 					item.Attributes.Append (itemhref);
 					
 					settings.AppendChild (item);
 				}
 				#endregion
-				
+													
+				#region Addins
+				{
+					XmlElement item = result.CreateElement ("", "item", "");
+								
+					XmlAttribute itemtag = result.CreateAttribute ("tag");
+					itemtag.Value = "addins";
+					item.Attributes.Append (itemtag);
+			
+					XmlAttribute itemlabel = result.CreateAttribute ("title");
+					itemlabel.Value = "Addins";
+					item.Attributes.Append (itemlabel);
+
+					XmlAttribute itemhref = result.CreateAttribute ("href");
+					itemhref.Value = "/console/settings/addins/";
+					item.Attributes.Append (itemhref);
+					
+					settings.AppendChild (item);
+				}
+				#endregion					
 			}
 			#endregion
 						

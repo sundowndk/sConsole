@@ -35,14 +35,14 @@
     <Folder Include="cgi-bin\Addins\sConsole\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\content\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\" />
-    <Folder Include="html\sconsole\xml\settings\" />
     <Folder Include="javascript\modal\edit\" />
     <Folder Include="html\sconsole\xml\modal\" />
     <Folder Include="html\sconsole\xml\modal\edit\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\content\settings\database\" />
-    <Folder Include="html\sconsole\xml\settings\database\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\database\" />
+    <Folder Include="html\sconsole\xml\engine\" />
+    <Folder Include="html\sconsole\xml\engine\database\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -71,19 +71,18 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\dashboard_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\index_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index_script.stpl" />
-    <None Include="html\sconsole\xml\settings\users\usergroups_edit.xml" />
-    <None Include="html\sconsole\xml\settings\users\users_edit.xml" />
-    <None Include="html\sconsole\xml\settings\users\users_edit_change_password.xml" />
-    <None Include="html\sconsole\xml\settings\users\users_create.xml" />
-    <None Include="html\sconsole\xml\settings\users\index.xml" />
     <None Include="javascript\modal\edit\profile.js" />
     <None Include="html\sconsole\xml\modal\edit\profile.xml" />
     <None Include="html\sconsole\xml\modal\edit\profile_change_password.xml" />
     <None Include="javascript\modal\edit\changepassword.js" />
-    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index_script.stpl" />
-    <None Include="html\sconsole\xml\settings\database\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\database\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\database\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\access\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\access\index_script.stpl" />
+    <None Include="html\sconsole\xml\engine\database\index.xml" />
+    <None Include="html\sconsole\xml\engine\access\index.xml" />
+    <None Include="html\sconsole\xml\engine\access\user_create.xml" />
+    <None Include="html\sconsole\xml\engine\access\user_edit.xml" />
+    <None Include="html\sconsole\xml\engine\access\usergroup_edit.xml" />
   </ItemGroup>
 </Project>
