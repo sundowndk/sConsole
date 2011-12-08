@@ -137,8 +137,13 @@ window : function (_attributes)
 	{
 		_elements["shade"].style.width = "0px";
 		_elements["shade"].style.height = "0px";	
+		_elements["container"].style.display = "none";
 
 		var pagesize = SNDK.tools.getPageSize ();
+		
+		_elements["container"].style.display = "block";
+		
+		console.log (pagesize);
 	
 		_elements["shade"].style.width = pagesize[0] + "px";
 		_elements["shade"].style.height = pagesize[1] + "px";	
@@ -146,11 +151,21 @@ window : function (_attributes)
 		var width = _elements["container"].offsetWidth;
 		var height = _elements["container"].offsetHeight;
 		
+		console.log (width)
+		console.log (height)
+		
 		var test = SNDK.tools.getScrollOffsets ();
 		var test2 = SNDK.tools.getWindowSize ();
+		
+		console.log (test2)
 
-			var top = test[1] + (test2[1] / 5);
-			var left = ((pagesize[0]/2) - (width/2));
+//			var top = test[1] + (test2[1] / 5);
+//			var left = ((pagesize[0]/2) - (width/2));
+
+		var top = (test2[1] - height) / 2;
+		var left = (test2[0] - width) / 2;
+		
+		console.log (top);
 
 		_elements["container"].style.top = top +"px";
 		_elements["container"].style.left = left +"px";							
