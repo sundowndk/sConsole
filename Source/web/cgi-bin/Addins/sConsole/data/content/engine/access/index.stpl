@@ -1,6 +1,6 @@
 <%Include ("../../includes/init.stpl")%>
 
-<%$title = "console | engine | users"%>
+<%$title = "console | engine | access"%>
 <%$contentxml = SorentoLib.Services.Config.GetString ("sconsole", "url") + "xml/engine/access/index.xml"%>
 
 <html>			

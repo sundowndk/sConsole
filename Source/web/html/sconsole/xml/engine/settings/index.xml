@@ -1,0 +1,143 @@
+<sui>
+	<container title="Settings" icon="Icon32Edit" stylesheet="SUIContainerNoBorder">		
+		<tabview>
+				<tab label="Site" selected="true">
+					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+						<panel size="*">
+							<layoutbox type="horizontal">			
+								<panel size="*">
+									<text text="Problems with broken URLs could be because hostname is either missing or incorrectly specified."/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Hostname"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="hostname" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text="Trouble with special language characteres is usally connected to wrong text encoding settings."/>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Encoding"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="encoding" width="100%">
+												<item value="plaintext" label="Plaintext" />	
+												<item value="rsa" label="RSA Encryption" />												
+											</dropbox>											
+										</panel>					
+									</layoutbox>
+								</panel>							
+							</layoutbox>
+						</panel>
+					</layoutbox>												
+				</tab>
+				<tab label="Database">
+					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+						<panel size="*">
+							<layoutbox type="horizontal">			
+								<panel size="*">
+									<text text=""/>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Connector"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="encoding" width="100%">
+												<item value="mysql" label="MySQL" />	
+												<item value="mssql" label="MSSQL" />
+											</dropbox>											
+										</panel>					
+									</layoutbox>
+								</panel>							
+							
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Server"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="server" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Database"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="database" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+							
+								<panel size="*">		
+										<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Prefix"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="prefix" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>							
+							
+							
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Username"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="username" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>							
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Password"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="password" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>							
+							
+							</layoutbox>
+						</panel>
+					</layoutbox>										
+				</tab>
+				<tab label="Environment">
+				</tab>			
+				<tab label="Options">
+				</tab>						
+		</tabview>
+	</container>	
+</sui>
+

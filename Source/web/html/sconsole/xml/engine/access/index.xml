@@ -39,37 +39,33 @@
 					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
 						<panel size="*">
 							<layoutbox type="horizontal">			
-								<panel size="%elementheight%">
-									<layoutbox type="vertical">
-										<panel size="100px">
-											<label text="RSA authentication"/>
-										</panel>					
-										<panel size="*">
-											<checkbox tag="rsaauthentication" width="100%" disabled="true"/>
-										</panel>					
-									</layoutbox>
+								<panel size="*">
+									<text text="As default passwords are send as plaintext, and can potentionaly be read by 3rd party. To prevent this choose RSA encryption, this way all password authentication will be encrypted before being send to the server. Unfortunally this renders the build-in password managers of most browsers useless."/>
 								</panel>
 								<panel size="%elementheight%">
 									<layoutbox type="vertical">
-										<panel size="100px">
+										<panel size="130px">
+											<label text="Authentication"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="authenticationmethod" width="100%">
+												<item value="plaintext" label="Plaintext" />	
+												<item value="rsa" label="RSA Encryption" />												
+											</dropbox>											
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text="Session timeout sets how many seconds should pass before a user session expires. Users who are logged in when a session timeout occures will be promted with a warning and will have to re-authenticate them selfs."/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
 											<label text="Session timeout"/>
 										</panel>					
 										<panel size="*">
 											<textbox tag="sessiontimeout" width="100%" />
 										</panel>					
-									</layoutbox>
-								</panel>
-								<panel size="%elementheight%">
-									<layoutbox type="vertical">
-										<panel size="100px">
-											<label text="Default usergroup" />
-										</panel>
-										<panel size="*">								
-											<textbox tag="location" width="100%" disabled="true" />
-										</panel>
-										<panel size="120px">
-											<button tag="chooselocation" label="Choose" width="100%" disabled="true" />
-										</panel>
 									</layoutbox>
 								</panel>
 							</layoutbox>

@@ -1,0 +1,47 @@
+<script language="JavaScript">					
+	
+	// ##########################################################################################################################################
+	// # UI
+	// ##########################################################################################################################################		
+	UI.init = 		function ()
+					{			
+					 										 																 										 																 										 																
+//						UI.set ();
+						SNDK.SUI.init ();
+					};
+	
+	UI.set =		function ()
+					{		
+						UI.elements.content.users.setItems (sorentoLib.user.list ());	
+						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
+						UI.onChange ();
+					};
+				
+	UI.onChange = 	function ()
+					{			
+						if (UI.elements.content.users.getItem ())
+		 				{
+		 					UI.elements.content.usersedit.setAttribute ("disabled", false);
+		 					UI.elements.content.usersdelete.setAttribute ("disabled", false);
+		 				}
+		 				else
+		 				{
+		 					UI.elements.content.usersedit.setAttribute ("disabled", true);
+		 					UI.elements.content.usersdelete.setAttribute ("disabled", true);
+		 				}
+		 				
+		 				var usergroup = UI.elements.content.usergroups.getItem ();
+						if ((usergroup) && (usergroup.type != "BuildIn"))
+		 				{
+	 						UI.elements.content.usergroupsedit.setAttribute ("disabled", false);
+		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", false);	 				
+		 				}
+		 				else
+		 				{
+		 					UI.elements.content.usergroupsedit.setAttribute ("disabled", true);
+		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", true);
+		 				}			 				
+					};
+	
+	UI.init ();		
+</script>

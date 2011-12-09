@@ -101,7 +101,7 @@ namespace sConsole
 					item.Attributes.Append (itemlabel);
 
 					XmlAttribute itemhref = result.CreateAttribute ("href");
-					itemhref.Value = "/console/settings/settings/";
+					itemhref.Value = "/console/engine/settings/";
 					item.Attributes.Append (itemhref);
 					
 					settings.AppendChild (item);
