@@ -75,7 +75,7 @@
 								<panel size="*">								
 								</panel>
 								<panel size="105px">
-									<button tag="save" label="Save" width="100px" disabled="true"/>							
+									<button tag="save" label="Save" width="100px" disabled="false"/>							
 								</panel>						
 							</layoutbox>
 						</panel>

@@ -328,6 +328,15 @@
 		}		
 	}		
 	
+	// #######################################################################################################################################
+	// # OPTIONS
+	// #######################################################################################################################################		
+	var OPTIONS =
+	{	
+		
+			
+	};
+	
 	// ##########################################################################################################################################
 	// # UI
 	// ##########################################################################################################################################		
@@ -343,9 +352,27 @@
 						UI.elements.content.usergroupscreate.setAttribute ("onClick", usergroup.edit);
 						UI.elements.content.usergroupsedit.setAttribute ("onClick", usergroup.edit);
 						UI.elements.content.usergroupsdelete.setAttribute ("onClick", usergroup.delete);							
+						
+						UI.elements.content.save.setAttribute ("onClick", UI.save);
 					 										 																 										 																 										 																
 						UI.set ();
 						SNDK.SUI.init ();
+					};
+					
+	UI.save =		function ()
+					{
+						
+						var conf = new Array ();
+						conf[0] = {};						
+						conf[0].key = "core_sessiontimeout";
+						conf[0].value = "2000";
+						
+						conf[1] = {};						
+						conf[1].key = "fastcgi_maxconnections";
+						conf[1].value = "250";
+						
+						sorentoLib.services.config.set (conf);
+						
 					};
 	
 	UI.set =		function ()
@@ -353,6 +380,15 @@
 						UI.elements.content.users.setItems (sorentoLib.user.list ());	
 						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
 						UI.onChange ();
+					};
+					
+	UI.get =		function ()	
+					{
+						var item = new Array ();
+						//item.authenticationmethod = UI.elements.content.authenticationmethod.getAttribute 
+						item.sessiontimeout = UI.elements.content.sessiontimeout.getAttribute ("value");									
+						
+						return item;
 					};
 				
 	UI.onChange = 	function ()

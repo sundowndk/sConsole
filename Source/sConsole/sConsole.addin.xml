@@ -2,8 +2,8 @@
        author      = "Rasmus Pedersen"
        copyright   = "MIT X11"
        url         = "http://www.sundown.dk/"
-       description = ""	   
-       version     = "1.0">
+       description = "Convenient UI to manage the Sorento Engine."	   
+       version     = "2.0">
 	<Runtime>
 		<Import assembly="sConsole.dll"/>
 	</Runtime>

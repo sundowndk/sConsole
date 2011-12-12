@@ -45,6 +45,8 @@
     <Folder Include="html\sconsole\xml\engine\database\" />
     <Folder Include="html\sconsole\xml\engine\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\settings\" />
+    <Folder Include="html\sconsole\xml\engine\addins\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\addins\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -89,5 +91,8 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
     <None Include="html\sconsole\xml\engine\settings\index.xml" />
+    <None Include="html\sconsole\xml\engine\addins\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index_script.stpl" />
   </ItemGroup>
 </Project>

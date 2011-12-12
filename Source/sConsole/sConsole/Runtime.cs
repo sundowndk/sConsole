@@ -128,7 +128,7 @@ namespace sConsole
 				}
 				#endregion
 													
-				#region Addins
+				#region ADDINS
 				{
 					XmlElement item = result.CreateElement ("", "item", "");
 								
@@ -141,7 +141,7 @@ namespace sConsole
 					item.Attributes.Append (itemlabel);
 
 					XmlAttribute itemhref = result.CreateAttribute ("href");
-					itemhref.Value = "/console/settings/addins/";
+					itemhref.Value = "/console/engine/addins/";
 					item.Attributes.Append (itemhref);
 					
 					settings.AppendChild (item);
