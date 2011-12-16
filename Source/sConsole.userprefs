@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/cgi-bin/Addins/sConsole/data/content/engine/access/index_script.stpl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/html/sconsole/xml/engine/access/index.xml">
     <Files>
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index.stpl" Line="11" Column="1" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index_script.stpl" Line="368" Column="28" />
-      <File FileName="web/html/sconsole/xml/engine/access/index.xml" Line="78" Column="71" />
+      <File FileName="web/html/sconsole/xml/engine/access/index.xml" Line="5" Column="20" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
