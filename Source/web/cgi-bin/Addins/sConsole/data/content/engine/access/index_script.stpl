@@ -4,9 +4,7 @@
 	// #######################################################################################################################################		
 	var user =
 	{
-		// ###################################################################################################################################
-		// # USER.CREATE
-		// ###################################################################################################################################		
+		// CREATE
 		create : function ()
 		{
 			// CREATE			
@@ -69,9 +67,7 @@
 			modal.show ();		
 		},
 		
-		// ###################################################################################################################################
-		// # USER.EDIT
-		// ###################################################################################################################################			
+		// EDIT
 		edit : function (attributes)
 		{			
 			if (!attributes) attributes = new Array ();
@@ -193,9 +189,7 @@
 			modal.show ();		
 		},
 		
-		// ###################################################################################################################################
-		// # USER.DELETE
-		// ###################################################################################################################################			
+		// DELETE
 		delete : function ()
 		{
 			var action =	function (result)
@@ -218,9 +212,7 @@
 	// #######################################################################################################################################		
 	var usergroup =
 	{	
-		// ###################################################################################################################################
-		// # USERGROUP.EDIT
-		// ###################################################################################################################################		
+		// EDIT
 		edit : function (attributes)
 		{			
 			if (!attributes) attributes = new Array ();
@@ -308,9 +300,7 @@
 			modal.show ();		
 		},
 		
-		// ###################################################################################################################################
-		// # USERGROUP.DELETE
-		// ###################################################################################################################################			
+		// DELETE
 		delete : function ()
 		{
 			var action =	function (result)
@@ -327,19 +317,13 @@
 			sConsole.modal.question ({title: "Delete usergroup", text: "Do you really want to delete this usergroup ?", buttonLabel: "Yes|No", onDone: action});	
 		}		
 	}		
-	
-	// #######################################################################################################################################
-	// # OPTIONS
-	// #######################################################################################################################################		
-	var OPTIONS =
-	{	
 		
-			
-	};
-	
 	// ##########################################################################################################################################
 	// # UI
 	// ##########################################################################################################################################		
+	
+	var current;
+	
 	UI.init = 		function ()
 					{			
 						UI.elements.content.users.setAttribute ("onChange", UI.onChange);
@@ -351,7 +335,10 @@
 
 						UI.elements.content.usergroupscreate.setAttribute ("onClick", usergroup.edit);
 						UI.elements.content.usergroupsedit.setAttribute ("onClick", usergroup.edit);
-						UI.elements.content.usergroupsdelete.setAttribute ("onClick", usergroup.delete);							
+						UI.elements.content.usergroupsdelete.setAttribute ("onClick", usergroup.delete);		
+						
+						UI.elements.content.authenticationtype.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.sessiontimeout.setAttribute ("onChange", UI.onChange);					
 						
 						UI.elements.content.save.setAttribute ("onClick", UI.save);
 					 										 																 										 																 										 																
@@ -360,18 +347,12 @@
 					};
 					
 	UI.save =		function ()
-					{
-						
-						var conf = new Array ();
-						conf[0] = {};						
-						conf[0].key = "core_sessiontimeout";
-						conf[0].value = "2000";
-						
-						conf[1] = {};						
-						conf[1].key = "fastcgi_maxconnections";
-						conf[1].value = "250";
-						
-						sorentoLib.services.config.set (conf);
+					{												
+						if (sorentoLib.services.config.set ({keys: UI.get ()}))
+						{
+							current = UI.get ();
+							UI.onChange ();
+						}
 						
 					};
 	
@@ -379,15 +360,22 @@
 					{		
 						UI.elements.content.users.setItems (sorentoLib.user.list ());	
 						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
+												
+						current = sorentoLib.services.config.get ({keys: ["core_authenticationtype", "core_sessiontimeout"]});
+						
+						UI.elements.content.authenticationtype.setAttribute ("selectedItemByValue", current.core_authenticationtype);						
+						UI.elements.content.sessiontimeout.setAttribute ("value", current.core_sessiontimeout);
+						
 						UI.onChange ();
 					};
 					
 	UI.get =		function ()	
 					{
-						var item = new Array ();
-						//item.authenticationmethod = UI.elements.content.authenticationmethod.getAttribute 
-						item.sessiontimeout = UI.elements.content.sessiontimeout.getAttribute ("value");									
-						
+						var item = {};
+																		
+						item["core_authenticationtype"] = UI.elements.content.authenticationtype.getAttribute ("selectedItem").value;						
+						item["core_sessiontimeout"] = UI.elements.content.sessiontimeout.getAttribute ("value");
+												
 						return item;
 					};
 				
@@ -414,7 +402,16 @@
 		 				{
 		 					UI.elements.content.usergroupsedit.setAttribute ("disabled", true);
 		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", true);
-		 				}			 				
+		 				}		
+		 				
+						if (sConsole.helpers.compareItems ({array1: current, array2: UI.get ()}))
+						{
+							UI.elements.content.save.setAttribute ("disabled", false);
+						}
+						else
+						{
+							UI.elements.content.save.setAttribute ("disabled", true);									
+						}		 					 					 				
 					};
 	
 	UI.init ();		

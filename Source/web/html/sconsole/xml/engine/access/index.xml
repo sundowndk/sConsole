@@ -48,7 +48,7 @@
 											<label text="Authentication"/>
 										</panel>					
 										<panel size="*">
-											<dropbox tag="authenticationmethod" width="100%">
+											<dropbox tag="authenticationtype" width="100%">
 												<item value="plaintext" label="Plaintext" />	
 												<item value="rsa" label="RSA Encryption" />												
 											</dropbox>											
