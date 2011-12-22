@@ -1,20 +1,32 @@
 <script language="JavaScript">					
 	
+	var current;
+	
 	// ##########################################################################################################################################
 	// # UI
 	// ##########################################################################################################################################		
 	UI.init = 		function ()
 					{			
 					 										 																 										 																 										 																
-//						UI.set ();
+						UI.set ();
 						SNDK.SUI.init ();
 					};
 	
 	UI.set =		function ()
 					{		
-						UI.elements.content.users.setItems (sorentoLib.user.list ());	
-						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
-						UI.onChange ();
+						current = sorentoLib.services.config.get ({keys: ["core_hostname", "core_encoding", "database_hostname", "database_database", "database_username", "database_password", "database_prefix"]});
+					
+						UI.elements.content.corehostname.setAttribute ("value", current.core_hostname);
+						
+						UI.elements.content.databasehostname.setAttribute ("value", current.database_hostname);
+						UI.elements.content.databasedatabase.setAttribute ("value", current.database_database);
+						UI.elements.content.databaseusername.setAttribute ("value", current.database_username);
+						UI.elements.content.databasepassword.setAttribute ("value", current.database_password);
+						UI.elements.content.databaseprefix.setAttribute ("value", current.database_prefix);
+					
+//						UI.elements.content.users.setItems (sorentoLib.user.list ());	
+//						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
+//						UI.onChange ();
 					};
 				
 	UI.onChange = 	function ()

@@ -4,11 +4,11 @@
 						<panel size="*">
 							<listview tag="addins" width="100%" height="100%">
 								<column tag="id" />		
+								<column tag="enabled" label="" width="70px" visible="true" />								
 								<column tag="name" label="Name" width="150px" visible="true" />
 								<column tag="version" label="Version" width="70px" visible="true" />
 								<column tag="description" label="Description" width="400px" visible="true" />
-								<column tag="author" label="Author" width="130px" visible="true" />
-								<column tag="enabled" label="Enabled" width="70px" visible="true" />								
+								<column tag="author" label="Author" width="130px" visible="true" />								
 								<column tag="candisable" />								
 							</listview>
 						</panel>
