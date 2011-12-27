@@ -17,7 +17,7 @@
 						Hello, <a onClick="sConsole.modal.edit.profile ();"><span id="name"><%Write ($user.Firstname)%></span></a>, you have <a>0 messages</a>
 					</div>
 					<div class="Actions">
-						<a onClick="UI.session.logout ();">Logout</a>
+						<a onClick="">Restart</a> | <a onClick="UI.session.logout ();">Logout</a>
 					</div>
 				</div>
 				<div id="navigation" class="navigation">

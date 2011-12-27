@@ -7,52 +7,140 @@
 	// ##########################################################################################################################################		
 	UI.init = 		function ()
 					{			
-					 										 																 										 																 										 																
+						UI.elements.content.corehostname.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.coreenablecache.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.fastcgimaxconnections.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.fastcgimaxrequests.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.coreencoding.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.coreloglevel.setAttribute ("onChange", UI.onChange);
+						
+						UI.elements.content.databasedriver.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.databasehostname.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.databasedatabase.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.databaseusername.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.databasepassword.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.databaseprefix.setAttribute ("onChange", UI.onChange);						
+												
+						UI.elements.content.corepathcontent.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathhtmlroot.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathmedia.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathpublicmedia.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathsnapshot.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathscript.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.corepathtmp.setAttribute ("onChange", UI.onChange);
+						
+						UI.elements.content.smtpserver.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.smtpencoding.setAttribute ("onChange", UI.onChange);						
+																		
+						UI.elements.content.button1.setAttribute ("onClick", UI.onButton1);
+						
 						UI.set ();
 						SNDK.SUI.init ();
 					};
 	
 	UI.set =		function ()
 					{		
-						current = sorentoLib.services.config.get ({keys: ["core_hostname", "core_encoding", "database_hostname", "database_database", "database_username", "database_password", "database_prefix"]});
+						current = sorentoLib.services.config.get ({keys: [	"core_hostname", "core_encoding", "fastcgi_maxconnections", "fastcgi_maxrequests", "core_enablecache", "core_loglevel", 
+																			"database_driver", "database_hostname", "database_database", "database_username", "database_password", "database_prefix", 
+																			"core_pathcontent", "core_pathhtmlroot", "core_pathmedia", "core_pathpublicmedia", "core_pathsnapshot", "core_pathscript", "core_pathtmp", 
+																			"smtp_server", "smtp_encoding"]});
 					
 						UI.elements.content.corehostname.setAttribute ("value", current.core_hostname);
 						
+						if (current.core_enablecache.toLowerCase () == "true")
+						{
+							UI.elements.content.coreenablecache.setAttribute ("value", true);
+						}
+						
+						UI.elements.content.fastcgimaxconnections.setAttribute ("value", current.fastcgi_maxconnections);
+						UI.elements.content.fastcgimaxrequests.setAttribute ("value", current.fastcgi_maxrequests);
+						UI.elements.content.coreencoding.setAttribute ("selectedItemByValue", current.core_encoding);
+						UI.elements.content.coreloglevel.setAttribute ("value", current.core_loglevel);
+												
+						UI.elements.content.databasedriver.setAttribute ("selectedItemByValue", current.database_driver);
 						UI.elements.content.databasehostname.setAttribute ("value", current.database_hostname);
 						UI.elements.content.databasedatabase.setAttribute ("value", current.database_database);
 						UI.elements.content.databaseusername.setAttribute ("value", current.database_username);
 						UI.elements.content.databasepassword.setAttribute ("value", current.database_password);
 						UI.elements.content.databaseprefix.setAttribute ("value", current.database_prefix);
+												
+						UI.elements.content.corepathcontent.setAttribute ("value", current.core_pathcontent);
+						UI.elements.content.corepathhtmlroot.setAttribute ("value", current.core_pathhtmlroot);
+						UI.elements.content.corepathmedia.setAttribute ("value", current.core_pathmedia);
+						UI.elements.content.corepathpublicmedia.setAttribute ("value", current.core_pathpublicmedia);
+						UI.elements.content.corepathsnapshot.setAttribute ("value", current.core_pathsnapshot);
+						UI.elements.content.corepathscript.setAttribute ("value", current.core_pathscript);
+						UI.elements.content.corepathtmp.setAttribute ("value", current.core_pathtmp);											
+						
+						UI.elements.content.smtpserver.setAttribute ("value", current.smtp_server);
+						UI.elements.content.smtpencoding.setAttribute ("selectedItemByValue", current.smtp_encoding);
+						
+						UI.onChange ();
 					
-//						UI.elements.content.users.setItems (sorentoLib.user.list ());	
-//						UI.elements.content.usergroups.setItems (sorentoLib.usergroup.list ());	
-//						UI.onChange ();
 					};
-				
+					
+	UI.get = 		function ()
+					{
+						var item = {};
+						
+						item["core_hostname"] = UI.elements.content.corehostname.getAttribute ("value");
+												
+						if (UI.elements.content.coreenablecache.getAttribute ("value"))
+						{
+							item["core_enablecache"] = "true";
+						}
+						else
+						{
+							item["core_enablecache"] = "false";
+						}						
+						
+						item["fastcgi_maxconnections"] = UI.elements.content.fastcgimaxconnections.getAttribute ("value");
+						item["fastcgi_maxrequests"] = UI.elements.content.fastcgimaxrequests.getAttribute ("value");
+						item["core_encoding"] = UI.elements.content.coreencoding.getAttribute ("selectedItem").value;
+						
+												
+						item["core_loglevel"] = UI.elements.content.coreloglevel.getAttribute ("value");
+						
+						item["database_driver"] = UI.elements.content.databasedriver.getAttribute ("selectedItem").value;
+						item["database_hostname"] = UI.elements.content.databasehostname.getAttribute ("value");
+						item["database_database"] = UI.elements.content.databasedatabase.getAttribute ("value");
+						item["database_username"] = UI.elements.content.databaseusername.getAttribute ("value");
+						item["database_password"] = UI.elements.content.databasepassword.getAttribute ("value");
+						item["database_prefix"] = UI.elements.content.databaseprefix.getAttribute ("value");
+						
+						item["core_pathcontent"] = UI.elements.content.corepathcontent.getAttribute ("value");
+						item["core_pathhtmlroot"] = UI.elements.content.corepathhtmlroot.getAttribute ("value");
+						item["core_pathmedia"] = UI.elements.content.corepathmedia.getAttribute ("value");
+						item["core_pathpublicmedia"] = UI.elements.content.corepathpublicmedia.getAttribute ("value");
+						item["core_pathsnapshot"] = UI.elements.content.corepathsnapshot.getAttribute ("value");
+						item["core_pathscript"] = UI.elements.content.corepathscript.getAttribute ("value");
+						item["core_pathtmp"] = UI.elements.content.corepathtmp.getAttribute ("value");
+						
+						item["smtp_server"] = UI.elements.content.smtpserver.getAttribute ("value");
+						item["smtp_encoding"] = UI.elements.content.smtpencoding.getAttribute ("selectedItem").value;
+						
+						return item;
+					}
+									
 	UI.onChange = 	function ()
-					{			
-						if (UI.elements.content.users.getItem ())
-		 				{
-		 					UI.elements.content.usersedit.setAttribute ("disabled", false);
-		 					UI.elements.content.usersdelete.setAttribute ("disabled", false);
-		 				}
-		 				else
-		 				{
-		 					UI.elements.content.usersedit.setAttribute ("disabled", true);
-		 					UI.elements.content.usersdelete.setAttribute ("disabled", true);
-		 				}
-		 				
-		 				var usergroup = UI.elements.content.usergroups.getItem ();
-						if ((usergroup) && (usergroup.type != "BuildIn"))
-		 				{
-	 						UI.elements.content.usergroupsedit.setAttribute ("disabled", false);
-		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", false);	 				
-		 				}
-		 				else
-		 				{
-		 					UI.elements.content.usergroupsedit.setAttribute ("disabled", true);
-		 					UI.elements.content.usergroupsdelete.setAttribute ("disabled", true);
-		 				}			 				
+					{		
+						if (sConsole.helpers.compareItems ({array1: current, array2: UI.get ()}))
+						{
+							UI.elements.content.button1.setAttribute ("disabled", false);
+						}
+						else
+						{
+							UI.elements.content.button1.setAttribute ("disabled", true);									
+						}		 											
+					};
+					
+	UI.onButton1 =	function ()
+					{	
+						if (sorentoLib.services.config.set ({keys: UI.get ()}))
+						{
+							current = UI.get ();
+							UI.onChange ();
+						}
 					};
 	
 	UI.init ();		

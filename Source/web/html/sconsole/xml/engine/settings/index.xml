@@ -3,7 +3,7 @@
 		<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">
 			<panel size="*">				
 				<tabview>
-					<tab label="Environment" selected="true">
+					<tab label="Engine" selected="true">
 						<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
 							<panel size="*">
 								<layoutbox type="horizontal">			
@@ -21,6 +21,45 @@
 										</layoutbox>
 									</panel>
 									<panel size="*">
+										<text text=""/>
+									</panel>					
+									<panel size="%elementheight%">
+										<layoutbox type="vertical">
+											<panel size="130px">
+												<label text="Enable cache"/>
+											</panel>					
+											<panel size="*">
+												<checkbox tag="coreenablecache" />
+											</panel>					
+										</layoutbox>
+									</panel>									
+									<panel size="*">
+										<text text=""/>
+									</panel>					
+									<panel size="%elementheight%">
+										<layoutbox type="vertical">
+											<panel size="130px">
+												<label text="Max connections"/>
+											</panel>					
+											<panel size="*">
+												<textbox tag="fastcgimaxconnections" width="100%" />
+											</panel>					
+										</layoutbox>
+									</panel>
+									<panel size="*">
+										<text text=""/>
+									</panel>					
+									<panel size="%elementheight%">
+										<layoutbox type="vertical">
+											<panel size="130px">
+												<label text="Max requests"/>
+											</panel>					
+											<panel size="*">
+												<textbox tag="fastcgimaxrequests" width="100%" />
+											</panel>					
+										</layoutbox>
+									</panel>									
+									<panel size="*">
 										<text text="Trouble with special language characteres is usally connected to wrong text encoding settings."/>
 									</panel>
 									<panel size="%elementheight%">
@@ -29,13 +68,26 @@
 												<label text="Encoding"/>
 											</panel>					
 											<panel size="*">
-												<dropbox tag="encoding" width="100%">
-													<item value="plaintext" label="Plaintext" />	
-													<item value="rsa" label="RSA Encryption" />												
+												<dropbox tag="coreencoding" width="100%">
+													<item value="UTF-8" label="UTF-8" />														
+													<item value="ISO-8859-15" label="ISO-8859-15"/>	
 												</dropbox>											
 											</panel>					
 										</layoutbox>
-									</panel>							
+									</panel>			
+									<panel size="*">
+										<text text=""/>
+									</panel>
+									<panel size="%elementheight%">
+										<layoutbox type="vertical">
+											<panel size="130px">
+												<label text="Loglevel"/>
+											</panel>					
+											<panel size="*">
+												<textbox tag="coreloglevel" width="100%" />
+											</panel>																
+										</layoutbox>
+									</panel>														
 								</layoutbox>
 							</panel>
 						</layoutbox>												
@@ -50,7 +102,7 @@
 											<label text="Connector"/>
 										</panel>					
 										<panel size="*">
-											<dropbox tag="encoding" width="100%">
+											<dropbox tag="databasedriver" width="100%">
 												<item value="mysql" label="MySQL" />	
 												<item value="mssql" label="MSSQL" />
 											</dropbox>											
@@ -97,9 +149,7 @@
 											<textbox tag="databaseprefix" width="100%" />
 										</panel>					
 									</layoutbox>
-								</panel>							
-							
-							
+								</panel>																					
 								<panel size="*">
 									<text text=""/>
 								</panel>					
@@ -131,19 +181,150 @@
 						</panel>
 					</layoutbox>										
 				</tab>
-				<tab label="Environment">
-				</tab>			
-				<tab label="Options">
+				<tab label="Paths">
+					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+						<panel size="*">
+							<layoutbox type="horizontal">			
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Content"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathcontent" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="HTML"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathhtmlroot" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>									
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Media"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathmedia" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>								
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Public media"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathpublicmedia" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Snapshots"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathsnapshot" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>									
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Scripts"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathscript" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>								
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Temp"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="corepathtmp" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+							</layoutbox>
+						</panel>							
+					</layoutbox>																				
 				</tab>						
-		</tabview>
-				</panel>
-		
+				<tab label="SMTP">
+					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+						<panel size="*">
+							<layoutbox type="horizontal">			
+								<panel size="*">
+									<text text=""/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Server"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="smtpserver" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text=""/>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Encoding"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="smtpencoding" width="100%">
+												<item value="UTF-8" label="UTF-8" />				
+												<item value="ISO-8859-15" label="ISO-8859-15"/>										
+											</dropbox>											
+										</panel>					
+									</layoutbox>
+								</panel>							
+							</layoutbox>
+						</panel>
+					</layoutbox>														
+				</tab>			
+			</tabview>
+		</panel>	
 		<panel size="45px">
 			<layoutbox type="vertical" stylesheet="LayoutboxNoborder">
 				<panel size="*">								
 				</panel>
 				<panel size="105px">
-					<button tag="save" label="Save" width="100px" disabled="false"/>							
+					<button tag="button1" label="Save" width="100px" disabled="true"/>							
 				</panel>						
 			</layoutbox>
 		</panel>
