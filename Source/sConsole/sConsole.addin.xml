@@ -11,7 +11,11 @@
 	<Dependencies>
 		<Addin id="Sorento" version="1.0"/>
 	</Dependencies>
-					
+	
+	<Extension path = "/SorentoLib/Init">
+		<Type type="sConsole.Addin.Init"/>
+	</Extension>		
+						
 	<Extension path = "/SorentoLib/Resolver/Ajaxes">
 		<Type type="sConsole.Addin.Ajax"/>
 	</Extension>			
