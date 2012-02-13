@@ -1,10 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole/Runtime.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_edit.xml">
     <Files>
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="49" Column="47" />
-      <File FileName="sConsole/sConsole/Menu.cs" Line="45" Column="49" />
-      <File FileName="Test/Main.cs" Line="38" Column="24" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/css/default.css" Line="102" Column="20" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index_script.stpl" Line="129" Column="103" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_edit.xml" Line="43" Column="24" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_create.xml" Line="41" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/css.stpl" Line="12" Column="70" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="15" Column="90" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

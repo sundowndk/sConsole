@@ -1,4 +1,4 @@
-<%Include ("includes/init.stpl")%>
+<%Include (SorentoLib.Services.Config.GetString ("sconsole", "url") + "includes/init.stpl")%>
 
 <%nomenu = true%>
 <%nobody = true%>
@@ -33,6 +33,19 @@
 		</form>
 
 		<div id="ui" class="UI">
+		</div>
+		
+		<div class="Browsers">
+			<div class="IconFirefox">
+			</div>
+			<div class="IconChrome">
+			</div>
+			<div class="IconIE">
+			</div>
+			<div class="IconOpera">
+			</div>
+			<div class="IconSafari">
+			</div>
 		</div>
 	</body>
 </html>

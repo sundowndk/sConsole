@@ -1,0 +1,15 @@
+<sui>
+	<layoutbox type="horizontal">			
+		<panel size="*">
+			<layoutbox type="vertical">
+				<panel size="*">
+					<listview tag="usergroups" width="100%" height="100%">						
+						<column tag="id" />
+						<column tag="name" label="Name" width="200px" visible="true" />
+						<column tag="accesslevel" label="Accesslevel" width="200px" visible="true" />
+					</listview>
+				</panel>					
+			</layoutbox>
+		</panel>	
+	</layoutbox>
+</sui>

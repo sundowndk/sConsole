@@ -51,8 +51,8 @@ namespace sConsole.Addin
 			switch (Fullname.ToLower ())
 			{
 				#region sconsole.runtime
-				case "sconsole.runtime":
-				{
+			case "sconsole.runtime":
+			{
 					switch (Method.ToLower ())
 					{
 						case "getmenuxml":

@@ -1,4 +1,4 @@
-<%Include ("../../includes/init.stpl")%>
+<%Include (SorentoLib.Services.Config.GetString ("sconsole", "url") + "includes/init.stpl")%>
 
 <%$title = "console | engine | settings"%>
 <%$contentxml = SorentoLib.Services.Config.GetString ("sconsole", "url") + "xml/engine/settings/index.xml"%>

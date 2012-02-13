@@ -1,4 +1,4 @@
-<%Include ("includes/init.stpl")%>
+<%Include (SorentoLib.Services.Config.GetString ("sconsole", "url") + "includes/init.stpl")%>
 
 <%$title = "CONSOLE | DASHBOARD"%>
 <%$contentxml = $url + "xml/ui.xml"%>

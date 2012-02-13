@@ -7,7 +7,9 @@
 #! SNDK
 <link rel="stylesheet" href="<%Write ($url)%>/includes/sndk/css/sndk.css" type="text/css">
 
-
+#! CODEMIRROR
+<link rel="stylesheet" href="<%Write ($url)%>/includes/sndk/includes/codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="<%Write ($url)%>/includes/sndk/includes/codemirror/mode/css/css.css">
 
 
 

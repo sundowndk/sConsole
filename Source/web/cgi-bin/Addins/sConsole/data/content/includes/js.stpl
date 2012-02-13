@@ -7,3 +7,9 @@
 #! SNDK
 <script language="JavaScript" type="text/javascript" src="<%Write ($url)%>/includes/sndk/js/sndk.js"></script>
 
+#! SCMS
+<script language="JavaScript" type="text/javascript" src="<%Write ($url)%>/includes/scms/js/scms.js"></script>
+
+#! CODEMIRROR
+<script language="JavaScript" type="text/javascript" src="<%Write ($url)%>/includes/sndk/includes/codemirror/lib/codemirror.js"></script>
+<script language="JavaScript" type="text/javascript" src="<%Write ($url)%>/includes/sndk/includes/codemirror/mode/css/css.js"></script>
