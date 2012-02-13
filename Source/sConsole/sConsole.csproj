@@ -16,16 +16,14 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\cgi-bin\Addins\sConsole</OutputPath>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Release\cgi-bin\Addins\sConsole</OutputPath>
+    <OutputPath>..\..\Binary\Release\Addins\sConsole</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -36,12 +34,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="SNDK, Version=1.0.4371.38234, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="SNDK, Version=1.0.4416.25851, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\SNDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SorentoLib, Version=1.0.4351.26120, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="SorentoLib">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\SorentoLib.dll</HintPath>
       <Private>False</Private>
