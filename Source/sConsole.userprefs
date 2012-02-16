@@ -1,14 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/build.sh">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole/Include.cs">
     <Files>
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index_script.stpl" Line="129" Column="103" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/css.stpl" Line="12" Column="70" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="12" Column="1" />
-      <File FileName="web/build.sh" Line="35" Column="72" />
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="1" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/ui.xml" Line="1" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/css/default.css" Line="1" Column="1" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="70" Column="10" />
+      <File FileName="sConsole/sConsole/Include.cs" Line="65" Column="108" />
+      <File FileName="sConsole/sConsole.Addin/Placerholder.cs" Line="49" Column="4" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/css.stpl" Line="12" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="13" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/header.stpl" Line="13" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

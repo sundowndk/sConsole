@@ -27,6 +27,7 @@ done
 ####################################################
 echo "Setting up build structur..."
 mkdir "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/html/js"
+chmod 777 "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/" -R
 
 ####################################################
 # JAVASCRIPT                                       #

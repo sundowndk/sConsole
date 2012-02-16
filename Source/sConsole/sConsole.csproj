@@ -35,12 +35,13 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="SNDK, Version=1.0.4416.25851, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="SNDK, Version=1.0.4423.39294, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\SNDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="SorentoLib, Version=1.0.4427.28749, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="Mono.Posix" />
+    <Reference Include="SorentoLib, Version=1.0.4429.37565, Culture=neutral, PublicKeyToken=null">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\SorentoLib.dll</HintPath>
       <Private>False</Private>
@@ -52,11 +53,16 @@
     <Compile Include="sConsole\Runtime.cs" />
     <Compile Include="sConsole\Menu.cs" />
     <Compile Include="sConsole.Addin\Init.cs" />
+    <Compile Include="sConsole.Enums\ConfigKey.cs" />
+    <Compile Include="sConsole.Addin\Placerholder.cs" />
+    <Compile Include="sConsole.Enums\IncludeType.cs" />
+    <Compile Include="sConsole\Include.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="sConsole.Addin\" />
     <Folder Include="sConsole\" />
+    <Folder Include="sConsole.Enums\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="sConsole.addin.xml" />

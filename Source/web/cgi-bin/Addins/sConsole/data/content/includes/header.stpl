@@ -6,8 +6,11 @@
 	<%Include ($meta)%>				
 </head>
 
-<%Include ($css)%>
-<%Include ($js)%>
+#!<%Include ($css)%>
+#!<%Include ($js)%>
+
+[SCONSOLE_INCLUDE_CSS_PLACEHOLDER]
+
 
 <script language="JavaScript">
 	// ##########################################################################################################################################

@@ -16,6 +16,10 @@
 		<Type type="sConsole.Addin.Init"/>
 	</Extension>		
 						
+	<Extension path = "/SorentoLib/Render/Placeholders">
+		<Type type="sConsole.Addin.Placeholder"/>
+	</Extension>								
+						
 	<Extension path = "/SorentoLib/Resolver/Ajaxes">
 		<Type type="sConsole.Addin.Ajax"/>
 	</Extension>			

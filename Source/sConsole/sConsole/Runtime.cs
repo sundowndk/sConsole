@@ -27,8 +27,10 @@
 //
 
 using System;
+using System.IO;
 using System.Xml;
 using System.Collections.Generic;
+using Mono.Unix;
 
 namespace sConsole
 {
@@ -42,14 +44,64 @@ namespace sConsole
 
 		#region Public Static Methods
 		public static void Initialize ()
+		{	
+			try
+			{
+				SetDefaults ();			
+			
+				Menu.AddCategory ("dashboard", "Dashboard", "dashboard", 0);
+			
+				Menu.AddCategory ("engine", "Engine", 100);
+				Menu.AddItem ("engine", "settings", "Settings", "engine/settings/", 0);
+				Menu.AddItem ("engine", "access", "Access", "engine/access/", 20);
+				Menu.AddItem ("engine", "addins", "Addins", "engine/addins/", 100);		
+				
+				Include.Add (Enums.IncludeType.Javascript, "/js/sconsole.js", "SCONSOLE", 1);
+				Include.Add (Enums.IncludeType.Javascript, "/includes/sorentolib/js/sorentolib.js", "SORENTOLIB", 2);
+				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/js/sndk.js", "SNDK", 3);
+				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/includes/codemirror/lib/codemirror.js", "CODEMIRROR", 4);
+				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/includes/codemirror/mode/css/css.js", "CODEMIRROR", 5);
+				
+				Include.Add (Enums.IncludeType.Stylesheet, "/css/default.css", "SCONSOLE", 1);
+				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/css/sndk.css", "SNDK", 2);
+				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/includes/codemirror/lib/codemirror.css", "CODEMIRROR", 3);
+				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/includes/codemirror/mode/css/css.css", "CODEMIRROR", 4);
+				
+				if (!Directory.Exists (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)))
+				{
+					UnixFileInfo dirinfo = new UnixFileInfo (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/data/html");
+					dirinfo.CreateSymbolicLink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
+				}			
+			}
+			catch (Exception exception)
+			{
+				// LOG: LogDebug.ExceptionUnknown
+				SorentoLib.Services.Logging.LogDebug (string.Format (SorentoLib.Strings.LogDebug.ExceptionUnknown, "SCONSOLE.INITIALIZE", exception.Message));
+			}
+		}
+		
+		
+		
+		private static void SetDefaults ()
 		{			
+			SorentoLib.Services.Config.SetDefault (Enums.ConfigKey.sconsole_url, "/console/");
+			SorentoLib.Services.Config.SetDefault (Enums.ConfigKey.sconsole_includecssplaceholdertag, "[SCONSOLE_INCLUDE_CSS_PLACEHOLDER]");
+			SorentoLib.Services.Config.SetDefault (Enums.ConfigKey.sconsole_includejsplaceholdertag, "[SCONSOLE_INCLUDE_JS_PLACEHOLDER]");
+		}
+		
+		public static string GetCSSInclude ()
+		{
+			string result = string.Empty;
 			
-			Menu.AddCategory ("dashboard", "Dashboard", "dashboard", 0);
+			return result;
+		}
+		
+		public static string GetJSInclude ()
+		{
+			string result = string.Empty;
 			
-			Menu.AddCategory ("engine", "Engine", 100);
-			Menu.AddItem ("engine", "settings", "Settings", "engine/settings/", 0);
-			Menu.AddItem ("engine", "access", "Access", "engine/access/", 20);
-			Menu.AddItem ("engine", "addins", "Addins", "engine/addins/", 100);		
+			
+			return result;
 		}
 		
 		public static XmlDocument GetMenuXML (SorentoLib.Session session)
