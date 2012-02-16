@@ -7,6 +7,7 @@
     <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EDED5866-DB06-4F34-94E1-470AB771690E}</ProjectGuid>
+    <ReleaseVersion>2.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>.</OutputPath>
@@ -37,18 +38,14 @@
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\database\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\addins\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\debug\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\chooser\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\modal\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\modal\edit\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\database\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\settings\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\addins\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\sconsole\js\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\chooser\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\modal\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\database\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\settings\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\css\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -83,38 +80,26 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\chooser\usergroup.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\default.css" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\ui.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\modal\edit\profile.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\modal\edit\profile_change_password.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\database\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\access\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\access\user_create.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\access\user_edit.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\access\usergroup_edit.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\settings\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\addins\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\css\default.css" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\chooser\usergroup.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\ui.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\profile.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\profile_change_password.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\database\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\user_create.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\user_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\usergroup_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\settings\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\index.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\background.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\bg-login-top.png" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\bg-login.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\bg-radial-gradient.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\bg-sidebar.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\category.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\category2.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\category2.png" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\current.gif" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\css\images\favicon.png" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\includes\sndk" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\includes\sorentolib" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\engine\access\users.xml" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\users\usergroups_edit.xml" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\users\users.xml" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\users\users_crerate.xml" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\users\users_edit.xml" />
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\sconsole\xml\users\users_edit_change_password.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\users\usergroups_edit.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\users\users.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\users\users_crerate.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\users\users_edit.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\users\users_edit_change_password.xml" />
   </ItemGroup>
 </Project>

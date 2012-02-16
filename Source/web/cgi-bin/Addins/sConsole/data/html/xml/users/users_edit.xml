@@ -1,0 +1,97 @@
+<sui elementheight="50px">
+	<canvas width="800px" height="400px" canScroll="false">	
+		<container title="Edit user" icon="Icon32Edit" stylesheet="SUIContainerModal">
+			<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+				<panel size="*">
+					<tabview>
+						<tab label="Details" selected="true">
+							<layoutbox type="horizontal">			
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="100px">
+											<label text="Username"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="username" width="100%" disabled="true" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="100px">
+											<label text="Realname"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="realname" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="100px">
+											<label text="Email"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="email" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="100px">
+											<label text="Status"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="status" width="100%">
+												<item label="Enabled" value="Enabled" />
+												<item label="Disabled" value="Disabled" />										
+											</dropbox>
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+								</panel>
+							</layoutbox>
+						</tab>
+						<tab label="Security">
+							<layoutbox type="horizontal">			
+								<panel size="*">										
+									<layoutbox type="vertical">
+										<panel size="100px">
+											<label text="Usergroups" />
+										</panel>
+										<panel size="*">
+											<listview tag="usergroups" width="100%" height="100%" unique="id">
+												<column tag="id" />
+												<column tag="name" label="Name" width="200px" visible="true" />
+												<column tag="accesslevel" label="AccessLevel" width="200px" visible="true" />
+											</listview>
+										</panel>					
+										<panel size="80px">
+											<button tag="usergroupsadd" stylesheet="SUIButtonSmall" width="100%" label="Add" />
+											<button tag="usergroupsremove" stylesheet="SUIButtonSmall" width="100%" label="Remove" disabled="true" />
+										</panel>
+									</layoutbox>																				
+								</panel>
+							</layoutbox>					
+						</tab>
+					</tabview>
+				</panel>
+				<panel size="45px">
+					<layoutbox type="vertical">
+						<panel size="*">	
+							<button tag="changepassword" label="Change password" width="150px" disabled="false"/>						
+						</panel>
+						<panel size="210px">
+							<button tag="save" label="Save" width="100px" disabled="true"/>
+							<button tag="close" label="Close" width="100px" />
+						</panel>						
+					</layoutbox>
+				</panel>
+			</layoutbox>				
+		</container>
+	</canvas>
+</sui>
+
+
+

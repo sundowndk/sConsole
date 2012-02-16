@@ -1,13 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_edit.xml">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/build.sh">
     <Files>
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/css/default.css" Line="102" Column="20" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index_script.stpl" Line="129" Column="103" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_edit.xml" Line="48" Column="10" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/sconsole/xml/engine/access/user_create.xml" Line="41" Column="1" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/css.stpl" Line="12" Column="70" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="15" Column="90" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="12" Column="1" />
+      <File FileName="web/build.sh" Line="35" Column="72" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="1" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/ui.xml" Line="1" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/css/default.css" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
