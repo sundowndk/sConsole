@@ -46,6 +46,8 @@
     <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\css\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\addins\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\addins\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />

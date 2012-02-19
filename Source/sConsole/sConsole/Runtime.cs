@@ -51,7 +51,9 @@ namespace sConsole
 			
 				Menu.AddCategory ("dashboard", "Dashboard", "dashboard", 0);
 			
-				Menu.AddCategory ("engine", "Engine", 100);
+				Menu.AddCategory ("addins", "Addins", 800);
+				
+				Menu.AddCategory ("engine", "Engine", 900);
 				Menu.AddItem ("engine", "settings", "Settings", "engine/settings/", 0);
 				Menu.AddItem ("engine", "access", "Access", "engine/access/", 20);
 				Menu.AddItem ("engine", "addins", "Addins", "engine/addins/", 100);		
