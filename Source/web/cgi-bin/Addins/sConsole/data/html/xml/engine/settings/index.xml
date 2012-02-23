@@ -194,7 +194,7 @@
 											<label text="Content"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathcontent" width="100%" />
+											<textbox tag="pathcontent" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>
@@ -207,7 +207,7 @@
 											<label text="HTML"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathhtmlroot" width="100%" />
+											<textbox tag="pathhtml" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>									
@@ -220,7 +220,7 @@
 											<label text="Media"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathmedia" width="100%" />
+											<textbox tag="pathmedia" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>								
@@ -233,7 +233,7 @@
 											<label text="Public media"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathpublicmedia" width="100%" />
+											<textbox tag="pathpublicmedia" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>
@@ -246,7 +246,7 @@
 											<label text="Snapshots"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathsnapshot" width="100%" />
+											<textbox tag="pathsnapshot" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>									
@@ -259,7 +259,7 @@
 											<label text="Scripts"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathscript" width="100%" />
+											<textbox tag="pathscript" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>								
@@ -272,7 +272,7 @@
 											<label text="Temp"/>
 										</panel>					
 										<panel size="*">
-											<textbox tag="corepathtmp" width="100%" />
+											<textbox tag="pathtemp" width="100%" />
 										</panel>					
 									</layoutbox>
 								</panel>

@@ -1,13 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole/Include.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/cgi-bin/Addins/sConsole/data/content/engine/settings/index_script.stpl">
     <Files>
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="70" Column="10" />
-      <File FileName="sConsole/sConsole/Include.cs" Line="65" Column="108" />
-      <File FileName="sConsole/sConsole.Addin/Placerholder.cs" Line="49" Column="4" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/css.stpl" Line="12" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="13" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/header.stpl" Line="13" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/settings/index_script.stpl" Line="111" Column="57" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/engine/settings/index.xml" Line="183" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
