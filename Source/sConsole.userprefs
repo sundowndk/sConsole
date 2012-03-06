@@ -8,7 +8,7 @@
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/js.stpl" Line="1" Column="1" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/header.stpl" Line="1" Column="1" />
       <File FileName="web/javascript/modal/init.js" Line="1" Column="1" />
-      <File FileName="web/javascript/modal/window.js" Line="229" Column="1" />
+      <File FileName="web/javascript/modal/window.js" Line="96" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
