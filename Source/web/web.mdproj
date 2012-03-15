@@ -32,7 +32,6 @@
     <Folder Include="cgi-bin\Addins\sConsole\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\content\" />
     <Folder Include="javascript\modal\edit\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\addins\" />
