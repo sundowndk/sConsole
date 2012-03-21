@@ -93,7 +93,7 @@ window : function (_attributes)
 
 		}
 		
-		SNDK.SUI.init ();
+		SNDK.SUI.init ();		
 	}
 	
 	// ------------------------------------
