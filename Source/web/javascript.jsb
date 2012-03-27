@@ -24,7 +24,10 @@
 			</class>												
 			<class name="runtime">
 				<js file="javascript/runtime.js" />
-			</class>															
+			</class>		
+			<class name="tinymce">
+				<js file="javascript/tinymce.js" />
+			</class>													
 		</class>		
 	</project>	
 </solution>

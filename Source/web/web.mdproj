@@ -89,6 +89,7 @@
     <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\index.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
+    <None Include="javascript\tinymce.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />
