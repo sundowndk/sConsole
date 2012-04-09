@@ -1,14 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/javascript/modal/window.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/javascript/modal/chooser/media.js">
     <Files>
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/ui.xml" Line="2" Column="34" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/index.stpl" Line="1" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/engine/access/index.stpl" Line="1" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/body.stpl" Line="31" Column="10" />
-      <File FileName="web/javascript/modal/window.js" Line="162" Column="1" />
-      <File FileName="web/javascript/tinymce.js" Line="56" Column="2" />
-      <File FileName="web/javascript.jsb" Line="29" Column="33" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/upload.stpl" Line="6" Column="4" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/debug/index_script.stpl" Line="1" Column="1" />
+      <File FileName="web/javascript/modal/chooser/media.js" Line="5" Column="11" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

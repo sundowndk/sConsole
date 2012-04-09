@@ -45,6 +45,8 @@
     <Folder Include="cgi-bin\Addins\sConsole\data\content\addins\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\addins\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\settings\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\debug\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\debug\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -66,7 +68,6 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\includes\js.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\includes\meta.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\dashboard.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\content\dashboard_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\index_script.stpl" />
     <None Include="javascript\modal\edit\profile.js" />
@@ -90,6 +91,12 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
     <None Include="javascript\tinymce.js" />
+    <None Include="javascript\modal\chooser\media.js" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\dashboard_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\upload.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\debug\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\debug\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\debug\index.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />

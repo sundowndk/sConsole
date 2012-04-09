@@ -1,0 +1,23 @@
+<script language="JavaScript">					
+	// ##########################################################################################################################################
+	// # UI
+	// ##########################################################################################################################################		
+	
+	var debugmediachooser =	function ()
+							{
+								var onDone =	function (media)
+												{
+												};
+				
+								sConsole.modal.chooser.media ({onDone: onDone});
+							};
+	
+	UI.init = 		function ()
+					{			
+						UI.elements.content.debugmediachooser.setAttribute ("onClick", debugmediachooser);
+						
+						SNDK.SUI.init ();
+					};
+								
+	UI.init ();		
+</script>

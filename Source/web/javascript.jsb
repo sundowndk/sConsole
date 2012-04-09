@@ -10,6 +10,7 @@
 				<class name="chooser">
 					<js file="javascript/modal/chooser/base.js" />
 					<js file="javascript/modal/chooser/usergroup.js" />
+					<js file="javascript/modal/chooser/media.js" />
 				</class>
 				<class name="edit">
 					<js file="javascript/modal/edit/profile.js" />
