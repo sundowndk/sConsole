@@ -8,7 +8,26 @@ media : function (attributes)
 					
 	var onUploadComplete =	function ()
 							{
+								var mediaupload = window.uploadframe.mediaUpload;
 							
+								if (mediaupload != null)
+								{
+									console.log (mediaupload.id);
+									console.log (mediaupload.path);
+									console.log (mediaupload.success);
+									console.log (mediaupload.errorMessage);
+								
+									if (mediaupload.success)
+									{
+										chooser.getUIElement ("uploadimage").setAttribute ("source", mediaupload.path);
+									}
+									else
+									{
+										sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
+									}
+									
+									
+								}
 							};
 
 	var onButton1 =			function ()
@@ -63,15 +82,24 @@ media : function (attributes)
 	suixml += '</tab>';
 	suixml += '<tab label="Upload" selected="true">';
 	suixml += '	<layoutbox type="horizontal">';
-	suixml += '		<panel size="*">';
+	suixml += '		<panel size="55px">';
 	suixml += '			<layoutbox type="vertical">';
 	suixml += '				<panel size="*">';
 	suixml += '					<upload tag="mediaupload" name="mediaupload" width="100%" label="Select file"/>';
 	suixml += '				</panel>';
-	suixml += '				<panel size="*" hidden="false">';
+	suixml += '				<panel size="*" hidden="true">';
 	suixml += '					<htmlview tag="uploadframe" name="uploadframe" width="100%" height="100%" url=""/>';
 	suixml += '				</panel>';
 	suixml += '			</layoutbox>';
+	suixml += '		</panel>';
+	suixml += '		<panel size="*">';	
+	suixml += '			<layoutbox type="vertical">';
+	suixml += '				<panel size="*">';
+	suixml += '					<image tag="uploadimage" width="100%" height="100%" />';
+	suixml += '				</panel>';
+	suixml += '				<panel size="*">';	
+	suixml += '				</panel>';	
+	suixml += '			</layoutbox>';	
 	suixml += '		</panel>';
 	suixml += '	</layoutbox>';	
 	suixml += '</tab>';
@@ -89,8 +117,8 @@ media : function (attributes)
 	var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd", value: "Function", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.function", value: "SorentoLib.Media.Upload", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/administration/includes/image_upload", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/administration/includes/image_upload", appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: "/media/content/%%FILENAME%%%%EXTENSION%%", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: "image/jpeg;image/png;image/gif", appendTo: uploadform});

@@ -1,17 +1,18 @@
-<html>
-	<%$includejs = "/administration/includes/image_upload_js.stpl"%>
-
+<html>	
 	<script language="javascript">		
-		var UI = 
+		var mediaUpload =
 		{
-			mediaId : "<%Write ($mediaid)%>",
-			mediaPath : "<%Write ($mediasoftpath)%>",
-			uploadSuccess : "<%Write ($uploadsuccess)%>",
-			cmdErrorMessage : "<%Write ($cmderrormessage)%>"
-		}			
+			success : <%Write ($cmdsuccess)%>,				
+			errorMessage : "<%Write ($cmderrormessage)%>",
+				
+			<%if ($cmdsuccess == true)%>
+				id : "<%Write ($mediaid)%>",
+				path : "<%Write ($mediapath)%>"
+			<%else%>
+				id : null,
+				path : null
+			<%endif%>
+		}
 	</script>
-
-	</body>	
-	</body>
 </html>
 
