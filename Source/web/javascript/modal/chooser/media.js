@@ -19,7 +19,8 @@ media : function (attributes)
 								
 									if (mediaupload.success)
 									{
-										chooser.getUIElement ("uploadimage").setAttribute ("source", mediaupload.path);
+										//chooser.getUIElement ("uploadimage").setAttribute ("source", mediaupload.path);
+										chooser.getUIElement ("uploadimage").setAttribute ("source", "/console/cache/thumbnails/"+ mediaupload.id +".jpg");
 									}
 									else
 									{
@@ -95,7 +96,7 @@ media : function (attributes)
 	suixml += '		<panel size="*">';	
 	suixml += '			<layoutbox type="vertical">';
 	suixml += '				<panel size="*">';
-	suixml += '					<image tag="uploadimage" width="100%" height="100%" />';
+	suixml += '					<image tag="uploadimage" width="120px" height="120px" />';
 	suixml += '				</panel>';
 	suixml += '				<panel size="*">';	
 	suixml += '				</panel>';	
@@ -123,6 +124,8 @@ media : function (attributes)
 	SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: "/media/content/%%FILENAME%%%%EXTENSION%%", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: "image/jpeg;image/png;image/gif", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail.xml;sconsole/media_test.xml", appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: "", appendTo: uploadform});
 	document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
 	uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
 					

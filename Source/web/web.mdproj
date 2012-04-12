@@ -47,6 +47,11 @@
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\debug\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\debug\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\content\media\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\media\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\scripts\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\cache\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\cache\thumbnails\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -97,6 +102,11 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\debug\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\debug\index_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\html\xml\debug\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_test.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />

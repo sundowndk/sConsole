@@ -51,6 +51,8 @@ namespace sConsole
 			
 				Menu.AddCategory ("dashboard", "Dashboard", "dashboard", 0);
 			
+				Menu.AddCategory ("media", "Media", "media/", 700);
+				
 				Menu.AddCategory ("addins", "Addins", 800);
 				
 				Menu.AddCategory ("engine", "Engine", 900);
@@ -73,7 +75,13 @@ namespace sConsole
 				{
 					UnixFileInfo dirinfo = new UnixFileInfo (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/data/html");
 					dirinfo.CreateSymbolicLink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
-				}			
+				}
+				
+				if (!Directory.Exists (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_script) + "sconsole/"))
+				{
+					UnixFileInfo dirinfo = new UnixFileInfo (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/data/scripts");
+					dirinfo.CreateSymbolicLink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_script) + "sconsole");
+				}
 			}
 			catch (Exception exception)
 			{
