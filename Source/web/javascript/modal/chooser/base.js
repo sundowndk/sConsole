@@ -51,7 +51,7 @@ base : function (attributes)
 	{
 		_temp.modal = new sConsole.modal.window (_attributes);		
 	
-		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "400px"});
+		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "430px"});
 		var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});
 		
 		var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});

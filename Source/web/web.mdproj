@@ -105,8 +105,8 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_test.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_small.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_large.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />

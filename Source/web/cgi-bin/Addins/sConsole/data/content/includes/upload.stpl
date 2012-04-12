@@ -5,9 +5,10 @@
 			success : <%Write ($cmdsuccess)%>,				
 			errorMessage : "<%Write ($cmderrormessage)%>",
 				
-			<%if ($cmdsuccess == true)%>
+			<%if ($cmdsuccess == true)%>				
 				id : "<%Write ($mediaid)%>",
-				path : "<%Write ($mediapath)%>"
+				path : "<%Write ($mediapath)%>",
+				mimetype : "<%Write ($media.mimetype)%>"
 			<%else%>
 				id : null,
 				path : null

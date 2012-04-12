@@ -1,0 +1,5 @@
+<job>
+	<load path="%%SOURCEPATH%%" name="IMAGE"/>	
+	<scale source="IMAGE" width="120" height="120" keepaspect="true" exact="true"/>	
+	<save source="IMAGE" path="%%HTMLROOT%%console/cache/thumbnails/%%SOURCEFILENAMEWITHOUTEXTENSION%%_small.jpg" codec="jpeg" quality="90"/>
+</job>  
