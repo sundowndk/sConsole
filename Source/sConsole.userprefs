@@ -1,14 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/javascript/modal/chooser/media.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_script.stpl">
     <Files>
-      <File FileName="web/cgi-bin/Addins/sConsole/data/scripts/media_image_thumbnail_small.xml" Line="4" Column="106" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/scripts/media_image_thumbnail_large.xml" Line="4" Column="66" />
-      <File FileName="web/javascript/modal/chooser/media.js" Line="94" Column="49" />
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="84" Column="6" />
-      <File FileName="web/javascript/modal/chooser/base.js" Line="59" Column="47" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/content/includes/upload.stpl" Line="20" Column="1" />
-      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/engine/settings/index.xml" Line="3" Column="61" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_script.stpl" Line="3" Column="56" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_script.stpl" Line="104" Column="7" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_mimetype_script.stpl" Line="96" Column="15" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/media/mediatransformation_mimetype_edit.xml" Line="33" Column="1" />
+      <File FileName="web/cgi-bin/Addins/sConsole/data/html/xml/media/mediatransformation_edit.xml" Line="35" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

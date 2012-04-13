@@ -1,8 +1,44 @@
 media : function (attributes)
 {
+	if (!attributes) 
+		attributres = new Array ();
+	
+	if (!attributes.type)
+		attributes.type = "file";
+		
+	if (!attributes.mimetypes)
+	{
+		switch (attributes.type)
+		{
+			case "file":
+			{
+				attributes.mimetypes = "";
+				break;
+			}
+			
+			case "image":
+			{
+				attributes.mimetypes = "image/jpeg;image/png;image/gif";
+			}
+		}
+	}
+	
+	if (!attributes.path)
+		attribtutes.path = "/media/%%FILENAME%%%%EXTENSION%%";
+	
+	if (!attributes.mediatransformations)
+		attributes.mediatransformations = "";
+		
+	if (!attributes.postuploadscript)
+		attributes.postuploadscript = "";
+
+	var media = null;
+
 	var upload = 			function ()
 							{
 								chooser.getUIElement ("mediaupload").setAttribute ("disabled", true);			
+								chooser.getUIElement ("button1").setAttribute ("disabled", true);
+								chooser.getUIElement ("button2").setAttribute ("disabled", true);
 								document.getElementById ("uploadform").submit ();
 							};
 					
@@ -12,18 +48,29 @@ media : function (attributes)
 							
 								if (mediaupload != null)
 								{
-									console.log (mediaupload.id);
-									console.log (mediaupload.path);
-									console.log (mediaupload.mimetype);
-									console.log (mediaupload.success);
-									console.log (mediaupload.errorMessage);
-								
 									if (mediaupload.success)
 									{
-										chooser.getUIElement ("id").setAttribute ("value", mediaupload.id);
-										chooser.getUIElement ("path").setAttribute ("value", mediaupload.path);
-										chooser.getUIElement ("mimetype").setAttribute ("value", mediaupload.mimetype);
-										chooser.getUIElement ("uploadimage").setAttribute ("source", "/console/cache/thumbnails/"+ mediaupload.id +"_large.jpg");
+										media = sorentoLib.media.load (mediaupload.id);
+									
+										chooser.getUIElement ("id").setAttribute ("value", media.id);
+										chooser.getUIElement ("path").setAttribute ("value", media.path);
+										chooser.getUIElement ("size").setAttribute ("value", media.size);
+										chooser.getUIElement ("mimetype").setAttribute ("value", media.mimetype);
+										
+										switch (attributes.type)
+										{
+											case "file":
+											{
+												chooser.getUIElement ("uploadimage").setAttribute ("source", "/console/css/images/mimetypes/scalable/"+ media.mimetype.replace ("/", "-") +".svg");
+												break;
+											}
+											
+											case "image":
+											{
+												chooser.getUIElement ("uploadimage").setAttribute ("source", "/console/cache/thumbnails/"+ media.id +"_large.jpg");
+												break;
+											}
+										}
 									}
 									else
 									{
@@ -32,6 +79,9 @@ media : function (attributes)
 								}
 								
 								chooser.getUIElement ("mediaupload").setAttribute ("disabled", false);
+								chooser.getUIElement ("button2").setAttribute ("disabled", false);
+								
+								onChange ();
 							};
 
 	var onButton1 =			function ()
@@ -40,7 +90,7 @@ media : function (attributes)
 						
 								if (attributes.onDone != null)
 								{
-									setTimeout( function ()	{ attributes.onDone (chooser.getUIElement ("usergroups").getItem ()); }, 1);
+									setTimeout( function ()	{ attributes.onDone (media); }, 1);
 								}
 							};
 					
@@ -56,7 +106,7 @@ media : function (attributes)
 					
 	var onChange = 			function ()
 							{
-								if (chooser.getUIElement ("usergroups").getItem ())
+								if (media != null)
 								{
 									chooser.getUIElement ("button1").setAttribute ("disabled", false);
 								}
@@ -69,21 +119,21 @@ media : function (attributes)
 	var suixml = "";
 	suixml += '<sui>';
 	suixml += '<tabview>';
-	suixml += '<tab label="Library">';
-	suixml += '	<layoutbox type="horizontal">';
-	suixml += '		<panel size="*">';
-	suixml += '			<layoutbox type="vertical">';
-	suixml += '				<panel size="*">';
-	suixml += '					<listview tag="usergroups" width="100%" height="100%" focus="true">';
-	suixml += '						<column tag="id" />';
-	suixml += '						<column tag="name" label="Name" width="200px" visible="true" />';
-	suixml += '						<column tag="type" label="Type" width="60px" visible="true" />';
-	suixml += '					</listview>';
-	suixml += '				</panel>';
-	suixml += '			</layoutbox>';
-	suixml += '		</panel>';
-	suixml += '	</layoutbox>';
-	suixml += '</tab>';
+//	suixml += '<tab label="Library">';
+//	suixml += '	<layoutbox type="horizontal">';
+//	suixml += '		<panel size="*">';
+//	suixml += '			<layoutbox type="vertical">';
+//	suixml += '				<panel size="*">';
+//	suixml += '					<listview tag="usergroups" width="100%" height="100%" focus="true">';
+//	suixml += '						<column tag="id" />';
+//	suixml += '						<column tag="name" label="Name" width="200px" visible="true" />';
+//	suixml += '						<column tag="type" label="Type" width="60px" visible="true" />';
+//	suixml += '					</listview>';
+//	suixml += '				</panel>';
+//	suixml += '			</layoutbox>';
+//	suixml += '		</panel>';
+//	suixml += '	</layoutbox>';
+//	suixml += '</tab>';
 	suixml += '<tab label="Upload" selected="true">';
 	suixml += '	<layoutbox type="horizontal">';
 	suixml += '		<panel size="55px">';
@@ -120,14 +170,20 @@ media : function (attributes)
 	suixml += '					</layoutbox>';
 	suixml += '					<layoutbox height="45px" type="vertical">';	
 	suixml += '						<panel size="70px">';
+	suixml += '							<label text="Size" />';
+	suixml += '						</panel>'
+	suixml += '						<panel size="*">';
+	suixml += '							<textbox tag="size" width="100%" disabled="true" />';
+	suixml += '						</panel>';
+	suixml += '					</layoutbox>';		
+	suixml += '					<layoutbox height="45px" type="vertical">';	
+	suixml += '						<panel size="70px">';
 	suixml += '							<label text="Mimetype" />';
 	suixml += '						</panel>'
 	suixml += '						<panel size="*">';
 	suixml += '							<textbox tag="mimetype" width="100%" disabled="true" />';
 	suixml += '						</panel>';
 	suixml += '					</layoutbox>';	
-		
-	suixml += '';
 	suixml += '				</panel>';	
 	suixml += '			</layoutbox>';	
 	suixml += '		</panel>';
@@ -140,8 +196,6 @@ media : function (attributes)
 	
 	chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
 	chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
-	chooser.getUIElement ("usergroups").setItems (sorentoLib.usergroup.list ());
-	chooser.getUIElement ("usergroups").setAttribute ("onChange", onChange);
 	
 	// UPLOADFORM
 	var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
@@ -150,11 +204,27 @@ media : function (attributes)
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
 	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: "/media/content/%%FILENAME%%%%EXTENSION%%", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: "image/jpeg;image/png;image/gif", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: "", appendTo: uploadform});
+	
+	SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: attributes.path, appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: attributes.mimetypes, appendTo: uploadform});
+	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
+	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
+	
+	switch (attributes.type)
+	{
+		case "file":
+		{
+			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
+			break;
+		}
+		
+		case "image":
+		{
+			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
+			break;
+		}
+	}
+	
 	document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
 	uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
 					

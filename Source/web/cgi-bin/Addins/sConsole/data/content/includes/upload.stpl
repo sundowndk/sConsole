@@ -6,12 +6,9 @@
 			errorMessage : "<%Write ($cmderrormessage)%>",
 				
 			<%if ($cmdsuccess == true)%>				
-				id : "<%Write ($mediaid)%>",
-				path : "<%Write ($mediapath)%>",
-				mimetype : "<%Write ($media.mimetype)%>"
+				id : "<%Write ($media.id)%>",
 			<%else%>
-				id : null,
-				path : null
+				media : null,
 			<%endif%>
 		}
 	</script>

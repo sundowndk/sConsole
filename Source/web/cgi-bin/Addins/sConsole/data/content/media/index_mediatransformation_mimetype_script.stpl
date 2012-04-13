@@ -1,0 +1,129 @@
+// #  <script language="JavaScript">
+// #######################################################################################################################################
+// # MIMETYPE
+// #######################################################################################################################################		
+var mimetype =
+{	
+	// ADD
+	add : function ()
+	{
+		var item = {};
+		item.value = "";
+	
+		mimetype.edit ({current: item});
+	},
+
+	// EDIT
+	edit : function (attributes)
+	{				
+		if (!attributes) attributes = new Array ();
+	
+		if (attributes.current)
+		{
+			attributes.mode = "new";
+		}
+		else
+		{
+			attributes.mode = "edit"
+			attributes.current = modal.getUIElement ("mimetypes").getItem ();
+		}
+	
+		// APPLY
+		var apply =		function ()
+						{
+							switch (attributes.mode)
+							{
+								case "new":
+								{
+									modal.getUIElement ("mimetypes").addItem (get ());
+									break;
+								}
+								
+								case "edit":
+								{
+									modal.getUIElement ("mimetypes").setItem (get ());
+									break;
+								}
+								
+							}
+							
+							modal2.dispose ();		
+						};
+										
+		// SET	
+		var set =		function ()
+						{
+							modal2.getUIElement ("mimetype").setAttribute ("value", attributes.current.value);
+						};
+				
+		// GET		
+		var get = 		function ()
+						{
+							var item = {};
+							item.value = modal2.getUIElement ("mimetype").getAttribute ("value");
+														
+							return item;								
+						};
+						
+		// DISPOSE
+		var dispose =	function ()
+						{
+							modal2.dispose ();
+						};
+						
+		// ONCHANGE	
+		var onChange =	function ()
+						{			
+							if ((sConsole.helpers.compareItems ({array1: attributes.current, array2: get ()})) && (modal2.getUIElement ("mimetype").getAttribute ("value") != ""))
+							{							
+								modal2.getUIElement ("button1").setAttribute ("disabled", false);
+							}
+							else
+							{
+								modal2.getUIElement ("button1").setAttribute ("disabled", true);									
+							}									
+						};							
+	
+		// INIT
+		var modal2 = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_mimetype_edit.xml"});
+		modal2.getUIElement ("button1").setAttribute ("onClick", apply);
+		modal2.getUIElement ("close").setAttribute ("onClick", dispose);		
+						
+		modal2.getUIElement ("mimetype").setAttribute ("onChange", onChange);
+		
+		switch (attributes.mode)
+		{
+			case "new":
+			{
+				modal2.getUIElement ("container").setAttribute ("title", "Add mimetype");
+				modal2.getUIElement ("button1").setAttribute ("label", "Add");
+				break;
+			}
+			
+			case "edit":
+			{
+				modal2.getUIElement ("container").setAttribute ("title", "Edit mimetype");
+				modal2.getUIElement ("button1").setAttribute ("label", "Apply");
+				break;
+			}
+		}
+						
+		// SET
+		set ();		
+		
+		// SHOW
+		modal2.show ();		
+	},
+	
+	// REMOVE
+	remove : function ()
+	{
+		modal.getUIElement ("mimetypes").removeItem ();
+	}	
+}
+
+
+
+
+
+

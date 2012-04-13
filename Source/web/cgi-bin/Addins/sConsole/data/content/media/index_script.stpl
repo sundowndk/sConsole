@@ -1,18 +1,66 @@
-<script language = "JavaScript">													
+<script language="JavaScript">							
+
+	<%Include ("index_mediatransformation_script.stpl")%>	
+
 	// ##########################################################################################################################################
 	// # UI
-	// ##########################################################################################################################################
+	// ##########################################################################################################################################		
+	
+	var current;
+	
 	UI.init = 		function ()
-					{
+					{			
+						UI.elements.content.mediatransformations.setAttribute ("onChange", UI.onChange);
+						UI.elements.content.mediatransformations.setAttribute ("onChange", UI.onChange);							
+						
+						UI.elements.content.mediatransformationcreate.setAttribute ("onClick", mediatransformation.create);
+						UI.elements.content.mediatransformationedit.setAttribute ("onClick", mediatransformation.edit);
+						UI.elements.content.mediatransformationdelete.setAttribute ("onClick", mediatransformation.delete);							
+					 										 																 										 																 										 																
+						UI.set ();
+						SNDK.SUI.init ();
 					};
 					
-	UI.refresh = 	function ()
-					{	
-					};		
+	UI.save =		function ()
+					{												
+						if (sorentoLib.services.config.set ({keys: UI.get ()}))
+						{
+							current = UI.get ();
+							UI.onChange ();
+						}
+						
+					};
+	
+	UI.set =		function ()
+					{		
+						UI.elements.content.mediatransformations.setItems (sorentoLib.mediaTransformation.list ());							
+												
+						UI.onChange ();
+					};
 					
-	UI.update = 	function ()
-					{						
-					};								
-	UI.init ();					
+	UI.get =		function ()	
+					{
+						var item = {};
+																		
+						item["core_authenticationtype"] = UI.elements.content.authenticationtype.getAttribute ("selectedItem").value;						
+						item["core_sessiontimeout"] = UI.elements.content.sessiontimeout.getAttribute ("value");
+												
+						return item;
+					};
+				
+	UI.onChange = 	function ()
+					{			
+						if (UI.elements.content.mediatransformations.getItem ())
+		 				{
+		 					UI.elements.content.mediatransformationedit.setAttribute ("disabled", false);
+		 					UI.elements.content.mediatransformationdelete.setAttribute ("disabled", false);
+		 				}
+		 				else
+		 				{
+		 					UI.elements.content.mediatransformationedit.setAttribute ("disabled", true);
+		 					UI.elements.content.mediatransformationdelete.setAttribute ("disabled", true);
+		 				}
+					};
+	
+	UI.init ();		
 </script>
-

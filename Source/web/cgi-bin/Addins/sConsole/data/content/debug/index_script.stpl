@@ -3,18 +3,30 @@
 	// # UI
 	// ##########################################################################################################################################		
 	
-	var debugmediachooser =	function ()
-							{
-								var onDone =	function (media)
-												{
-												};
+	var debugmediachooser1 =	function ()
+								{
+									var onDone =	function (media)
+													{
+														console.log (media.id);
+													};
 				
-								sConsole.modal.chooser.media ({onDone: onDone});
-							};
+									sConsole.modal.chooser.media ({type: "file", path: "/media/content/%%FILENAME%%%%EXTENSION%%", onDone: onDone});
+								};
+								
+	var debugmediachooser2 =	function ()
+								{
+									var onDone =	function (media)
+													{
+														console.log (media.id);
+													};
+				
+									sConsole.modal.chooser.media ({type: "image", path: "/media/content/%%FILENAME%%%%EXTENSION%%", onDone: onDone});
+								};								
 	
 	UI.init = 		function ()
 					{			
-						UI.elements.content.debugmediachooser.setAttribute ("onClick", debugmediachooser);
+						UI.elements.content.debugmediachooser1.setAttribute ("onClick", debugmediachooser1);
+						UI.elements.content.debugmediachooser2.setAttribute ("onClick", debugmediachooser2);
 						
 						SNDK.SUI.init ();
 					};
