@@ -1,0 +1,30 @@
+<sui>
+	<container title="Addins" icon="Icon32Edit" stylesheet="SUIContainerNoBorder">		
+					<layoutbox type="vertical" width="100%" height="100%" stylesheet="SUILayoutboxNoBorder">
+						<panel size="*">
+							<listview tag="addins" width="100%" height="100%">
+								<column tag="id" />		
+								<column tag="enabled" label="" width="70px" visible="true" />								
+								<column tag="name" label="Name" width="150px" visible="true" />
+								<column tag="version" label="Version" width="70px" visible="true" />
+								<column tag="description" label="Description" width="400px" visible="true" />
+								<column tag="author" label="Author" width="130px" visible="true" />								
+								<column tag="candisable" />								
+							</listview>
+						</panel>
+						<panel size="100px">
+							<layoutbox type="horizontal" width="100%" height="100%" stylesheet="SUILayoutboxNoBorder">
+								<panel size="*">
+									<button tag="addintoggle" width="100%" label="Enable" disabled="true"/>
+									<button tag="addinremove" width="100%" label="Remove" disabled="true"/>
+								</panel>
+								<panel size="40px">
+									<button tag="addininstall" width="100%" label="Install" disabled="true"/>
+								</panel>
+							</layoutbox>
+							
+						</panel>
+					</layoutbox>				
+	</container>	
+</sui>
+

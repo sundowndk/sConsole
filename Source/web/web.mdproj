@@ -35,23 +35,19 @@
     <Folder Include="javascript\modal\edit\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\addins\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\chooser\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\modal\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\settings\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\css\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\addins\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\addins\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\engine\settings\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\debug\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\debug\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\content\media\" />
-    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\media\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\scripts\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\cache\" />
     <Folder Include="cgi-bin\Addins\sConsole\data\html\cache\thumbnails\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\js\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\includes\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\css\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\xml\" />
+    <Folder Include="cgi-bin\Addins\sConsole\data\html\xml\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="javascript\modal\chooser\base.js" />
@@ -81,18 +77,6 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\access\index_script.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\css\default.css" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\chooser\usergroup.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\ui.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\profile.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\modal\edit\profile_change_password.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\user_create.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\user_edit.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\usergroup_edit.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\settings\index.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\engine\addins\index.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
     <None Include="javascript\tinymce.js" />
@@ -101,19 +85,31 @@
     <None Include="cgi-bin\Addins\sConsole\data\content\includes\upload.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\debug\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\debug\index_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\debug\index.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index.stpl" />
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\index.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_small.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_large.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index_mediatransformation_script.stpl" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\mediatransformation_create.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\mediatransformation_edit.xml" />
-    <None Include="cgi-bin\Addins\sConsole\data\html\xml\media\mediatransformation_mimetype_edit.xml" />
     <None Include="cgi-bin\Addins\sConsole\data\content\media\index_mediatransformation_mimetype_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\chooser\usergroup.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\debug\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\user_create.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\user_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\usergroup_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\settings\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\addins\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_create.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_mimetype_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\modal\edit\profile.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\modal\edit\profile_change_password.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\ui.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\css\default.css" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="cgi-bin\Addins\sConsole\data\html\xml\engine\access\users.xml" />
+    <Compile Include="cgi-bin\Addins\sConsole\data\xml\engine\access\users.xml" />
   </ItemGroup>
 </Project>

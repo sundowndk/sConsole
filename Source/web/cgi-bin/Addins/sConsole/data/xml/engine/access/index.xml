@@ -1,0 +1,86 @@
+<sui>
+	<container title="Access" icon="Icon32Edit" stylesheet="SUIContainerNoBorder">		
+		<tabview>
+				<tab label="Users" selected="true">
+					<layoutbox type="vertical" width="100%" height="100%" stylesheet="SUILayoutboxNoBorder">
+						<panel size="*">
+							<listview tag="users" width="100%" height="100%">
+								<column tag="id" />						
+								<column tag="username" label="Username" width="200px" visible="true" />
+								<column tag="realname" label="Realname" width="200px" visible="true" />
+								<column tag="email" label="Email" width="200px" visible="true" />								
+								<column tag="status" label="Status" width="200px" visible="true" />
+							</listview>
+						</panel>
+						<panel size="100px">
+							<button tag="userscreate" stylesheet="SUIButtonSmall" width="100%" label="Create" />
+							<button tag="usersedit" stylesheet="SUIButtonSmall" width="100%" label="Edit" />
+							<button tag="usersdelete" stylesheet="SUIButtonSmall" width="100%" label="Delete" />								
+						</panel>
+					</layoutbox>				
+				</tab>
+				<tab label="Usergroups">
+					<layoutbox type="vertical" width="100%" height="100%" stylesheet="SUILayoutboxNoBorder">
+						<panel size="*">
+							<listview tag="usergroups" width="100%" height="100%">
+								<column tag="id" />						
+								<column tag="name" label="Name" width="200px" visible="true" />								
+								<column tag="type" label="Type" width="60px" visible="true" />
+							</listview>
+						</panel>
+						<panel size="100px">
+							<button tag="usergroupscreate" stylesheet="SUIButtonSmall" width="100%" label="Create" />
+							<button tag="usergroupsedit" stylesheet="SUIButtonSmall" width="100%" label="Edit" />
+							<button tag="usergroupsdelete" stylesheet="SUIButtonSmall" width="100%" label="Delete" />								
+						</panel>
+					</layoutbox>				
+				</tab>
+				<tab label="Options">
+					<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">			
+						<panel size="*">
+							<layoutbox type="horizontal">			
+								<panel size="*">
+									<text text="As default passwords are send as plaintext, and can potentionaly be read by 3rd party. To prevent this choose RSA encryption, this way all password authentication will be encrypted before being send to the server. Unfortunally this renders the build-in password managers of most browsers useless."/>
+								</panel>
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Authentication"/>
+										</panel>					
+										<panel size="*">
+											<dropbox tag="authenticationtype" width="100%">
+												<item value="plaintext" label="Plaintext" />	
+												<item value="rsa" label="RSA Encryption" />												
+											</dropbox>											
+										</panel>					
+									</layoutbox>
+								</panel>
+								<panel size="*">
+									<text text="Session timeout sets how many seconds should pass before a user session expires. Users who are logged in when a session timeout occures will be promted with a warning and will have to re-authenticate them selfs."/>
+								</panel>					
+								<panel size="%elementheight%">
+									<layoutbox type="vertical">
+										<panel size="130px">
+											<label text="Session timeout"/>
+										</panel>					
+										<panel size="*">
+											<textbox tag="sessiontimeout" width="100%" />
+										</panel>					
+									</layoutbox>
+								</panel>
+							</layoutbox>
+						</panel>
+						<panel size="45px">
+							<layoutbox type="vertical" stylesheet="LayoutboxNoborder">
+								<panel size="*">								
+								</panel>
+								<panel size="105px">
+									<button tag="save" label="Save" width="100px" disabled="false"/>							
+								</panel>						
+							</layoutbox>
+						</panel>
+					</layoutbox>								
+				</tab>			
+		</tabview>
+	</container>	
+</sui>

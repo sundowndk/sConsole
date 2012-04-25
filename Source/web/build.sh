@@ -12,7 +12,10 @@ OUTPUTDIR="$1"
 # CLEAN                                            #
 ####################################################
 echo "Cleaning previous build..."
-rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/" -r
+rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/js/" -r
+rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/xml/" -r
+rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/htdocs/" -r
+rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/content/" -r
 
 ####################################################
 # CGI-BIN                                          #
@@ -33,4 +36,4 @@ chmod 777 "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/" -R
 # JAVASCRIPT                                       #
 ####################################################
 echo "Building 'javascript'..."
-jsbuilder javascript.jsb "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/html/js/"
+jsbuilder javascript.jsb "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/js/"
