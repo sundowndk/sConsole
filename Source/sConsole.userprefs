@@ -1,14 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole/Runtime.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="web/build.sh">
     <Files>
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_script.stpl" Line="3" Column="56" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_script.stpl" Line="104" Column="7" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_mimetype_script.stpl" Line="96" Column="15" />
       <File FileName="sConsole/sConsole.Addin/Init.cs" Line="1" Column="1" />
       <File FileName="sConsole/sConsole/Menu.cs" Line="1" Column="1" />
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="94" Column="5" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="85" Column="5" />
       <File FileName="web/javascript.jsb" Line="1" Column="1" />
+      <File FileName="web/build.sh" Line="18" Column="57" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
