@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/build.sh">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole.Addin/Placerholder.cs">
     <Files>
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_script.stpl" Line="3" Column="56" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/media/index_mediatransformation_script.stpl" Line="104" Column="7" />
@@ -10,6 +10,7 @@
       <File FileName="sConsole/sConsole/Runtime.cs" Line="85" Column="5" />
       <File FileName="web/javascript.jsb" Line="1" Column="1" />
       <File FileName="web/build.sh" Line="18" Column="57" />
+      <File FileName="sConsole/sConsole.Addin/Placerholder.cs" Line="54" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

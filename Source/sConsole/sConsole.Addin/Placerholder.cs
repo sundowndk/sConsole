@@ -42,10 +42,18 @@ namespace sConsole.Addin
 		#region Public Methods
 		public List<SorentoLib.Render.Placeholder> Get (SorentoLib.Session Session)
 		{
-			List<SorentoLib.Render.Placeholder> result = new List<SorentoLib.Render.Placeholder> ();
-
+			
+				List<SorentoLib.Render.Placeholder> result = new List<SorentoLib.Render.Placeholder> ();
+			
+			try
+			{
 			result.Add (new SorentoLib.Render.Placeholder (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_includecssplaceholdertag), Include.GetString ()));
 //			result.Add (new SorentoLib.Render.Placeholder (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_includejsplaceholdertag, Runtime.GetJSInclude ())));
+			}
+			catch
+			{
+				
+			}
 
 			return result;
 		}
