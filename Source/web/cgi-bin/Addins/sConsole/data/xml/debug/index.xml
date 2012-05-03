@@ -6,6 +6,7 @@
 						<panel size="*">
 							<button tag="debugmediachooser1" label="DebugMediaChooser FILE" width="300px" focus="true"/>
 							<button tag="debugmediachooser2" label="DebugMediaChooser IMAGE" width="300px" focus="true"/>
+							<button tag="debugmediachooser3" label="DebugMediaChooser UPLOAD IMAGE" width="300px" focus="true"/>
 						</panel>
 					</layoutbox>				
 				</tab>

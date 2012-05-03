@@ -22,11 +22,22 @@
 				
 									sConsole.modal.chooser.media ({type: "image", path: "/media/content/%%FILENAME%%%%EXTENSION%%", onDone: onDone});
 								};								
+								
+	var debugmediachooser3 =	function ()
+								{
+									var onDone =	function (media)
+													{
+														console.log (media.id);
+													};
+				
+									sConsole.modal.chooser.media ({type: "image", subType: "upload", path: "/media/content/%%FILENAME%%%%EXTENSION%%", onDone: onDone});
+								};																
 	
 	UI.init = 		function ()
 					{			
 						UI.elements.content.debugmediachooser1.setAttribute ("onClick", debugmediachooser1);
 						UI.elements.content.debugmediachooser2.setAttribute ("onClick", debugmediachooser2);
+						UI.elements.content.debugmediachooser3.setAttribute ("onClick", debugmediachooser3);
 						
 						SNDK.SUI.init ();
 					};

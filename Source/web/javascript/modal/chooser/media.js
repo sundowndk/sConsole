@@ -4,19 +4,22 @@ media : function (attributes)
 		attributres = new Array ();
 	
 	if (!attributes.type)
-		attributes.type = "file";
+		attributes.type = "FILE";
+		
+	if (!attributes.subType)
+		attributes.subType = "All";
 		
 	if (!attributes.mimetypes)
 	{
-		switch (attributes.type)
+		switch (attributes.type.toUpperCase ())
 		{
-			case "file":
+			case "FILE":
 			{
 				attributes.mimetypes = "";
 				break;
 			}
 			
-			case "image":
+			case "IMAGE":
 			{
 				attributes.mimetypes = "image/jpeg;image/png;image/gif";
 			}
@@ -31,7 +34,29 @@ media : function (attributes)
 		
 	if (!attributes.postuploadscript)
 		attributes.postuploadscript = "";
-
+		
+	if (attributes.subType.toUpperCase () == "ALL")
+	{
+		attributes.title = "Choose media";	
+	}
+	else
+	{
+		switch (attributes.subType.toUpperCase ())
+		{
+			case "LIBRARY":
+			{
+				attributes.title = "Choose media";
+				break;
+			}
+			
+			case "UPLOAD":
+			{
+				attributes.title = "Upload media";
+				break;
+			}
+		}	
+	}
+	
 	var media = null;
 
 	var upload = 			function ()
@@ -118,81 +143,124 @@ media : function (attributes)
 
 	var suixml = "";
 	suixml += '<sui>';
-	suixml += '<tabview>';
-//	suixml += '<tab label="Library">';
-//	suixml += '	<layoutbox type="horizontal">';
-//	suixml += '		<panel size="*">';
-//	suixml += '			<layoutbox type="vertical">';
-//	suixml += '				<panel size="*">';
-//	suixml += '					<listview tag="usergroups" width="100%" height="100%" focus="true">';
-//	suixml += '						<column tag="id" />';
-//	suixml += '						<column tag="name" label="Name" width="200px" visible="true" />';
-//	suixml += '						<column tag="type" label="Type" width="60px" visible="true" />';
-//	suixml += '					</listview>';
-//	suixml += '				</panel>';
-//	suixml += '			</layoutbox>';
-//	suixml += '		</panel>';
-//	suixml += '	</layoutbox>';
-//	suixml += '</tab>';
-	suixml += '<tab label="Upload" selected="true">';
-	suixml += '	<layoutbox type="horizontal">';
-	suixml += '		<panel size="55px">';
-	suixml += '			<layoutbox type="vertical">';
-	suixml += '				<panel size="*">';
-	suixml += '					<upload tag="mediaupload" name="mediaupload" width="100%" label="Select file"/>';
-	suixml += '				</panel>';
-	suixml += '				<panel size="*" hidden="true">';
-	suixml += '					<htmlview tag="uploadframe" name="uploadframe" width="100%" height="100%" url=""/>';
-	suixml += '				</panel>';
-	suixml += '			</layoutbox>';
-	suixml += '		</panel>';
-	suixml += '		<panel size="*">';	
-	suixml += '			<layoutbox type="vertical">';
-	suixml += '				<panel size="200px">';
-	suixml += '					<image tag="uploadimage" width="190px" height="190px" />';
-	suixml += '				</panel>';
-	suixml += '				<panel size="*">';	
-	suixml += '					<layoutbox height="45px" type="vertical">';	
-	suixml += '						<panel size="70px">';
-	suixml += '							<label text="Id" />';
-	suixml += '						</panel>'
-	suixml += '						<panel size="*">';
-	suixml += '							<textbox tag="id" width="100%" disabled="true" />';
-	suixml += '						</panel>';
-	suixml += '					</layoutbox>';
-	suixml += '					<layoutbox height="45px" type="vertical">';	
-	suixml += '						<panel size="70px">';
-	suixml += '							<label text="Path" />';
-	suixml += '						</panel>'
-	suixml += '						<panel size="*">';
-	suixml += '							<textbox tag="path" width="100%" disabled="true" />';
-	suixml += '						</panel>';
-	suixml += '					</layoutbox>';
-	suixml += '					<layoutbox height="45px" type="vertical">';	
-	suixml += '						<panel size="70px">';
-	suixml += '							<label text="Size" />';
-	suixml += '						</panel>'
-	suixml += '						<panel size="*">';
-	suixml += '							<textbox tag="size" width="100%" disabled="true" />';
-	suixml += '						</panel>';
-	suixml += '					</layoutbox>';		
-	suixml += '					<layoutbox height="45px" type="vertical">';	
-	suixml += '						<panel size="70px">';
-	suixml += '							<label text="Mimetype" />';
-	suixml += '						</panel>'
-	suixml += '						<panel size="*">';
-	suixml += '							<textbox tag="mimetype" width="100%" disabled="true" />';
-	suixml += '						</panel>';
-	suixml += '					</layoutbox>';	
-	suixml += '				</panel>';	
-	suixml += '			</layoutbox>';	
-	suixml += '		</panel>';
-	suixml += '	</layoutbox>';	
-	suixml += '</tab>';
-	suixml += '</tabview>';
+	
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+		suixml += '<tabview>';
+	}
+	
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+		suixml += '<tab label="Library">';
+	}
+		
+	// SUBTYPE: ALL, LIBRARY
+	if ((attributes.subType.toUpperCase () == "ALL") || (attributes.subType.toUpperCase () == "LIBRARY"))	
+	{
+//		suixml += '	<layoutbox type="horizontal">';
+//		suixml += '		<panel size="*">';
+//		suixml += '			<layoutbox type="vertical">';
+//		suixml += '				<panel size="*">';
+//		suixml += '					<listview tag="usergroups" width="100%" height="100%" focus="true">';
+//		suixml += '						<column tag="id" />';
+//		suixml += '						<column tag="name" label="Name" width="200px" visible="true" />';
+//		suixml += '						<column tag="type" label="Type" width="60px" visible="true" />';
+//		suixml += '					</listview>';
+//		suixml += '				</panel>';
+//		suixml += '			</layoutbox>';
+//		suixml += '		</panel>';
+//		suixml += '	</layoutbox>';
+	}
+			
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+//		suixml += '</tab>';
+	}
+
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+		suixml += '<tab label="Upload" selected="true">';
+	}
+	
+	// SUBTYPE: ALL, UPLOAD
+	if ((attributes.subType.toUpperCase () == "ALL") || (attributes.subType.toUpperCase () == "UPLOAD"))	
+	{
+		suixml += '	<layoutbox type="horizontal">';
+		suixml += '		<panel size="55px">';
+		suixml += '			<layoutbox type="vertical">';
+		suixml += '				<panel size="*">';
+		suixml += '					<upload tag="mediaupload" name="mediaupload" width="100%" label="Select file"/>';
+		suixml += '				</panel>';
+		suixml += '				<panel size="*" hidden="true">';
+		suixml += '					<htmlview tag="uploadframe" name="uploadframe" width="100%" height="100%" url=""/>';
+		suixml += '				</panel>';
+		suixml += '			</layoutbox>';
+		suixml += '		</panel>';
+		suixml += '		<panel size="*">';	
+		suixml += '			<layoutbox type="vertical">';
+		suixml += '				<panel size="200px">';
+		suixml += '					<image tag="uploadimage" width="190px" height="190px" />';
+		suixml += '				</panel>';
+		suixml += '				<panel size="*">';	
+		suixml += '					<layoutbox height="45px" type="vertical">';	
+		suixml += '						<panel size="70px">';
+		suixml += '							<label text="Id" />';
+		suixml += '						</panel>'
+		suixml += '						<panel size="*">';
+		suixml += '							<textbox tag="id" width="100%" disabled="true" />';
+		suixml += '						</panel>';
+		suixml += '					</layoutbox>';
+		suixml += '					<layoutbox height="45px" type="vertical">';	
+		suixml += '						<panel size="70px">';
+		suixml += '							<label text="Path" />';
+		suixml += '						</panel>'
+		suixml += '						<panel size="*">';
+		suixml += '							<textbox tag="path" width="100%" disabled="true" />';
+		suixml += '						</panel>';
+		suixml += '					</layoutbox>';
+		suixml += '					<layoutbox height="45px" type="vertical">';	
+		suixml += '						<panel size="70px">';
+		suixml += '							<label text="Size" />';
+		suixml += '						</panel>'
+		suixml += '						<panel size="*">';
+		suixml += '							<textbox tag="size" width="100%" disabled="true" />';
+		suixml += '						</panel>';
+		suixml += '					</layoutbox>';		
+		suixml += '					<layoutbox height="45px" type="vertical">';	
+		suixml += '						<panel size="70px">';
+		suixml += '							<label text="Mimetype" />';
+		suixml += '						</panel>'
+		suixml += '						<panel size="*">';
+		suixml += '							<textbox tag="mimetype" width="100%" disabled="true" />';
+		suixml += '						</panel>';
+		suixml += '					</layoutbox>';	
+		suixml += '				</panel>';	
+		suixml += '			</layoutbox>';	
+		suixml += '		</panel>';
+		suixml += '	</layoutbox>';	
+	}
+	
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+		suixml += '</tab>';
+	}
+
+	// SUBTYPE: ALL
+	if (attributes.subType.toUpperCase () == "ALL")	
+	{
+		suixml += '</tabview>';	
+	}
+
 	suixml += '</sui>';
 	
-	var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: "Choose media", buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
+	
+	
+	var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
 	
 	chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
 	chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
@@ -210,15 +278,15 @@ media : function (attributes)
 	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
 	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
 	
-	switch (attributes.type)
+	switch (attributes.type.toUpperCase ())
 	{
-		case "file":
+		case "FILE":
 		{
 			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
 			break;
 		}
 		
-		case "image":
+		case "IMAGE":
 		{
 			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
 			break;
