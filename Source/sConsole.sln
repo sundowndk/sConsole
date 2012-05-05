@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{9344bdbb-3e7f-41fc-a0dd-8665d75ee146}") = "web", "web\web.mdproj", "{EDED5866-DB06-4F34-94E1-470AB771690E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sConsole", "sConsole\sConsole.csproj", "{A58DB02E-1361-428E-A295-A1A4D41DC863}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}"
@@ -24,9 +22,6 @@ Global
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.Build.0 = Debug|Any CPU
-		{EDED5866-DB06-4F34-94E1-470AB771690E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDED5866-DB06-4F34-94E1-470AB771690E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDED5866-DB06-4F34-94E1-470AB771690E}.Test|Any CPU.ActiveCfg = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Test\Test.csproj

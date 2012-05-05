@@ -9,7 +9,6 @@
     <OutputType>Library</OutputType>
     <RootNamespace>sConsole</RootNamespace>
     <AssemblyName>sConsole</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ReleaseVersion>2.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,6 +16,11 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\cgi-bin\Addins\sConsole</OutputPath>
     <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="build.sh bin/Debug" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -35,14 +39,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
-    <Reference Include="SNDK, Version=1.0.4423.39294, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Mono.Posix" />
+    <Reference Include="SNDK">
       <HintPath>..\Lib\SNDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Mono.Posix" />
-    <Reference Include="SorentoLib, Version=1.0.4429.37565, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="SorentoLib">
       <HintPath>..\Lib\SorentoLib.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -63,8 +65,79 @@
     <Folder Include="sConsole.Addin\" />
     <Folder Include="sConsole\" />
     <Folder Include="sConsole.Enums\" />
+    <Folder Include="cgi-bin\" />
+    <Folder Include="javascript\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="sConsole.addin.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cgi-bin\Addins\sConsole\data\content\dashboard.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\dashboard_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\debug\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\debug\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\access\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\access\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\addins\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\database\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\database\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\engine\settings\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\body.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\css.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\header.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\init.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\js.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\meta.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\includes\upload.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index_mediatransformation_mimetype_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index_mediatransformation_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\media\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\database\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\content\settings\users\index_script.stpl" />
+    <None Include="cgi-bin\Addins\sConsole\data\css\default.css" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_large.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_image_thumbnail_small.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\scripts\media_test.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\ui.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\chooser\usergroup.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\debug\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\user_create.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\user_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\usergroup_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\access\users.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\addins\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\engine\settings\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\index.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_create.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\media\mediatransformation_mimetype_edit.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\modal\edit\profile.xml" />
+    <None Include="cgi-bin\Addins\sConsole\data\xml\modal\edit\profile_change_password.xml" />
+    <None Include="javascript\helpers.js" />
+    <None Include="javascript\runtime.js" />
+    <None Include="javascript\snapin.js" />
+    <None Include="javascript\tinymce.js" />
+    <None Include="javascript\modal\error.js" />
+    <None Include="javascript\modal\init.js" />
+    <None Include="javascript\modal\question.js" />
+    <None Include="javascript\modal\warning.js" />
+    <None Include="javascript\modal\window.js" />
+    <None Include="javascript\modal\chooser\base.js" />
+    <None Include="javascript\modal\chooser\media.js" />
+    <None Include="javascript\modal\chooser\usergroup.js" />
+    <None Include="javascript\modal\edit\changepassword.js" />
+    <None Include="javascript\modal\edit\profile.js" />
+    <None Include="build.sh" />
+    <None Include="javascript.jsb" />
   </ItemGroup>
 </Project>
