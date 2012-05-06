@@ -12,28 +12,18 @@ OUTPUTDIR="$1"
 # CLEAN                                            #
 ####################################################
 echo "Cleaning previous build..."
-rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/" -r
-#rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/xml/" -r
-#rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/htdocs/" -r
-#rm "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/content/" -r
+rm "$OUTPUTDIR/resources/" -r
 
 ####################################################
-# CGI-BIN                                          #
+# RESOURCES                                        #
 ####################################################
-echo "Building 'cgi-bin'..."
-for file in cgi-bin/*; do
-    cp -rv $file "$OUTPUTDIR/cgi-bin/"
+echo "Copying 'resources''..."
+for file in resources*; do
+    cp -rv $file "$OUTPUTDIR/resources/"
 done
-
-####################################################
-# SETUP                                            #
-####################################################
-echo "Setting up build structur..."
-#mkdir "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/html/js"
-#chmod 777 "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/" -R
 
 ####################################################
 # JAVASCRIPT                                       #
 ####################################################
 echo "Building 'javascript'..."
-jsbuilder javascript.jsb "$OUTPUTDIR/cgi-bin/Addins/sConsole/data/js/"
+jsbuilder javascript.jsb "$OUTPUTDIR/resources/js/"

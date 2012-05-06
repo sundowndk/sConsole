@@ -20,11 +20,11 @@ Global
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Test|Any CPU.Build.0 = Test|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.ActiveCfg = Debug|Any CPU
-		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.Build.0 = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Test\Test.csproj
-		version = 2.0
+		version = 2.1
 	EndGlobalSection
 EndGlobal

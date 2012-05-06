@@ -1,11 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="web/build.sh">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Test" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/sConsole/Runtime.cs">
     <Files>
       <File FileName="web/javascript/modal/chooser/media.js" Line="95" Column="128" />
       <File FileName="web/cgi-bin/Addins/sConsole/data/content/debug/index_script.stpl" Line="41" Column="7" />
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="45" Column="1" />
-      <File FileName="web/build.sh" Line="36" Column="53" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="91" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -14,4 +13,5 @@
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <AuthorInfo Name="Rasmus Pedersen" Email="rasmus@akvaservice.dk" Copyright="Rasmus Pedersen" Company="" Trademark="" />
 </Properties>
