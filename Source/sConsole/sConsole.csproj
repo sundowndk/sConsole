@@ -73,6 +73,8 @@
     <Folder Include="javascript\" />
     <Folder Include="resources\cache\" />
     <Folder Include="resources\cache\thumbnails\" />
+    <Folder Include="resources\content\addins\" />
+    <Folder Include="resources\xml\addins\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="sConsole.addin.xml" />
@@ -119,10 +121,6 @@
     <None Include="resources\content\media\index_mediatransformation_mimetype_script.stpl" />
     <None Include="resources\content\media\index_mediatransformation_script.stpl" />
     <None Include="resources\content\media\index_script.stpl" />
-    <None Include="resources\content\settings\database\index.stpl" />
-    <None Include="resources\content\settings\database\index_script.stpl" />
-    <None Include="resources\content\settings\users\index.stpl" />
-    <None Include="resources\content\settings\users\index_script.stpl" />
     <None Include="resources\css\default.css" />
     <None Include="resources\css\images\background.gif" />
     <None Include="resources\css\images\bg-login-top.png" />

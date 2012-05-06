@@ -18,8 +18,9 @@ rm "$OUTPUTDIR/resources/" -r
 # RESOURCES                                        #
 ####################################################
 echo "Copying 'resources''..."
+#mkdir "$OUTPUTDIR/resources/"
 for file in resources*; do
-    cp -rv $file "$OUTPUTDIR/resources/"
+    cp -rv $file "$OUTPUTDIR/"
 done
 
 ####################################################
