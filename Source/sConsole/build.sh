@@ -23,6 +23,12 @@ for file in resources*; do
 done
 
 ####################################################
+# RESOURCES/INCLUDES/SNDK                          #
+####################################################
+rm "$OUTPUTDIR/resources/includes/sndk" -r
+cp -rvL "resources/includes/sndk" "$OUTPUTDIR/resources/includes/"
+
+####################################################
 # JAVASCRIPT                                       #
 ####################################################
 echo "Building 'javascript'..."

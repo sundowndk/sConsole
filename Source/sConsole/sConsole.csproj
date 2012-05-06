@@ -71,6 +71,8 @@
     <Folder Include="sConsole\" />
     <Folder Include="sConsole.Enums\" />
     <Folder Include="javascript\" />
+    <Folder Include="resources\cache\" />
+    <Folder Include="resources\cache\thumbnails\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="sConsole.addin.xml" />
