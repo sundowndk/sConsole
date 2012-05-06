@@ -1,0 +1,16 @@
+<html>	
+	<script language="javascript">		
+		var mediaUpload =
+		{
+			success : <%Write ($cmdsuccess)%>,				
+			errorMessage : "<%Write ($cmderrormessage)%>",
+				
+			<%if ($cmdsuccess == true)%>				
+				id : "<%Write ($media.id)%>",
+			<%else%>
+				media : null,
+			<%endif%>
+		}
+	</script>
+</html>
+

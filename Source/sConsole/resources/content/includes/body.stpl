@@ -1,0 +1,59 @@
+<style type="text/css">
+
+#contentwrapper
+{
+	float: right;
+	width: 100%;
+	height: 100%;
+	margin-left: -230px; /*Set left margin to -(RightColumnWidth)*/
+}
+
+#contentcolumn
+{
+	margin: 0 0px 0 230px; /*Set margin to 0 (LeftColumnWidth) 0 (RightColumnWidth)*/
+	height: 100%;
+}
+
+#rightcolumn
+{
+	float: right;
+	width: 230px; /*Width of right column in percentage*/
+	height: 100%;
+	z-index: 20;
+}
+
+</style>
+
+<body>				
+	<div id="contentwrapper">
+		<div id="contentcolumn">
+			<div id="content" class="content">
+			</div>
+		</div>
+	</div>	
+
+	<div id="rightcolumn">
+		<div class="Sidebar">
+			<div id="informationpad" class="InformationPad">
+				<h1>
+					SORENTO
+				<h1/>
+				<h2>
+					WEB ENGINE CONSOLE
+				</h2>
+				<div class="Version">
+					version 2.0
+				</div>
+				<div class="Notification">
+					Hello, <a onClick="sConsole.modal.edit.profile ();"><span id="name"><%Write ($user.Firstname)%></span></a>, you have <a>0 messages</a>
+				</div>
+				<div class="Actions">
+					<a onClick="">Restart</a> | <a onClick="UI.session.logout ();">Logout</a>
+				</div>
+			</div>
+			<div id="navigation" class="navigation">
+			</div>				
+		</div>
+	</div>	
+</body>
+
