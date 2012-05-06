@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/build.sh">
+    <Files>
+      <File FileName="sConsole/build.sh" Line="25" Column="1" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="74" Column="23" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/home/sundown/Projekter/mono/sConsole/Source/web/html/sconsole/xml/engine/settings/index.xml" line="335" />
