@@ -30,6 +30,12 @@ rm "$OUTPUTDIR/resources/includes/sndk" -r
 cp -rvL "resources/includes/sndk" "$OUTPUTDIR/resources/includes/"
 
 ####################################################
+# PERMISSIONS			                           #
+####################################################
+chmod 777 "$OUTPUTDIR/resources/"
+chmod 777 "$OUTPUTDIR/resources/"* -R
+
+####################################################
 # JAVASCRIPT                                       #
 ####################################################
 echo "Building 'javascript'..."
