@@ -557,5 +557,6 @@
     <None Include="resources\xml\media\mediatransformation_mimetype_edit.xml" />
     <None Include="resources\xml\modal\edit\profile.xml" />
     <None Include="resources\xml\modal\edit\profile_change_password.xml" />
+    <None Include="javascript\modal\chooser\mediatransformation.js" />
   </ItemGroup>
 </Project>

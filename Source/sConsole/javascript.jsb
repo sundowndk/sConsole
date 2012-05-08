@@ -11,6 +11,7 @@
 					<js file="javascript/modal/chooser/base.js" />
 					<js file="javascript/modal/chooser/usergroup.js" />
 					<js file="javascript/modal/chooser/media.js" />
+					<js file="javascript/modal/chooser/mediatransformation.js" />
 				</class>
 				<class name="edit">
 					<js file="javascript/modal/edit/profile.js" />

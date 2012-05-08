@@ -64,7 +64,8 @@ namespace sConsole
 				Include.Add (Enums.IncludeType.Javascript, "/includes/sorentolib/js/sorentolib.js", "SORENTOLIB", 2);
 				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/js/sndk.js", "SNDK", 3);
 				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/includes/codemirror/lib/codemirror.js", "CODEMIRROR", 4);
-				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/includes/codemirror/mode/css/css.js", "CODEMIRROR", 5);
+				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/includes/codemirror/mode/css/css.js", "CODEMIRROR", 5);
+				Include.Add (Enums.IncludeType.Javascript, "/includes/sndk/includes/jshash/md5-min.js", "JHASH", 5);
 				
 				Include.Add (Enums.IncludeType.Stylesheet, "/css/default.css", "SCONSOLE", 1);
 				Include.Add (Enums.IncludeType.Stylesheet, "/includes/sndk/css/sndk.css", "SNDK", 2);
@@ -76,7 +77,7 @@ namespace sConsole
 				{
 					System.IO.Directory.CreateDirectory (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_cache) + "sconsole/thumbnails/");
 				}
-				
+												
 				// Remove symlinks
 				SNDK.IO.RemoveSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_content) +  Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
 				SNDK.IO.RemoveSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) +  Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));

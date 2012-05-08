@@ -1,4 +1,34 @@
 // ------------------------------------
+// arrayChecksum
+// ------------------------------------	
+arrayChecksum : function (value)
+{			
+	var result = "";
+
+	for (key in value)
+		{	
+		var segment = "";
+		
+		if (value[key] != null)
+		{	
+			if (typeof(value[key]) == "object")
+			{								 
+				segment = test (value[key]);
+			}	
+			else
+			{
+				segment = value[key];
+			}
+		}	
+			
+		result += segment;
+	}				
+		
+	return hex_md5 (result);	
+},
+
+
+// ------------------------------------
 // compareItems
 // ------------------------------------	
 compareItems : function (options)

@@ -1,10 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/build.sh">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/helpers.js">
     <Files>
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="106" Column="4" />
-      <File FileName="sConsole/javascript/modal/chooser/media.js" Line="197" Column="28" />
-      <File FileName="sConsole/build.sh" Line="43" Column="1" />
+      <File FileName="sConsole/sConsole/Runtime.cs" Line="67" Column="46" />
+      <File FileName="sConsole/javascript/helpers.js" Line="17" Column="6" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
