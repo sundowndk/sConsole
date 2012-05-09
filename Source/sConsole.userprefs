@@ -1,9 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/helpers.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/scripts/media_image_thumbnail_large.xml">
     <Files>
       <File FileName="sConsole/sConsole/Runtime.cs" Line="67" Column="46" />
-      <File FileName="sConsole/javascript/helpers.js" Line="17" Column="6" />
+      <File FileName="sConsole/javascript/helpers.js" Line="27" Column="16" />
+      <File FileName="sConsole/resources/scripts/media_image_thumbnail_large.xml" Line="4" Column="139" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

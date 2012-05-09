@@ -13,7 +13,7 @@ arrayChecksum : function (value)
 		{	
 			if (typeof(value[key]) == "object")
 			{								 
-				segment = test (value[key]);
+				segment = sConsole.helpers.arrayChecksum (value[key]);
 			}	
 			else
 			{
@@ -24,7 +24,8 @@ arrayChecksum : function (value)
 		result += segment;
 	}				
 		
-	return hex_md5 (result);	
+	return result;			
+	//return hex_md5 (result);	
 },
 
 
