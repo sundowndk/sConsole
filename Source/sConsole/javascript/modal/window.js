@@ -82,6 +82,7 @@ window : function (_attributes)
 		sConsole.modal.depth++;
 		_initialized = true;
 		
+		
 		if (_attributes.XML)
 		{
 			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
@@ -90,7 +91,6 @@ window : function (_attributes)
 		if (_attributes.SUIXML != null)
 		{
 			_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["content"] });	
-
 		}
 		
 		SNDK.SUI.init ();		
