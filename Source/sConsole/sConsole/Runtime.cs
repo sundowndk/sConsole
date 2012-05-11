@@ -87,6 +87,7 @@ namespace sConsole
 				
 				// Create symlinks				
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/content", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_content) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
+				SorentoLib.Services.Logging.LogDebug (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/htdocs", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/scripts", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_script) + "sconsole");							
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "Core/resources/htdocs", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/includes/sorentolib");
