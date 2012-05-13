@@ -41,6 +41,17 @@
     <OutputPath>bin\Test\sConsole\</OutputPath>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug-Resources-Only|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Test\sConsole\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="build.sh bin/Debug/cgi-bin/Addins/sConsole/" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -558,5 +569,6 @@
     <None Include="resources\xml\modal\edit\profile.xml" />
     <None Include="resources\xml\modal\edit\profile_change_password.xml" />
     <None Include="javascript\modal\chooser\mediatransformation.js" />
+    <None Include="javascript\modal\busy.js" />
   </ItemGroup>
 </Project>

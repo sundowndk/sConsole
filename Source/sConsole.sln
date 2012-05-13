@@ -10,15 +10,19 @@ Global
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Test|Any CPU = Test|Any CPU
+		Debug-Resources-Only|Any CPU = Debug-Resources-Only|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug-Resources-Only|Any CPU.ActiveCfg = Debug-Resources-Only|Any CPU
+		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Debug-Resources-Only|Any CPU.Build.0 = Debug-Resources-Only|Any CPU
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{A58DB02E-1361-428E-A295-A1A4D41DC863}.Test|Any CPU.Build.0 = Test|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Debug-Resources-Only|Any CPU.ActiveCfg = Debug-Resources-Only|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{AD92BC78-A476-490F-A8D2-76EE92AF2D5B}.Test|Any CPU.Build.0 = Test|Any CPU

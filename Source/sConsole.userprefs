@@ -1,11 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/window.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/css/default.css">
     <Files>
-      <File FileName="sConsole/sConsole/Runtime.cs" Line="67" Column="46" />
-      <File FileName="sConsole/javascript/helpers.js" Line="27" Column="16" />
-      <File FileName="sConsole/resources/scripts/media_image_thumbnail_large.xml" Line="4" Column="139" />
-      <File FileName="sConsole/javascript/modal/window.js" Line="94" Column="1" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="377" Column="51" />
+      <File FileName="sConsole/javascript/modal/busy.js" Line="98" Column="61" />
+      <File FileName="sConsole/resources/css/default.css" Line="59" Column="22" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
