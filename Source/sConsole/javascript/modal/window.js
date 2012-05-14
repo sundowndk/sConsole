@@ -92,8 +92,13 @@ window : function (_attributes)
 		_elements["container"].style.display = "none";
 		_elements["busy"].style.display = "none";
 
+
+		_elements["canvas"] = SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["container"]});
+		_elements["container1"] = SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
 	
-										
+//	<canvas canScroll="false">	
+//		<container tag="container" title="Edit page" icon="Icon32Edit" stylesheet="SUIContainerModal">
+											
 		SNDK.tools.changeOpacityByObject (_elements["container"], 0);								
 		SNDK.tools.changeOpacityByObject (_elements["busy"], 0);						
 	
@@ -103,12 +108,14 @@ window : function (_attributes)
 		
 		if (_attributes.XML)
 		{
-			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
+			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
+			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
 		}
 		
 		if (_attributes.SUIXML != null)
 		{
-			_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["content"] });	
+			//_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["content"] });	
+			_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, parent: _elements["container1"] });	
 		}
 		
 		SNDK.SUI.init ();		
