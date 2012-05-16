@@ -92,9 +92,10 @@ window : function (_attributes)
 		_elements["container"].style.display = "none";
 		_elements["busy"].style.display = "none";
 
-
-		_elements["canvas"] = SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["container"]});
-		_elements["container1"] = SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
+		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"]});				
+		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
+		
+		_elements["canvas"].addUIElement (_elements["container1"]);
 	
 //	<canvas canScroll="false">	
 //		<container tag="container" title="Edit page" icon="Icon32Edit" stylesheet="SUIContainerModal">
@@ -106,16 +107,37 @@ window : function (_attributes)
 		_initialized = true;
 		
 		
+		
+		
 		if (_attributes.XML)
 		{
 			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
-			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
+			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
 		}
 		
 		if (_attributes.SUIXML != null)
+		{				
+			_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["container1"] });	
+			//_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, parent: _elements["container1"] });	
+		}
+		
+		_elements["ui"]["canvas"] = _elements["canvas"];
+		_elements["ui"]["container"] = _elements["container1"];
+		
+		if (_attributes.titleBarUI)
 		{
-			//_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["content"] });	
-			_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, parent: _elements["container1"] });	
+			for (index in _attributes.titleBarUI)
+			{
+				var element = _attributes.titleBarUI [index];
+				//var count = _elements["ui"].length;
+				
+				_elements["ui"][element.attributes.tag] = _elements["container1"].addTitleBarUIElement (element.type, element.attributes);
+				
+				//console.log (_elements["ui"][count])
+				
+				// _elements["container1"].addTitleBarUIElement (element.type, element.attributes);
+			}
 		}
 		
 		SNDK.SUI.init ();		
@@ -321,7 +343,7 @@ window : function (_attributes)
 		_elements["container"].style.height = height +"px";
 		
 		_elements["busy"].style.width = (width - 30) +"px";
-		_elements["busy"].style.height = (height - 70) +"px";
+		_elements["busy"].style.height = (height - 90) +"px";
 		
 		//_elements["container"].setAttribute ("width", "1000px");
 		//_elements["container"].setAttribute ("height", "1000px");
@@ -475,12 +497,18 @@ window : function (_attributes)
 				{ 
 					document.body.removeChild (_elements["container"]); 
 					//document.documentElement.removeChild (_elements["shade"]); 		
+
+					window.removeEvent (window, 'resize', setDimensions);
+					
+					
 										
+																														
 					for (index in _elements.ui)
 					{
 						try
 						{
 							_elements.ui[index].dispose ();					
+							//console.log (_elements.ui[index].getAttribute ("tag"))
 						}
 						catch (e)
 						{
