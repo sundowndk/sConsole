@@ -2,8 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/window.js">
     <Files>
-      <File FileName="sConsole/javascript/modal/window.js" Line="502" Column="6" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="446" Column="3" />
       <File FileName="sConsole/resources/css/default.css" Line="53" Column="16" />
+      <File FileName="sConsole/javascript/modal/chooser/base.js" Line="82" Column="108" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

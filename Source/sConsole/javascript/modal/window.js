@@ -25,7 +25,8 @@ window : function (_attributes)
 			  controlWidth: "533px",
 			  controlWidthTabbed: "510px",
 			  top: 0,
-			  left: 0
+			  left: 0,
+			  isBusy: false
 			}
 			
 	setAttributes ();
@@ -37,12 +38,15 @@ window : function (_attributes)
 		
 	this.show = show;
 	this.hide = hide;	
+	this.busy = functionBusy;
 	this.showBusy = showBusy;
 	this.hideBusy = hideBusy;
 	this.dispose = dispose;
 	
 	this.getContentElement = functionGetContentElement;
 	this.getUIElement = functionGetUIElement;
+	this.addUIElement = functionAddUIElement;
+	this.addUIElementsByXML = functionAddUIElementsByXML;
 	
 	
 	// Construct
@@ -107,7 +111,7 @@ window : function (_attributes)
 		_initialized = true;
 		
 		
-		
+		_elements["ui"] = {};
 		
 		if (_attributes.XML)
 		{
@@ -125,11 +129,43 @@ window : function (_attributes)
 		_elements["ui"]["canvas"] = _elements["canvas"];
 		_elements["ui"]["container"] = _elements["container1"];
 		
+		var count = 1;
+		for (i in _elements["ui"])
+		{
+			try
+			{
+				switch (_elements["ui"][i].type.toUpperCase ())
+				{
+					case "TEXTBOX":
+					{
+						_elements["ui"][i].setAttribute ("tabIndex", count);
+						count++;
+						break;
+					}
+					
+					case "BUTTON":
+					{
+						_elements["ui"][i].setAttribute ("tabIndex", count);						
+						count++;
+						break;
+					}
+				}
+			}
+			catch (e)
+			{		
+				//console.log (e);
+			}				
+		}
+		
 		if (_attributes.titleBarUI)
 		{
 			for (index in _attributes.titleBarUI)
 			{
 				var element = _attributes.titleBarUI [index];
+				//console.log (count)
+				
+				element.attributes.tabIndex = count;
+				count++;
 				//var count = _elements["ui"].length;
 				
 				_elements["ui"][element.attributes.tag] = _elements["container1"].addTitleBarUIElement (element.type, element.attributes);
@@ -337,7 +373,7 @@ window : function (_attributes)
 		//var height = ((pagesize[1] * 85) / 100);
 		
 		
-		console.log (width +"x"+ height +"   |    "+ _attributes.width +"x"+ _attributes.height);
+		//console.log (width +"x"+ height +"   |    "+ _attributes.width +"x"+ _attributes.height);
 						
 		_elements["container"].style.width = width +"px";
 		_elements["container"].style.height = height +"px";
@@ -373,9 +409,56 @@ window : function (_attributes)
 		
 	}			
 	
+	function busy ()
+	{
+		if (_temp.isBusy)
+		{
+			SNDK.animation.opacityFade (_elements["busy"], 60, 0, 150);
+		
+			setTimeout (	function () 
+							{ 
+								_elements["busy"].style.display = "none";	
+							}, 150);
+							
+			_temp.isBusy = false;
+		}
+		else
+		{
+			_elements["busy"].style.display = "block";	
+			SNDK.animation.opacityFade (_elements["busy"], 0, 60, 150);
+			
+			_temp.isBusy = true;
+		}
+	}
+	
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	// Methods
 	// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------				
+
+	function functionBusy ()
+	{
+		busy ();
+	}
+	
+	
+	function functionAddUIElement (element, appendTo)
+	{
+		
+	
+		_elements["ui"][element.getAttribute ("tag")] = element;
+	
+	}
+	
+	function functionAddUIElementsByXML (xml, appendTo)
+	{
+		var elements = SNDK.SUI.builder.construct ({XML: xml, appendTo: appendTo});
+		
+		for (i in elements)
+		{
+			_elements["ui"][i] = elements[i];
+		
+		}
+	}
 
 	function functionGetContentElement ()
 	{

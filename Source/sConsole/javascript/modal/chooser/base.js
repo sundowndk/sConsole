@@ -49,40 +49,61 @@ base : function (attributes)
 	// ------------------------------------	
 	function construct ()
 	{
-		_temp.modal = new sConsole.modal.window (_attributes);		
-	
-		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "430px"});
-		var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});
+		//_temp.modal = new sConsole.modal.window (_attributes);		
 		
-		var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});
-		layoutbox1.addPanel ({tag: "panel1", size: "*"});
-		layoutbox1.addPanel ({tag: "panel2", size: "55px"});		
-	
-		var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-		layoutbox2.addPanel ({tag: "panel1", size: "*"});
-		layoutbox2.addPanel ({tag: "panel2", size: "210px"});	
+		var onInit = 	function ()
+						{
+//		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "430px"});
+//		var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});
 		
-		layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);
-		canvas.addUIElement (container);
-		container.addUIElement (layoutbox1);
+							var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});
+							layoutbox1.addPanel ({tag: "panel1", size: "*"});
+//							layoutbox1.addPanel ({tag: "panel2", size: "55px"});		
+	
+//							var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
+//							layoutbox2.addPanel ({tag: "panel1", size: "*"});
+//							layoutbox2.addPanel ({tag: "panel2", size: "210px"});	
+		
+//							layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);
+							//canvas.addUIElement (container);
+							//container.addUIElement (layoutbox1);
+							
+							_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
 													
-		if (_attributes.suiURL)
-		{
-			_temp.elements = SNDK.SUI.builder.construct ({URL: _attributes.suiURL, appendTo: layoutbox1.getPanel ("panel1")});
+//							if (_attributes.suiURL)
+//							{
+//								_temp.elements = SNDK.SUI.builder.construct ({URL: _attributes.suiURL, appendTo: layoutbox1.getPanel ("panel1")});
+//							}
+//							else if (_attributes.suiXML)
+//							{
+//								_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
+//							}
 
-		}
-		else if (_attributes.suiXML)
-		{
-			_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
-		}
+							_temp.elements = _temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
+									
+							//_temp.elements.button1 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[0], width: "100px", onClick: eventOnClickButton1, disabled: true});
+							//_temp.elements.button2 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[1], width: "100px", onClick: eventOnClickButton2, disabled: false});	
+							
+							_temp.elements.button1 = _temp.modal.getUIElement ("button1");
+							_temp.elements.button2 = _temp.modal.getUIElement ("button2");
+							_temp.elements.button1.setAttribute ("label", _attributes.buttonLabel1);
+							_temp.elements.button2.setAttribute ("label", _attributes.buttonLabel2);
+							_temp.elements.button1.setAttribute ("onClick", eventOnClickButton1);
+							_temp.elements.button2.setAttribute ("onClick", eventOnClickButton2);
 		
-		_temp.elements.button1 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[0], width: "100px", onClick: eventOnClickButton1, disabled: true});
-		_temp.elements.button2 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[1], width: "100px", onClick: eventOnClickButton2, disabled: false});	
-		
-		layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button1);
-		layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button2);			
+							//layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button1);
+							//layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button2);			
 
-		SNDK.SUI.init ();
+							SNDK.SUI.init ();
+							
+							if (attributes.onInit != null)
+							{
+								attributes.onInit ();
+							}
+						};
+						
+		_temp.modal = new sConsole.modal.window ({width: "800px", height: "430px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}, {type: "button", attributes: {tag: "button2"}}], busy: true, onInit: onInit});		
+						
 	}	
 	
 	// ------------------------------------
@@ -129,14 +150,7 @@ base : function (attributes)
 	// ------------------------------------
 	function functionGetUIElement (tag)
 	{	
-		if (_temp.elements[tag] != null)
-		{
-			return _temp.elements[tag];
-		}
-		else
-		{
-			throw "No UI element with tag '"+ tag +"' was found.";
-		}									
+		return _temp.modal.getUIElement (tag);
 	}	
 	
 	// ------------------------------------
