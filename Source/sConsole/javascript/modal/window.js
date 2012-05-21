@@ -454,7 +454,7 @@ window : function (_attributes)
 		var elements = SNDK.SUI.builder.construct ({XML: xml, appendTo: appendTo});
 		
 		for (i in elements)
-		{
+		{		
 			_elements["ui"][i] = elements[i];
 		
 		}
@@ -467,7 +467,7 @@ window : function (_attributes)
 
 	function functionGetUIElement (tag)
 	{
-	//console.log (_elements.ui);
+	//console.log (tag);
 		if (_elements.ui[tag] != null)
 		{
 			return _elements.ui[tag];

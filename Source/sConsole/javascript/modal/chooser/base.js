@@ -2,35 +2,42 @@
 // base ([attributes])
 // -------------------------------------------------------------------------------------------------------------------------
 //
-// .getContentElement ()
-// .getUIElement ();
+// .show ()
+// .hide ()
+// .refresh ()
+// .dispose ()
+//
+// .getUIElement ()
 //
 // .getAttribute (string)
 // .setAttribute (string, string)
-//	
+//
+//		suiXML			init
+//		suiURL			init	
 //		title 			get/set
-//		buttonLabel		get/set
+//		buttonLabel1	get/set
+//		buttonLabel2	get/set
 //		onButton1Click	set
 //		onButton2Click	set
 //
-
+/**
+ * @constructor
+ */
 base : function (attributes)
 {
 	_attributes = attributes;
 	_temp = { initialized: false,
-			  modal: null,
-			  elements: new Array };
+			  modal: null};
 				
 	setAttributes ();
 	construct ();
-	init ();
-
+	
 	this.show = functionShow;
 	this.hide = functionHide;
+	this.refresh = functionRefresh;
 	this.dispose = functionDispose;
 	
-	this.getUIElement = functionGetUIElement;
-	
+	this.getUIElement = functionGetUIElement;	
 	this.setAttribute = functionSetAttribute;
 	this.getAttribute = functionGetAttribute;	
 
@@ -42,59 +49,38 @@ base : function (attributes)
 	// ------------------------------------		
 	function init ()
 	{				
+		refresh ();
 	}
 
 	// ------------------------------------
 	// construct
 	// ------------------------------------	
 	function construct ()
-	{
-		//_temp.modal = new sConsole.modal.window (_attributes);		
-		
+	{				
 		var onInit = 	function ()
-						{
-//		var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "430px"});
-//		var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});
-		
+						{		
 							var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});
-							layoutbox1.addPanel ({tag: "panel1", size: "*"});
-//							layoutbox1.addPanel ({tag: "panel2", size: "55px"});		
-	
-//							var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-//							layoutbox2.addPanel ({tag: "panel1", size: "*"});
-//							layoutbox2.addPanel ({tag: "panel2", size: "210px"});	
-		
-//							layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);
-							//canvas.addUIElement (container);
-							//container.addUIElement (layoutbox1);
-							
-							_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+							layoutbox1.addPanel ({tag: "panel1", size: "*"});	
+							_temp.modal.getUIElement ("container").addUIElement (layoutbox1);							
 													
-//							if (_attributes.suiURL)
-//							{
+							if (_attributes.suiURL)
+							{
 //								_temp.elements = SNDK.SUI.builder.construct ({URL: _attributes.suiURL, appendTo: layoutbox1.getPanel ("panel1")});
-//							}
-//							else if (_attributes.suiXML)
-//							{
+								_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
+							}
+							else if (_attributes.suiXML)
+							{
+								_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
 //								_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
-//							}
-
-							_temp.elements = _temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
-									
-							//_temp.elements.button1 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[0], width: "100px", onClick: eventOnClickButton1, disabled: true});
-							//_temp.elements.button2 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[1], width: "100px", onClick: eventOnClickButton2, disabled: false});	
+							}
 							
-							_temp.elements.button1 = _temp.modal.getUIElement ("button1");
-							_temp.elements.button2 = _temp.modal.getUIElement ("button2");
-							_temp.elements.button1.setAttribute ("label", _attributes.buttonLabel1);
-							_temp.elements.button2.setAttribute ("label", _attributes.buttonLabel2);
-							_temp.elements.button1.setAttribute ("onClick", eventOnClickButton1);
-							_temp.elements.button2.setAttribute ("onClick", eventOnClickButton2);
-		
-							//layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button1);
-							//layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button2);			
-
+							_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
+																							
+							_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton1);												
+							_temp.modal.getUIElement ("button2").setAttribute ("onClick", eventOnClickButton2);				
+							
 							SNDK.SUI.init ();
+							init ();
 							
 							if (attributes.onInit != null)
 							{
@@ -102,8 +88,7 @@ base : function (attributes)
 							}
 						};
 						
-		_temp.modal = new sConsole.modal.window ({width: "800px", height: "430px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}, {type: "button", attributes: {tag: "button2"}}], busy: true, onInit: onInit});		
-						
+		_temp.modal = new sConsole.modal.window ({width: "800px", height: "430px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}, {type: "button", attributes: {tag: "button2"}}], busy: true, onInit: onInit});							
 	}	
 	
 	// ------------------------------------
@@ -111,12 +96,28 @@ base : function (attributes)
 	// ------------------------------------					
 	function setAttributes ()
 	{
-		if (!_attributes) _attributes = new Array ();
+		if (!_attributes) 
+			_attributes = new Array ();
 		
-		if (!_attributes.title) _attributes.title = "";
+		if (!_attributes.title) 
+			_attributes.title = "";
 		
-		if (!_attributes.buttonLabel) _attributes.buttonLabel = "|";
+		if (!_attributes.button1Label) 
+			_attributes.button1Label = "BUTTON1";
+		
+		if (!_attributes.button2Label) 
+			_attributes.button2Label = "BUTTON2";
 	}		
+	
+	// ------------------------------------
+	// Refresh
+	// ------------------------------------	
+	function refresh ()
+	{
+		_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+		_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.button1Label);						
+		_temp.modal.getUIElement ("button2").setAttribute ("label", _attributes.button2Label);
+	}
 	
 	// ------------------------------------
 	// Public functions
@@ -135,6 +136,14 @@ base : function (attributes)
 	function functionHide ()
 	{
 		_temp.modal.hide ();
+	}
+	
+	// ------------------------------------
+	// Refresh
+	// ------------------------------------	
+	function functionRefresh ()
+	{
+		refresh ();
 	}
 	
 	// ------------------------------------
@@ -159,7 +168,32 @@ base : function (attributes)
 	function functionGetAttribute (attribute)
 	{
 		switch (attribute)
-		{								
+		{			
+			case "title":
+			{
+				return _attributes[attribute];
+			}
+
+			case "button1Label":
+			{
+				return _attributes[attribute];
+			}
+			
+			case "button2Label":
+			{
+				return _attributes[attribute];
+			}
+			
+			case "onButton1Click":
+			{
+				return _attributes[attribute];
+			}
+			
+			case "onButton2Click":
+			{
+				return _attributes[attribute];
+			}
+																	
 			default:
 			{
 				throw "No attribute with the name '"+ attribute +"' exist in this object";
@@ -174,6 +208,39 @@ base : function (attributes)
 	{
 		switch (attribute)
 		{
+			case "title":
+			{
+				_attributes[attribute] = value;
+				refresh ();
+				break;
+			}
+			
+			case "button1Label":
+			{
+				_attributes[attribute] = value;
+				refresh ();
+				break;
+			}
+			
+			case "button2Label":
+			{
+				_attributes[attribute] = value;
+				refresh ();
+				break;
+			}
+			
+			case "onButton1Click":
+			{
+				_attributes[attribute] = value;
+				break;
+			}
+			
+			case "onButton2Click":
+			{
+				_attributes[attribute] = value;
+				break;
+			}
+		
 			default:
 			{
 				throw "No attribute with the name '"+ attribute +"' exist in this object";
