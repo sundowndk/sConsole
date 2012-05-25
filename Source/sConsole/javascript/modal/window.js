@@ -595,6 +595,7 @@ window : function (_attributes)
 						}
 						catch (e)
 						{
+							console.log (e);
 							console.log ("CANNOT DISPOSE: ");
 							console.log (_elements.ui[index]);
 						}
