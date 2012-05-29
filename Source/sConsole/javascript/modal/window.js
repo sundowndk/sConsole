@@ -540,6 +540,11 @@ window : function (_attributes)
 								  	  				top: {begin: _temp.top +"px", end: (_temp.top - 20) +"px", ease: "outexpo"}
 												});
 		test.play ();
+		
+		if (_temp.isBusy)
+		{
+			busy ();
+		}
 
 		setTimeout (	
 		function () 
@@ -583,7 +588,7 @@ window : function (_attributes)
 
 					window.removeEvent (window, 'resize', setDimensions);
 					
-					
+					_temp.busy.dispose ();
 										
 																														
 					for (index in _elements.ui)
