@@ -73,9 +73,7 @@ base : function (attributes)
 								_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
 //								_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
 							}
-							
-							_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
-																							
+																																					
 							_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton1);												
 							_temp.modal.getUIElement ("button2").setAttribute ("onClick", eventOnClickButton2);				
 							

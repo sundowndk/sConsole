@@ -1,61 +1,105 @@
 media : function (attributes)
 {
-	if (!attributes) 
-		attributres = new Array ();
+	// ONINIT
+	var onInit =	function ()
+					{
+						if (!attributes) 
+							attributres = new Array ();
+						
+						if (!attributes.type)
+							attributes.type = "FILE";
+							
+						if (!attributes.subType)
+							attributes.subType = "All";
+							
+						if (!attributes.mimetypes)
+						{
+							switch (attributes.type.toUpperCase ())
+							{
+								case "FILE":
+								{
+									attributes.mimetypes = "";
+									break;
+								}
+								
+								case "IMAGE":
+								{
+									attributes.mimetypes = "image/jpeg;image/png;image/gif";
+								}
+							}
+						}
+						
+						if (!attributes.path)
+							attribtutes.path = "/media/%%FILENAME%%%%EXTENSION%%";
+						
+						if (!attributes.mediatransformations)
+							attributes.mediatransformations = "";
+							
+						if (!attributes.postuploadscript)
+							attributes.postuploadscript = "";
+							
+						if (attributes.subType.toUpperCase () == "ALL")
+						{
+							attributes.title = "Choose media";	
+						}
+						else
+						{
+							switch (attributes.subType.toUpperCase ())
+							{
+								case "LIBRARY":
+								{
+									attributes.title = "Choose media";
+									break;
+								}
+								
+								case "UPLOAD":
+								{
+									attributes.title = "Upload media";
+									break;
+								}
+							}	
+						}
+					
+						chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
+						chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
+						
+						// UPLOADFORM
+						var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
+						SNDK.tools.newElement ("input", {type: "hidden", name: "cmd", value: "Function", appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.function", value: "SorentoLib.Media.Upload", appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
+						
+						SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: attributes.path, appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: attributes.mimetypes, appendTo: uploadform});
+						SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
+						SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
+						
+						switch (attributes.type.toUpperCase ())
+						{
+							case "FILE":
+							{
+								SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
+								break;
+							}
+							
+							case "IMAGE":
+							{
+								SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
+								break;
+							}
+						}
+						
+						document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
+						uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
+										
+						chooser.show ();			
+					
+					
+					};
 	
-	if (!attributes.type)
-		attributes.type = "FILE";
-		
-	if (!attributes.subType)
-		attributes.subType = "All";
-		
-	if (!attributes.mimetypes)
-	{
-		switch (attributes.type.toUpperCase ())
-		{
-			case "FILE":
-			{
-				attributes.mimetypes = "";
-				break;
-			}
-			
-			case "IMAGE":
-			{
-				attributes.mimetypes = "image/jpeg;image/png;image/gif";
-			}
-		}
-	}
 	
-	if (!attributes.path)
-		attribtutes.path = "/media/%%FILENAME%%%%EXTENSION%%";
-	
-	if (!attributes.mediatransformations)
-		attributes.mediatransformations = "";
-		
-	if (!attributes.postuploadscript)
-		attributes.postuploadscript = "";
-		
-	if (attributes.subType.toUpperCase () == "ALL")
-	{
-		attributes.title = "Choose media";	
-	}
-	else
-	{
-		switch (attributes.subType.toUpperCase ())
-		{
-			case "LIBRARY":
-			{
-				attributes.title = "Choose media";
-				break;
-			}
-			
-			case "UPLOAD":
-			{
-				attributes.title = "Upload media";
-				break;
-			}
-		}	
-	}
 	
 	var media = null;
 
@@ -260,43 +304,10 @@ media : function (attributes)
 	
 	
 	
-	var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
+	//var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
 	
-	chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
-	chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
-	
-	// UPLOADFORM
-	var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd", value: "Function", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.function", value: "SorentoLib.Media.Upload", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
-	
-	SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: attributes.path, appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: attributes.mimetypes, appendTo: uploadform});
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
-	SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
-	
-	switch (attributes.type.toUpperCase ())
-	{
-		case "FILE":
-		{
-			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
-			break;
-		}
 		
-		case "IMAGE":
-		{
-			SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
-			break;
-		}
-	}
-	
-	document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
-	uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
-					
-	chooser.show ();			
+	var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, button1Label: "Select", button2Label: "Close", onClickButton1: onButton1, onClickButton2: onButton2, onInit: onInit});	
 }	
 
 
