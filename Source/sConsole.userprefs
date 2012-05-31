@@ -1,11 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/chooser/media.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/engine/settings/index_script.stpl">
     <Files>
       <File FileName="sConsole/javascript/modal/window.js" Line="591" Column="28" />
       <File FileName="sConsole/javascript/modal/chooser/base.js" Line="76" Column="15" />
       <File FileName="sConsole/javascript/modal/busy.js" Line="1" Column="1" />
       <File FileName="sConsole/javascript/modal/chooser/media.js" Line="306" Column="2" />
+      <File FileName="sConsole/resources/content/engine/settings/index_script.stpl" Line="82" Column="17" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
