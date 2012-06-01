@@ -53,7 +53,7 @@ busy : function (_attributes)
 	function construct ()
 	{		
 		_elements["shade"] = SNDK.tools.newElement ("div", "ModalWindowShade", _id + "_shade", document.documentElement);
-		_elements["shade"].style.zIndex = 100 * sConsole.modal.depth;
+		_elements["shade"].style.zIndex = 100 * sConsole.modal.depth++;
 		_elements["shade"].style.display = "none";
 											
 		SNDK.tools.changeOpacityByObject (_elements["shade"], 0);					

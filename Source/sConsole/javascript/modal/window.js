@@ -71,16 +71,19 @@ window : function (_attributes)
 	// ------------------------------------
 	function construct ()
 	{	
+		
+		
 		_temp.busy = new sConsole.modal.busy ({});
 		_temp.busy.show ();
 	
 				
 		var test = function ()
 		{
-					
+			
+		
 		_elements["container"] = SNDK.tools.newElement ("div", "Modal", _id, document.body);	
 		
-		_elements["container"].style.zIndex = 101 * sConsole.modal.depth;
+		_elements["container"].style.zIndex = 100 * sConsole.modal.depth++;
 		
 		_elements["content"] = SNDK.tools.newElement ("div", "", null, _elements["container"]);
 		_elements["content"].style.width = "100%";
@@ -106,8 +109,7 @@ window : function (_attributes)
 											
 		SNDK.tools.changeOpacityByObject (_elements["container"], 0);								
 		SNDK.tools.changeOpacityByObject (_elements["busy"], 0);						
-	
-		sConsole.modal.depth++;
+			
 		_initialized = true;
 		
 		
@@ -560,7 +562,7 @@ window : function (_attributes)
 	// ------------------------------------				
 	function dispose ()
 	{
-		sConsole.modal.depth--;
+		//sConsole.modal.depth--;
 		
 		
 //		if (_temp.controls > 0)
@@ -608,6 +610,8 @@ window : function (_attributes)
 					
 					
 					UI.modal[_attributes.tag] = null;
+					
+					
 					
 				}, 602);
 	}

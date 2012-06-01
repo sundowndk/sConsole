@@ -1,12 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/engine/settings/index_script.stpl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/includes/init.stpl">
     <Files>
-      <File FileName="sConsole/javascript/modal/window.js" Line="591" Column="28" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="86" Column="69" />
       <File FileName="sConsole/javascript/modal/chooser/base.js" Line="76" Column="15" />
-      <File FileName="sConsole/javascript/modal/busy.js" Line="1" Column="1" />
+      <File FileName="sConsole/javascript/modal/busy.js" Line="56" Column="65" />
       <File FileName="sConsole/javascript/modal/chooser/media.js" Line="306" Column="2" />
       <File FileName="sConsole/resources/content/engine/settings/index_script.stpl" Line="82" Column="17" />
+      <File FileName="sConsole/javascript/modal/error.js" Line="1" Column="1" />
+      <File FileName="sConsole/resources/content/includes/header.stpl" Line="15" Column="1" />
+      <File FileName="sConsole/resources/content/includes/init.stpl" Line="21" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
