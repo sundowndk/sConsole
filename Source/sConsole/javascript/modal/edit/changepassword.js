@@ -18,8 +18,8 @@ changePassword : function (attributes)
 		case "sessionuser":
 		{
 			suixml += '<sui elementheight="50px">';
-			suixml += '<canvas width="600px" height="290px" canScroll="false">';
-			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
+//			suixml += '<canvas width="600px" height="290px" canScroll="false">';
+//			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
 			suixml += '			<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">';
 	
 			suixml += '				<panel size="%elementheight%">';
@@ -39,8 +39,8 @@ changePassword : function (attributes)
 		case "nonsessionuser":
 		{
 			suixml += '<sui elementheight="50px">';
-			suixml += '<canvas width="600px" height="230px" canScroll="false">';
-			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
+//			suixml += '<canvas width="600px" height="230px" canScroll="false">';
+//			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
 			suixml += '			<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">';		
 		}
 	}
@@ -65,21 +65,21 @@ changePassword : function (attributes)
 	suixml += '						</panel>';				
 	suixml += '					</layoutbox>';
 	suixml += '				</panel>';
-	suixml += '				<panel size="*">';
-	suixml += '				</panel>';
-	suixml += '				<panel size="45px">';
-	suixml += '					<layoutbox type="vertical">';
-	suixml += '						<panel size="*">';
-	suixml += '						</panel>';
-	suixml += '						<panel size="210px">';
-	suixml += '							<button tag="change" label="Change" width="100px" disabled="true"/>';
-	suixml += '							<button tag="close" label="Close" width="100px" />';
-	suixml += '						</panel>';					
-	suixml += '					</layoutbox>';
-	suixml += '				</panel>';
+//	suixml += '				<panel size="*">';
+//	suixml += '				</panel>';
+//	suixml += '				<panel size="45px">';
+//	suixml += '					<layoutbox type="vertical">';
+//	suixml += '						<panel size="*">';
+//	suixml += '						</panel>';
+//	suixml += '						<panel size="210px">';
+//	suixml += '							<button tag="change" label="Change" width="100px" disabled="true"/>';
+//	suixml += '							<button tag="close" label="Close" width="100px" />';
+//	suixml += '						</panel>';					
+//	suixml += '					</layoutbox>';
+//	suixml += '				</panel>';
 	suixml += '			</layoutbox>';
-	suixml += '		</container>';
-	suixml += '	</canvas>';
+//	suixml += '		</container>';
+//	suixml += '	</canvas>';
 	suixml += '</sui>';
 																																																												
 	// CHANGEPASSWORD
@@ -141,28 +141,33 @@ changePassword : function (attributes)
 									modal.getUIElement ("change").setAttribute ("disabled", true);
 								}
 							};		
-																						
-	// INIT				
-	var modal = new sConsole.modal.window ({XML: suixml});
 	
-	if (attributes.mode == "sessionuser")
-	{
-		modal.getUIElement ("current").setAttribute ("focus", true);
-		modal.getUIElement ("current").setAttribute ("onChange", onChange);
-	}
-	else
-	{
-		modal.getUIElement ("new").setAttribute ("focus", true);
-	}
-	
-	modal.getUIElement ("new").setAttribute ("onChange", onChange);
-	modal.getUIElement ("repeat").setAttribute ("onChange", onChange);
-
-	modal.getUIElement ("change").setAttribute ("onClick", change);	
-	modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+	var onInit = 			function ()
+							{
+								if (attributes.mode == "sessionuser")
+								{
+									modal.getUIElement ("current").setAttribute ("focus", true);
+									modal.getUIElement ("current").setAttribute ("onChange", onChange);
+								}
+								else
+								{
+									modal.getUIElement ("new").setAttribute ("focus", true);
+								}
 								
-	// SHOW
-	modal.show ();	
+								modal.getUIElement ("new").setAttribute ("onChange", onChange);
+								modal.getUIElement ("repeat").setAttribute ("onChange", onChange);
+							
+								modal.getUIElement ("change").setAttribute ("onClick", change);	
+								modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+															
+								// SHOW
+								modal.show ();								
+							}
+																																																																
+	// INIT				
+//	var modal = new sConsole.modal.window ({XML: suixml});
+	
+	var modal = new sConsole.modal.window ({width: "600px", height: "240px", titleBarUI: [{type: "button", attributes: {tag: "change", label: "Change"}}, {type: "button", attributes: {tag: "close", label: "Close"}}], busy: true, XML: suixml, onInit: onInit});	
 }
 
 

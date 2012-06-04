@@ -118,7 +118,9 @@ window : function (_attributes)
 		if (_attributes.XML)
 		{
 			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
-			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+			_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["container1"] });	
+			
 			//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
 		}
 		
@@ -609,7 +611,7 @@ window : function (_attributes)
 					}
 					
 					
-					UI.modal[_attributes.tag] = null;
+					//UI.modal[_attributes.tag] = null;
 					
 					
 					

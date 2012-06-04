@@ -31,6 +31,9 @@ Modal
 	
 	top: 						0px;
 	
+	
+	background: 				url('images/throbber.gif') center center;	
+	background-repeat:			no-repeat;
 	background-color:			#000;	
 	
 	cursor: 					wait;
@@ -40,6 +43,25 @@ Modal
 .ModalBoxContent
 {
 }
+
+.ModalWindowBusy
+{
+	position: 				absolute;
+	top: 0px;
+	left: 0px;
+
+	margin-top: 75px;
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	
+	background: 				url('images/throbber2.gif') center center;	
+	background-repeat:			no-repeat;
+	
+	background-color:	#fff;
+
+}
+
 
 /* --------------------------------------------------------------------------------------------------------------
 Login

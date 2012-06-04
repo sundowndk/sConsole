@@ -7,7 +7,8 @@ profile : function ()
 							{
 								sConsole.modal.edit.changePassword ({userid: user["id"]});					
 							};
-							
+					
+	// SAVE		
 	var save =				function ()
 							{
 								var item = get ();
@@ -56,23 +57,34 @@ profile : function ()
 						
 								return item;
 							};
-												
+							
+	// DISPOSE
+	var dispose =			function ()
+							{	
+								
+							};
+							
+	
+	// ONINIT
+	var onInit =			function ()
+							{
+								modal.getUIElement ("realname").setAttribute ("onChange", onChange);
+								modal.getUIElement ("email").setAttribute ("onChange", onChange);
+									
+								modal.getUIElement ("changepassword").setAttribute ("onClick", changePassword);
+							
+								modal.getUIElement ("save").setAttribute ("onClick", save);	
+								modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+													
+								// SET
+								set ();						
+									
+								// SHOW
+								modal.show ();							
+							}
+													
 	// INIT				
-	var modal = new sConsole.modal.window ({SUIXML: "/console/xml/modal/edit/profile.xml"});
-																																								
-	modal.getUIElement ("realname").setAttribute ("onChange", onChange);
-	modal.getUIElement ("email").setAttribute ("onChange", onChange);
-		
-	modal.getUIElement ("changepassword").setAttribute ("onClick", changePassword);
-
-	modal.getUIElement ("save").setAttribute ("onClick", save);	
-	modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
-						
-	// SET
-	set ();						
-		
-	// SHOW
-	modal.show ();	
+	var modal = new sConsole.modal.window ({width: "450px", height: "500px", titleBarUI: [{type: "button", attributes: {tag: "save", label: "Save"}}, {type: "button", attributes: {tag: "close", label: "Close"}}], busy: true, SUIXML: sConsole.runtime.URL +"xml/modal/edit/profile.xml", onInit: onInit});	
 }
 
 

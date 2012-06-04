@@ -3,7 +3,7 @@
        copyright   = "MIT X11"
        url         = "http://www.sundown.dk/"
        description = "Convenient UI to manage the Sorento Engine."	   
-       version     = "2.0">
+       version     = "2.2">
 	<Runtime>
 		<Import assembly="sConsole.dll"/>
 	</Runtime>
@@ -22,5 +22,9 @@
 						
 	<Extension path = "/SorentoLib/Resolver/Ajaxes">
 		<Type type="sConsole.Addin.Ajax"/>
+	</Extension>			
+	
+	<Extension path = "/SorentoLib/Resolver/Renders">
+		<Type type="sConsole.Addin.Render"/>
 	</Extension>			
 </Addin>

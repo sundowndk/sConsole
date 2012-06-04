@@ -3443,8 +3443,17 @@ var SNDK =
 								}
 							}
 						};	
-								
-				parser (root.childNodes, suiattributes.appendTo);
+						
+				if (attributes.parent)
+				{
+				
+				
+					parser (root.childNodes, attributes.parent);
+				}
+				else
+				{
+					parser (root.childNodes, suiattributes.appendTo);
+				}
 				
 				return elements;
 			}
@@ -3599,6 +3608,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.setAttribute = functionSetAttribute;
 			this.getAttribute = functionGetAttribute;
 		
@@ -3616,6 +3626,7 @@ var SNDK =
 		//	this.removeAllItems = functionRemoveAllItems;
 			this.moveItemUp = functionMoveItemUp;
 			this.moveItemDown = functionMoveItemDown;
+			this.canItemMove = functionCanItemMove;
 		//	this.canItemMove = functionCanItemMove;
 		
 						
@@ -3762,10 +3773,10 @@ var SNDK =
 					}				
 				}
 				
-				if (_temp.isDirty)
-					{
+				//if (_temp.isDirty)
+				//	{
 				setDimensions ();
-				}
+				//}
 		
 				if (_temp.initialized)
 				{
@@ -3801,6 +3812,14 @@ var SNDK =
 					}			
 				}
 			}
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}		
 			
 			// ------------------------------------
 			// updateCache
@@ -4004,8 +4023,8 @@ var SNDK =
 					{			
 						continue;
 					}
-									
-					if (typeof(item[key]) == "object")
+								
+					if ((typeof(item[key]) == "object") && (column.visible == true))
 					{
 						value = "";
 						for (index2 in item[key])
@@ -4553,7 +4572,7 @@ var SNDK =
 			// ------------------------------------				
 			function setFocus ()
 			{
-				setTimeout ( function () { _elements["contentcenter"].focus (); }, 2);	
+				setTimeout ( function () { _attributes.focus = true;  _elements["contentcenter"].focus (); }, 20);	
 			}		
 				
 			// ------------------------------------
@@ -5243,7 +5262,16 @@ var SNDK =
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
 					}
 				}	
-			}									
+			}						
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}		
+							
 							
 			// ------------------------------------
 			// Events
@@ -5460,6 +5488,7 @@ var SNDK =
 											
 			// Functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 						
@@ -5559,6 +5588,16 @@ var SNDK =
 						}
 					}										
 				}
+			}
+			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
+			}
+			
+			function functionDispose ()
+			{		
+				dispose ();
 			}
 			
 			// ------------------------------------
@@ -5868,7 +5907,12 @@ var SNDK =
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
 					}
 				}		
-			}					
+			}		
+			
+			function functionDispose ()
+			{
+				dispose ();	
+			}			
 			
 			// ------------------------------------
 			// Events
@@ -5984,35 +6028,26 @@ var SNDK =
 		// button ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
+		// .refresh ()
+		// .dispose ()
 		// .getAttribute (string)
 		// .setAttribute (string, string)
 		//	
-		// 	id 		get
-		//	tag		get/set
+		// 	id 			get
+		//	tag			get/set
 		//	stylesheet	get/set
-		//	appendTo	get/set
-		//	managed		get/set
 		//	width		get/set
 		//	height		get
+		//	appendTo	get/set
+		//	managed		get/set
 		//	disabled	get/set
 		//	focus		get/set
 		//	onFocus		get/set
 		//	onBlur		get/set
 		//	onClick		get/set
 		//	label		get/set
+		//	tabIndex	get/set
 		//
-		// CHANGELOG:
-		//
-		// v1.02:
-		//	- Fixed dimension calculations, now works faster and percentage works correctly.
-		//	- Added managed mode.
-		//
-		// v1.01: 
-		//	- Fixed width caluclation. Now works with percentage.
-		//	- Code cleanup.
-		//
-		// v1.00:
-		//	- Initial release.
 		/**
 		 * @constructor
 		 */
@@ -6021,12 +6056,13 @@ var SNDK =
 			var _elements = new Array ();			
 			var _attributes = attributes;				
 		
-			var _temp = 	{ initialized: false,
-					  mouseDown: false,
-					  mouseOver: false,
-					  enterDown: false,
-					  cache: new Array ()
-					}	
+			var _temp = 	{ 
+								initialized: false,
+					  			mouseDown: false,
+					  			mouseOver: false,
+					  			enterDown: false,
+					  			cache: new Array ()
+							};
 			
 			_attributes.id = SNDK.tools.newGuid ();				
 			
@@ -6039,7 +6075,9 @@ var SNDK =
 			this._init = init;			
 						
 			// Functions
+			this.type = "BUTTON";
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;	
 											
@@ -6112,7 +6150,7 @@ var SNDK =
 					}
 					else
 					{
-						_elements["container"].setAttribute("tabIndex", 0);	
+						//_elements["container"].setAttribute("tabIndex", 0);	
 						
 						if (_attributes.focus)
 						{
@@ -6131,12 +6169,26 @@ var SNDK =
 						{
 							_elements["container"].className = _attributes.stylesheet;
 						}
+						
+						_elements["container"].tabIndex = _attributes.tabIndex;
 					}	
 						
 					_elements["center"].innerHTML = _attributes.label;
+					
+					//console.log (_attributes.tabIndex)
+					
+					
 				}
 				
 				setDimensions ();
+			}	
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
 			}	
 			
 			// ------------------------------------
@@ -6193,9 +6245,12 @@ var SNDK =
 				// Focus	
 				if (!_attributes.focus)
 					_attributes.focus = false;
+					
+				// TabIndex
+				if (!_attributes.tabIndex)
+					_attributes.tabIndex = 0;
 			}
-			
-				
+					
 			// -------------------------------------
 			// setDimensions
 			// -------------------------------------
@@ -6228,31 +6283,31 @@ var SNDK =
 				}
 			}
 				
-			function setDimensions2 ()
-			{
-				if (_temp.initialized)
-				{
-					var containerwidth = SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]);
+		//	function setDimensions2 ()
+		//	{
+		//		if (_temp.initialized)
+		//		{
+		//			var containerwidth = SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]);
 				
-					if (_attributes.widthType == "percent")
-					{								
+		//			if (_attributes.widthType == "percent")
+		//			{								
 			//			setTimeout (	function () 
 			//					{	
-									var parentwidth = SNDK.tools.getElementInnerWidth (_elements["container"].parentNode);							
-									var width = parentwidth - SNDK.tools.getElementStyledPadding (_elements["container"])["horizontal"] - containerwidth +"px";
+		//							var parentwidth = SNDK.tools.getElementInnerWidth (_elements["container"].parentNode);							
+		//							var width = parentwidth - SNDK.tools.getElementStyledPadding (_elements["container"])["horizontal"] - containerwidth +"px";
 															
-									_elements["center"].style.width = width;
+		//							_elements["center"].style.width = width;
 			//					}, 0);						
-					}
-					else
-					{
-						var width = _attributes.width  - containerwidth +"px";
-		
-						_elements["container"].style.width = _attributes.width +"px";
-						_elements["center"].style.width = width;
-					}		
-				}
-			}
+		//			}
+		//			else
+		//			{
+		//				var width = _attributes.width  - containerwidth +"px";
+		//
+		//				_elements["container"].style.width = _attributes.width +"px";
+		//				_elements["center"].style.width = width;
+		//			}		
+		//		}
+		//	}
 			
 			// ------------------------------------
 			// setFocus
@@ -6306,6 +6361,14 @@ var SNDK =
 			{
 				refresh ();
 			}		
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}	
 				
 			// ------------------------------------
 			// getAttribute
@@ -6393,6 +6456,11 @@ var SNDK =
 					case "label":
 					{
 						return _attributes[attribute];			
+					}
+					
+					case "tabIndex":
+					{
+						return _attributes[attribute];
 					}
 							
 					default:
@@ -6510,14 +6578,21 @@ var SNDK =
 						refresh ();
 						break;
 					}
+					
+					case "tabIndex":
+					{
+						_attributes[attribute] = value;
+						refresh ();
+						break;
+					}			
 							
 					default:
 					{
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
 					}
 				}	
-			}			
-									
+			}				
+										
 			// ------------------------------------
 			// Events
 			// ------------------------------------
@@ -6683,6 +6758,8 @@ var SNDK =
 		// dropbox ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
+		// .dispose ()
+		
 		// .addItem ({label, value})
 		//
 		// .getAttribute (string)
@@ -6742,8 +6819,11 @@ var SNDK =
 			this._temp = _temp;	
 			this._init = init;
 		
-			// Functions
+		
+			// Functions		
+			this.type = "DROPBOX";
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.addItem = functionAddItem;	
 			this.selectItemByTitle = functionSelectItemByTitle;
 			this.selectItemByValue = functionSelectItemByValue;
@@ -6879,6 +6959,16 @@ var SNDK =
 				}
 					
 				setDimensions ();
+			}
+			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh)
+			}
+			
+			function functionDispose ()
+			{		
+				dispose ();
 			}
 			
 			// ------------------------------------
@@ -7145,6 +7235,11 @@ var SNDK =
 			{
 				refresh ();
 			}	
+			
+			function functionDispose ()
+			{
+				dispose ();
+			}
 				
 			// ------------------------------------
 			// addItem
@@ -7703,6 +7798,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 			
@@ -7855,6 +7951,11 @@ var SNDK =
 				{
 					drawItems ();
 				}
+			}
+			
+			function functionDispose ()
+			{		
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
 			}
 				
 			// ------------------------------------
@@ -8413,6 +8514,12 @@ var SNDK =
 				}	
 			}		
 									
+									
+			function functionDispose ()
+			{
+				dispose ();
+			}
+									
 			// ------------------------------------
 			// Events
 			// ------------------------------------					
@@ -8963,9 +9070,10 @@ var SNDK =
 				window.addEvent (window, 'SUIREFRESH', refresh);																																			
 			}
 					
-			function functionDispose ()
+			function dispose ()
 			{	
-				tinyMCE.execCommand('mceRemoveControl', true, _temp.tinymceId);
+				//tinyMCE.execCommand('mceRemoveControl', true, _temp.tinymceId);			
+				window.removeEvent (window, 'SUIREFRESH', refresh);		
 			}
 					
 			// ------------------------------------
@@ -9503,6 +9611,11 @@ var SNDK =
 			{
 				refresh ();
 			}	
+			
+			function functionDispose ()
+			{
+				dispose ();
+			}
 				
 			// ------------------------------------
 			// getAttribute
@@ -9909,13 +10022,16 @@ var SNDK =
 		//		disabled		get/set
 		//		autoComplete	get/set
 		//		readOnly		get/set
+		//		transform		get/set
 		//		focus			get/set
 		//		password		get/set
 		//		onFocus			get/set
 		//		onBlur			get/set
 		//		onChange		get/set
 		//		onKeyUp			get/set
+		//		onEnter			get/set
 		//		value			get/set
+		//		tabIndex		get/set
 		//
 		/**
 		 * @constructor
@@ -9941,10 +10057,11 @@ var SNDK =
 			
 			
 			// Functions
+			this.type = "TEXTBOX";
 			this.refresh = functionRefresh;	
-			this.getAttribute = functionGetAttribute;
-			this.setAttribute = functionSetAttribute;
 			this.dispose = functionDispose;
+			this.getAttribute = functionGetAttribute;
+			this.setAttribute = functionSetAttribute;	
 				
 			// Construct
 			construct ();
@@ -9960,7 +10077,7 @@ var SNDK =
 			// ------------------------------------			
 			function init ()
 			{
-				updateCache ();
+				updateCache ();		
 				
 				_attributes.heightType = "pixel";
 				_attributes.height = _temp.cache["containerPadding"]["vertical"] + _temp.cache["containerHeight"] +"px";		
@@ -9992,23 +10109,29 @@ var SNDK =
 				{
 					type = "password";
 				}
-				
+						
 				_elements["input"] = SNDK.tools.newElement ("input", {className: "Input", type: type, appendTo: _elements["center"]});
 				_elements["input"].setAttribute ("name", _attributes.name);
+				
+				if (_attributes.textTransform)
+				{
+					_elements["input"].style.textTransform = _attributes.textTransform;					
+				}
+		
 																	
 				// Hook Events
 				_elements["input"].onfocus = eventOnFocus;
 				_elements["input"].onblur = eventOnBlur;
 				_elements["input"].onchange = eventOnChange;
 				_elements["input"].onkeyup = eventOnKeyUp;	
+				_elements["input"].onkeypress = eventOnKeyPress;
 				
 				window.addEvent (window, 'SUIREFRESH', refresh);						
 			}		
 				
 			function functionDispose ()
-			{
-				
-			
+			{		
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
 			}
 				
 			// ------------------------------------
@@ -10017,7 +10140,7 @@ var SNDK =
 			function refresh ()
 			{
 				if (_temp.initialized)
-				{	
+				{					
 					if (_attributes.disabled)
 					{
 						_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet+"Disabled";														
@@ -10028,12 +10151,12 @@ var SNDK =
 					else
 					{
 						if (_attributes.focus)
-						{
-							_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet+"Focus";
+						{				
+							_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet+"Focus";					
 							setFocus ();
 						}
 						else
-						{
+						{				
 							_elements["container"].className = _attributes.stylesheet;
 						}
 		
@@ -10061,7 +10184,9 @@ var SNDK =
 					if (_attributes.value != null)
 					{
 						_elements["input"].value = _attributes.value;
-					}							
+					}				
+					
+					_elements["input"].tabIndex = _attributes.tabIndex;									
 				}
 						
 				setDimensions ();	
@@ -10134,6 +10259,10 @@ var SNDK =
 				// Password
 				if (!_attributes.password)
 					_attributes.password = false;
+					
+				// textTransform
+				if (!_attributes.textTransform)
+					_attributes.textTransform = "none";
 		
 				// onFocus
 				if (!_attributes.onFocus)
@@ -10146,10 +10275,18 @@ var SNDK =
 				// onChange
 				if (!_attributes.onChange)
 					_attributes.onChange = null;
+					
+				// onEnter
+				if (!_attributes.onEnter)
+					_attributes.onEnter = null;
 										
 				// Value
 				if (!_attributes.value)
 					_attributes.value = "";	
+					
+				// TabIndex
+				if (!_attributes.tabIndex)
+					_attributes.tabIndex = 0;
 			}		
 			
 			// ------------------------------------	
@@ -10190,8 +10327,8 @@ var SNDK =
 			// setFocus
 			// ------------------------------------				
 			function setFocus ()
-			{
-				setTimeout ( function () { _elements["input"].focus ();	}, 2);	
+			{	
+				setTimeout ( function () {  _attributes.focus = true; _elements["input"].focus (); }, 25);	
 			}	
 				
 			// ------------------------------------
@@ -10213,6 +10350,8 @@ var SNDK =
 				{
 					key = event.which;	
 				}
+				
+				return key;
 			}		
 			
 			// ------------------------------------
@@ -10313,6 +10452,11 @@ var SNDK =
 					{
 						return _attributes[attribute];			
 					}
+					
+					case "textTransform":
+					{
+						return _attributes[attribute];			
+					}
 		
 					case "onFocus":
 					{
@@ -10333,10 +10477,20 @@ var SNDK =
 					{
 						return _attributes[attribute];			
 					}
+					
+					case "onEnter":
+					{
+						return _attributes[attribute];
+					}
 		
 					case "value":
 					{
 						return _attributes[attribute];			
+					}
+					
+					case "tabIndex":
+					{
+						return _attributes[attribute];
 					}
 							
 					default:
@@ -10454,6 +10608,13 @@ var SNDK =
 						refresh ();
 						break;
 					}
+					
+					case "textTransform":
+					{
+						_attributes[attribute] = value;
+						refresh ();
+						break;
+					}
 		
 					case "onFocus":
 					{
@@ -10478,6 +10639,12 @@ var SNDK =
 						_attributes[attribute] = value;
 						break;
 					}
+					
+					case "onEnter":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
 		
 					case "value":
 					{
@@ -10488,6 +10655,12 @@ var SNDK =
 							eventOnChange ();
 						}
 						break;
+					}
+					
+					case "tabIndex":
+					{
+						_attributes[attribute] = value;
+						refresh ();
 					}
 							
 					default:
@@ -10500,7 +10673,25 @@ var SNDK =
 			// ------------------------------------
 			// Events
 			// ------------------------------------
-			// ------------------------------------		
+			// ------------------------------------	
+			
+			// ------------------------------------
+			// eventOnKeyPress
+			// ------------------------------------			
+			function eventOnKeyPress (event)
+			{
+				_attributes.value = _elements["input"].value;			
+										
+				switch (_attributes.textTransform.toLowerCase ())
+				{
+					case "uppercase":
+					{
+						_elements["input"].value = _attributes.value.toUpperCase ();
+						break;
+					}
+				}				
+			}
+			
 			// ------------------------------------
 			// onKeyUp
 			// ------------------------------------	
@@ -10508,14 +10699,25 @@ var SNDK =
 			{
 				var result = true;
 					
-				result = keyHandler (event);				
-						
-				_attributes.value = _elements["input"].value;				
+				var key = keyHandler (event);
+				
+				
+			
+				//_attributes.value = _elements["input"].value;				
 							
 				if (_attributes.onKeyUp != null)
 				{
 					setTimeout( function () { _attributes.onKeyUp (_attributes.tag); }, 1);
 				}	
+				
+				// ONENTER
+				if (key == 13)
+				{
+					if (_attributes.onEnter != null)
+					{
+						setTimeout( function () { _attributes.onEnter (_attributes.tag); }, 1);
+					}	
+				}
 				
 				eventOnChange ();
 									
@@ -10528,7 +10730,7 @@ var SNDK =
 			function eventOnFocus ()
 			{
 				if (!_attributes.disabled)
-				{
+				{		
 					if (!_attributes.focus)
 					{
 						_attributes.focus = true;				
@@ -10566,7 +10768,7 @@ var SNDK =
 			// onChange
 			// ------------------------------------			
 			function eventOnChange ()
-			{
+			{	
 				_attributes.value = _elements["input"].value;
 			
 				if (_attributes.onChange != null)
@@ -10640,6 +10842,7 @@ var SNDK =
 			
 			// Public functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;	
 									
@@ -10773,6 +10976,11 @@ var SNDK =
 				
 				setDimensions ();
 			}	
+			
+			function dispose ()
+			{		
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
+			}
 			
 			// ------------------------------------
 			// updateCache
@@ -11133,7 +11341,12 @@ var SNDK =
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
 					}
 				}		
-			}					
+			}			
+			
+			function functionDispose ()
+			{
+				dispose ();
+			}		
 								
 			// ------------------------------------
 			// Events
@@ -11290,6 +11503,9 @@ var SNDK =
 			
 			// Functions				
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
+			this.addTitleBarUIElement = functionAddTitleBarUIElement;
+			//this.getTitleBarUIElement = funcitonGetTitleBarUIElement;
 			this.addUIElement = functionAddUIElement;
 			this.setAttribute = functionSetAttribute;
 			this.getAttribute = functionGetAttribute;
@@ -11330,6 +11546,9 @@ var SNDK =
 				// TopCenter
 				_elements["topcenter"] = SNDK.tools.newElement ("div", {className: "TopCenter", appendTo: _elements["top"]});
 				_elements["topcenter"].style.overflow = "hidden";
+				
+				// Titlebar
+				_elements["titlebar"] = SNDK.tools.newElement ("div", {className: "TitleBar", appendTo: _elements["topcenter"]});
 									
 				// TopRight
 				_elements["topright"] = SNDK.tools.newElement ("div", {className: "TopRight", appendTo: _elements["top"]});
@@ -11403,6 +11622,42 @@ var SNDK =
 				
 				setDimensions ();
 			}			
+			
+			// ------------------------------------
+			// refresh
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}
+			
+			function addTitleBarUIElement (type, attributes)
+			{
+				if (!attributes)
+					attributes = new Array ();
+					
+				attributes.appendTo = _elements["titlebar"];
+			
+				switch (type.toUpperCase ())
+				{
+					case "BUTTON":
+					{
+						var count = _temp.uiElements.length;
+				
+			 			_temp.uiElements[count] = new SNDK.SUI.button (attributes);
+			 				 			
+			 			return _temp.uiElements[count];
+			 		 		 			
+						break;
+					}						
+				}
+			}
+			
+			
+			function getTitleBarUIElement (tag)
+			{
+			
+			}
 			
 			// ------------------------------------
 			// updateCache
@@ -11583,6 +11838,24 @@ var SNDK =
 			{
 				refresh ();
 			}		
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}				
+			
+			function functionAddTitleBarUIElement (type, attributes)
+			{
+				return addTitleBarUIElement (type, attributes)
+			}
+			
+			function functionGetTitleBarUIElement (tag)
+			{
+				return getTitleBarUIElement (tag);
+			}
 			
 			// ------------------------------------
 			// content
@@ -11834,6 +12107,7 @@ var SNDK =
 			
 			// Functions		
 			this.refresh = functionRefresh;	
+			this.dispose = functionDispose;
 			this.addPanel = functionAddPanel;
 			this.getPanel = functionGetPanel;		
 			this.setAttribute = functionSetAttribute;
@@ -11881,6 +12155,14 @@ var SNDK =
 				}
 				
 				setDimensions ();
+			}
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
 			}
 			
 			// ------------------------------------
@@ -12134,6 +12416,14 @@ var SNDK =
 				refresh ();
 			}		
 			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}	
+			
 			function newPanel (attributes)
 			{
 				var _attributes = attributes;
@@ -12153,6 +12443,7 @@ var SNDK =
 				this.getContentElement = functionGetContentElement;	
 				this.setAttribute = functionSetAttribute;
 				this.getAttribute = functionGetAttribute;
+				this.refresh = functionRefresh ();
 		
 				// Initialize
 				construct ();
@@ -12179,6 +12470,18 @@ var SNDK =
 					{
 						//_elements["container"].style.overflow = "hidden";		
 					}
+				}
+				
+				function refresh ()
+				{
+					if (_attributes.hidden)
+					{
+						_elements["container"].style.display = "none";
+					}
+					else
+					{
+						_elements["container"].style.display = "block";							
+					}	
 				}
 				
 				// ------------------------------------
@@ -12245,6 +12548,11 @@ var SNDK =
 						{
 							return _attributes[attribute];
 						}
+						
+						case "hidden":
+						{
+							return _attributes[attribute];				
+						}
 				
 						default:
 						{
@@ -12265,6 +12573,13 @@ var SNDK =
 							_attributes[attribute] = value;
 							break;
 						}
+						
+						case "hidden":
+						{
+							_attributes[attribute] = value;				
+							refresh ();
+							break;
+						}
 				
 						default:
 						{
@@ -12281,6 +12596,7 @@ var SNDK =
 			{
 				var count = _attributes.panels.length;
 				attributes.appendTo = _elements["container"];
+				attributes.parent = this;
 		
 				_attributes.panels[count] = new newPanel (attributes);
 											
@@ -12353,7 +12669,7 @@ var SNDK =
 					{
 						return _attributes[attribute];			
 					}
-		
+				
 					default:
 					{
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
@@ -12438,7 +12754,7 @@ var SNDK =
 						
 						break;
 					}
-							
+										
 					default:
 					{
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
@@ -12493,6 +12809,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;	
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 				
@@ -12552,6 +12869,14 @@ var SNDK =
 				}
 				
 				setDimensions ();
+			}	
+		
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
 			}	
 		
 			// ------------------------------------
@@ -12649,6 +12974,14 @@ var SNDK =
 			{
 				refresh ();
 			}	
+				
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}		
 				
 			// ------------------------------------
 			// getAttribute
@@ -12885,6 +13218,7 @@ var SNDK =
 			
 			// Functions		
 			this.refresh = functionRefresh;		
+			this.dispose = functionDispose;
 			this.addTab = functionAddTab;
 			this.getTab = functionGetTab;		
 			this.setAttribute = functionSetAttribute;
@@ -12981,6 +13315,14 @@ var SNDK =
 				changeTab (_temp.selectedTab);
 				setDimensions ();
 			}
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}	
 			
 			// ------------------------------------
 			// updateCache
@@ -13188,6 +13530,14 @@ var SNDK =
 			function functionRefresh ()
 			{
 				refresh ();
+			}	
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
 			}					
 			
 			function newTab (attributes)
@@ -13535,6 +13885,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;	
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 				
@@ -13595,6 +13946,11 @@ var SNDK =
 				
 				setDimensions ();
 			}	
+			
+			function functionDispose ()
+			{		
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
+			}
 		
 			// ------------------------------------
 			// updateCache
@@ -13863,6 +14219,11 @@ var SNDK =
 				}	
 			}								
 			
+			function functionDispose ()
+			{
+				dispose ();
+			}
+			
 			// ------------------------------------
 			// Events
 			// ------------------------------------
@@ -13872,23 +14233,19 @@ var SNDK =
 		// Canvas ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
+		// .refresh ()
+		// .dispose ()
 		// .addUIElement (uiElement);
-		//
 		// .getAttribute (string)
 		// .setAttribute (string, string)
 		//	
-		// 	id 		get
-		//	tag		get/set
+		// 	id 			get
+		//	tag			get/set
 		//	stylesheet	get/set
 		//	width		get/set
 		//	height		get/set
 		//	canScroll	get/set
 		//
-		// CHANGELOG:
-		//
-		// v1.00:
-		//	- Initial release.
-		
 		/**
 		 * @constructor
 		 */
@@ -13896,9 +14253,11 @@ var SNDK =
 		{
 			var _elements = new Array ();
 			var _attributes = attributes;				
-			var _temp = 	{ initialized: false,
-					  uiElements: new Array ()
-					};
+			
+			var _temp = 	{ 
+								initialized: false,
+					  			uiElements: new Array ()
+							};
 			
 			_attributes.id = SNDK.tools.newGuid ();
 			
@@ -13911,8 +14270,10 @@ var SNDK =
 			this._init = init;
 			
 			// Functions		
-			this.refresh = functionRefresh;		
+			this.refresh = functionRefresh;			
+			this.dispose = functionDispose;
 			this.addUIElement = functionAddUIElement;
+			this.getUIElement = functionGetUIElement;
 			this.setAttribute = functionSetAttribute;
 			this.getAttribute = functionGetAttribute;	
 			
@@ -13967,6 +14328,14 @@ var SNDK =
 				
 				setDimensions ();
 			}
+			
+			// ------------------------------------
+			// refresh
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}
 						
 			// ------------------------------------
 			// setDefaultAttributes
@@ -13975,8 +14344,15 @@ var SNDK =
 			{
 				// Stylesheet
 				if (!_attributes.stylesheet) _attributes.stylesheet = "SUICanvas";	
+				
+				// Managed
+				if (!_attributes.managed)
+					_attributes.managed = false;				
 			
 				// Width
+				if (!_attributes.width) 
+					_attributes.width = "100%";				
+					
 				if (_attributes.width.substring (_attributes.width.length - 1) == "%")
 				{
 					_attributes.widthType = "percent";
@@ -13986,9 +14362,12 @@ var SNDK =
 				{
 					_attributes.widthType = "pixel";
 					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
-				}						
+				}		
 				
 				// Height
+				if (!_attributes.height) 
+					_attributes.height = "100%";
+					
 				if (_attributes.height.substring (_attributes.height.length - 1) == "%")
 				{
 					_attributes.heightType = "percent";
@@ -13998,7 +14377,32 @@ var SNDK =
 				{
 					_attributes.heightType = "pixel";
 					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
-				}		
+				}
+						
+			
+				// Width
+		//		if (_attributes.width.substring (_attributes.width.length - 1) == "%")
+		//		{
+		//			_attributes.widthType = "percent";
+		//			_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
+		//		}
+		//		else
+		//		{
+		//			_attributes.widthType = "pixel";
+		//			_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
+		//		}						
+				
+				// Height
+		//		if (_attributes.height.substring (_attributes.height.length - 1) == "%")
+		//		{
+		//			_attributes.heightType = "percent";
+		//			_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
+		//		}
+		//		else
+		//		{
+		//			_attributes.heightType = "pixel";
+		//			_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
+		//		}		
 				
 				if (!_attributes.canScroll) 
 					_attributes.canScroll = false;
@@ -14080,8 +14484,16 @@ var SNDK =
 			function functionRefresh ()
 			{
 				refresh ();
-			}					
-		
+			}			
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}			
+							
 			// ------------------------------------
 			// addUIElement
 			// ------------------------------------							
@@ -14094,29 +14506,77 @@ var SNDK =
 			 	element.setAttribute ("managed", true);
 			 	element.setAttribute ("appendTo", _elements["container"]);
 			}
+			
+			function functionGetUIElement (tag)
+			{
+				for (index in _temp.uiElements)
+				{
+					if (_temp.uiElements[index].getAttribute ("tag") == tag)
+					{
+						
+					}
+				}
+			}
 										
 			// ------------------------------------
 			// getAttribute
-			// ------------------------------------						
+			// ------------------------------------								
 			function functionGetAttribute (attribute)
 			{
-				if (!_attributes[attribute])
+				switch (attribute)
 				{
-					var result;
-					
-					// Some attributes are attentions whores.
-					if (attribute == "width" || attribute == "height")
+					case "id":
 					{
-						result = _attributes[attribute] + _attributes[attribute + "Type"];
+						return _attributes[attribute];
 					}
-				
-					return _attributes[attribute];
-				}
-				else
-				{
-					throw "No attribute with the name '"+ attribute +"' exist in this object";
-				}
-			}
+					
+					case "tag":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "stylesheet":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "width":
+					{
+						if (_attributes.widthType == "percent")
+						{
+							return _attributes.width + "%";
+						}
+		
+						if (_attributes.widthType == "pixel")
+						{
+							return _attributes.width + "px";
+						}
+					}
+					
+					case "height":
+					{
+						if (_attributes.heightType == "percent")
+						{
+							return _attributes.height + "%";
+						}
+		
+						if (_attributes.heightType == "pixel")
+						{
+							return _attributes.height + "px";
+						}						
+					}
+					
+					case "canScroll":
+					{
+						return _attributes[attribute];			
+					}			
+										
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}	
 			
 			// ------------------------------------
 			// setAttribute
@@ -14145,6 +14605,80 @@ var SNDK =
 					throw "No attribute with the name '"+ attribute +"' exist in this object";
 				}
 			}	
+			
+			// ------------------------------------
+			// setAttribute
+			// ------------------------------------						
+			function functionSetAttribute (attribute, value)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						throw "Attribute with name ID is ready only.";
+						break;
+					}
+					
+					case "tag":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
+					
+					case "stylesheet":
+					{
+						_attributes[attribute] = value;
+						break;				
+					}
+					
+					case "width":
+					{
+						if (value.substring (value.length, 3) == "%")
+						{
+							_attributes.widthType = "percent";
+							_attributes.width = value.substring (0, value.length - 1)			
+						}
+						else
+						{
+							_attributes.widthType = "pixel";
+							_attributes.width = value.substring (0, value.length - 2)
+						}	
+						
+						refresh ();
+						
+						break;			
+					}
+		
+					case "height":
+					{
+						if (value.substring (value.length, 3) == "%")
+						{
+							_attributes.heightType = "percent";
+							_attributes.height = value.substring (0, value.length - 1)			
+						}
+						else
+						{
+							_attributes.heightType = "pixel";
+							_attributes.height = value.substring (0, value.length - 2)
+						}	
+						
+						refresh ();
+						
+						break;			
+					}
+					
+					case "canScroll":
+					{
+						_attributes[attribute] = value;					
+						break;
+					}			
+										
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}					
 		
 			// ------------------------------------
 			// Events
@@ -14230,6 +14764,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 			
@@ -14356,6 +14891,16 @@ var SNDK =
 				}		
 		
 				setDimensions ();
+			}
+			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
+			}
+			
+			function functionDispose ()
+			{		
+				dispose ();
 			}
 				
 			// ------------------------------------
@@ -14685,7 +15230,13 @@ var SNDK =
 						throw "No attribute with the name '"+ attribute +"' exist in this object";
 					}
 				}	
-			}										
+			}									
+			
+				
+			function functionDispose ()
+			{
+				dispose ();
+			}	
 									
 			// ------------------------------------
 			// Events
@@ -14821,6 +15372,7 @@ var SNDK =
 			
 			// Functions
 			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
 			this.getAttribute = functionGetAttribute;
 			this.setAttribute = functionSetAttribute;
 			
@@ -14937,6 +15489,16 @@ var SNDK =
 				}		
 		
 				setDimensions ();
+			}
+			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);	
+			}
+			
+			function functionDispose ()
+			{		
+				dispose ();
 			}
 				
 			// ------------------------------------
@@ -15270,7 +15832,12 @@ var SNDK =
 					}
 				}	
 			}										
-									
+							
+			function functionDispose ()
+			{
+				dispose ();
+			}							
+													
 			// ------------------------------------
 			// Events
 			// ------------------------------------					
@@ -15361,7 +15928,23 @@ var SNDK =
 			this.getAttribute = functionGetAttribute;
 			this.dispose = functionDispose;
 			
+			// ------------------------------------
+			// STRING
+			// ------------------------------------		
+			var string =
+			{
+				onChange : function ()
+				{
+					if (_attributes.onChange != null)
+					{
+						setTimeout( function ()	{ _attributes.onChange (); }, 1);
+					}
+				}	
+			}
 			
+			// ------------------------------------
+			// LISTSTRING
+			// ------------------------------------		
 			var liststring =
 			{
 				add : function ()
@@ -15417,6 +16000,23 @@ var SNDK =
 				}
 			};	
 			
+			// ------------------------------------
+			// TEXT
+			// ------------------------------------		
+			var text =
+			{
+				onChange : function ()
+				{
+					if (_attributes.onChange != null)
+					{
+						setTimeout( function ()	{ _attributes.onChange (); }, 1);
+					}
+				}
+			}
+			
+			// ------------------------------------
+			// LINK
+			// ------------------------------------		
 			var link =
 			{
 				choose : function ()
@@ -15431,13 +16031,23 @@ var SNDK =
 									};
 			
 					sCMS.modal.chooser.page ({onDone: onDone});									
+				},
+				
+				onChange : function ()
+				{
+					if (_attributes.onChange != null)
+					{
+						setTimeout( function ()	{ _attributes.onChange (); }, 1);
+					}
 				}
 			}
 			
+			// ------------------------------------
+			// IMAGE
+			// ------------------------------------		
 			var image = 
 			{
-				value : null,
-				onChangeValue : null,
+				value : null,		
 				
 				set : function (value)
 				{
@@ -15483,15 +16093,15 @@ var SNDK =
 										};
 									};
 						
-					sConsole.modal.chooser.media ({type: "image", subType: "upload", path: "/media/scms/%%FILENAME%%%%EXTENSION%%", onDone: onDone});
+					sConsole.modal.chooser.media ({type: "image", subType: "upload", path: "/media/scms/%%FILENAME%%%%EXTENSION%%", mediatransformations: _attributes.options.mediatransformationids, onDone: onDone});
 				},
 				
 				onChange : function ()
 				{		
-					if (image.onChangeValue != null)
-					{			
-						setTimeout( function ()	{ image.onChangeValue (); }, 1);
-					}		
+					if (_attributes.onChange != null)
+					{
+						setTimeout( function ()	{ _attributes.onChange (); }, 1);
+					}
 				}
 			}
 		
@@ -15530,7 +16140,12 @@ var SNDK =
 					{
 						_elements["content"] = new SNDK.SUI.textbox ({tag: _attributes.tag, width: "100%"});
 						_elements["content"].setAttribute ("value", _attributes.value);
+						_elements["content"].setAttribute ("onChange", string.onChange);
+						_elements["content"].setAttribute ("onKeyUp", string.onChange);
+						
 						_elements["container"].getPanel ("containerpanel").addUIElement (_elements["content"]);		
+						
+						_elements["content"].setAttribute ("onKeyUp", string.onChange);
 						break;
 					}		
 					
@@ -15594,6 +16209,9 @@ var SNDK =
 					
 						_elements["content"] = new SNDK.SUI.textarea ({tag: _attributes.tag, width: "100%", height: "100%", provider: "tinymce", providerConfig: providerconfig})				
 						_elements["content"].setAttribute ("value", _attributes.value);
+						_elements["content"].setAttribute ("onChange", text.onChange);
+						_elements["content"].setAttribute ("onKeyUp", text.onChange);
+						
 						_elements["container"].getPanel ("containerpanel").addUIElement (_elements["content"]);		
 						break;
 					}		
@@ -15602,9 +16220,12 @@ var SNDK =
 					{
 						_elements["content"] = new SNDK.SUI.textbox ({tag: _attributes.tag, width: "90%"});
 						_elements["content"].setAttribute ("value", _attributes.value);
+						_elements["content"].setAttribute ("onChange", link.onChange);
+						_elements["content"].setAttribute ("onKeyUp", link.onChange);
+										
 						_elements["container"].getPanel ("containerpanel").addUIElement (_elements["content"]);		
 						
-						_elements["choose"] = new SNDK.SUI.button ({label: "Choose", width: "10%"});
+						_elements["choose"] = new SNDK.SUI.button ({label: "Select", width: "10%"});
 						_elements["choose"].setAttribute ("onClick", link.choose);				
 						_elements["container"].getPanel ("containerpanel").addUIElement (_elements["choose"]);		
 						
@@ -15633,8 +16254,7 @@ var SNDK =
 						_elements["upload"] = new SNDK.SUI.button ({label: "Upload", width: "95px", stylesheet: "SUIButtonSmall"});
 						_elements["upload"].setAttribute ("onClick", image.upload)
 						_elements["layout1"].getPanel ("panel2").addUIElement (_elements["upload"]);
-						
-						
+									
 						break;
 					}
 				}					
@@ -15722,9 +16342,17 @@ var SNDK =
 			// ------------------------------------		
 			function setAttributes ()
 			{	
-				// Value
+				// VALUE
 				if (!_attributes.value)
 					_attributes.value = "";	
+					
+				// OPTIONS
+				if (!_attributes.options)
+					_attributes.options = new Array ();
+					
+				// OPTIONS.MEDIATRANSFORMATIONIDS
+				if (!_attributes.options.mediatransformationids)
+					_attributes.options.mediatransformationids = "";
 			}	
 			
 			// ------------------------------------
@@ -15792,38 +16420,7 @@ var SNDK =
 		
 					case "onChange":
 					{
-						switch (_attributes.type)
-						{
-							case "string":
-							{
-								return _elements["content"].getAttribute ("onKeyUp");
-								break;					
-							}
-							
-							case "liststring":
-							{
-								return _attributes[attribute];
-								break;
-							}
-							
-							case "text":
-							{
-								return _elements["content"].getAttribute ("onKeyUp");
-								break;
-							}
-							
-							case "link":
-							{
-								return _elements["content"].getAttribute ("onKeyUp");
-								break;					
-							}
-							
-							case "image":
-							{
-								return image.onChangeValue;
-							
-							}
-						}								
+						return _attributes[attribute];
 					}
 		
 					case "value":
@@ -15845,26 +16442,22 @@ var SNDK =
 									result += items[index].value +"\n";
 								}
 							
-								return result;
-								break;
+								return result;						
 							}
 							
 							case "text":
 							{
-								return _elements["content"].getAttribute ("value");
-								break;
+								return _elements["content"].getAttribute ("value");						
 							}
 							
 							case "link":
 							{
-								return _elements["content"].getAttribute ("value");
-								break;
+								return _elements["content"].getAttribute ("value");						
 							}
 							
 							case "image":
 							{				
-								return image.get ();		
-								break;
+								return image.get ();								
 							}
 						}				
 					}			
@@ -15952,40 +16545,44 @@ var SNDK =
 		
 					case "onChange":
 					{
-						switch (_attributes.type)
-						{
-							case "string":
-							{						
-								_elements["content"].setAttribute ("onKeyUp", value);
-								break;					
-							}
+		//				switch (_attributes.type)
+		//				{
+		//					case "string":
+		//					{						
+		//						_attributes[attribute] = value;
+		//						_elements["content"].setAttribute ("onKeyUp", value);
+		//						break;					
+			//				}
 							
-							case "liststring":
-							{
-								_attributes[attribute] = value;
-								break;
-							}
+		//					case "liststring":
+		//					{
+		//						_attributes[attribute] = value;
+		//						break;
+		//					}
 							
-							case "text":
-							{
-								_elements["content"].setAttribute ("onChange", value);
-								_elements["content"].setAttribute ("onKeyUp", value);
-								break;
-							}
+		//					case "text":
+		//					{
+		//						_attributes[attribute] = value;
+		//						_elements["content"].setAttribute ("onChange", value);
+		//						_elements["content"].setAttribute ("onKeyUp", value);
+		//						break;
+		//					}
 							
-							case "link":
-							{						
-								_elements["content"].setAttribute ("onKeyUp", value);
-								break;					
-							}
+		//					case "link":
+		//					{						
+								//_elements["content"].setAttribute ("onKeyUp", value);
+		//						_attributes[attribute] = value;
+		//						break;					
+		//					}
 							
-							case "image":
-							{
-								image.onChangeValue = value;
-								break;
-							}
-						}								
-									
+		//					case "image":
+		//					{
+		//						image.onChangeValue = value;
+		//						break;
+		//					}
+		//				}								
+		
+						_attributes[attribute] = value;						
 						break;
 					}
 		
@@ -16126,7 +16723,8 @@ var SNDK =
 									obj._init ();
 							
 									obj._temp.initialized = true;			
-		
+									
+									window.removeEvent (window, 'SUIINIT', init);
 							
 								}
 							}
@@ -16354,7 +16952,7 @@ var SNDK =
 						
 						case "hashtable":
 						{
-							var hashtable = {};
+							var hashtable = new Array ();
 							
 							parseResponsRecursive (node.childNodes, hashtable);
 							
@@ -16403,7 +17001,7 @@ var SNDK =
 					var xmldata = "";					
 					//xmldata += "<?xml version='1.0' encoding='ISO-8859-1'?>";
 					xmldata += "<ajax>\n";			
-					
+											
 					xmldata = parseRequestRecursive (xmldata, data);			
 								
 					xmldata += "</ajax>\n";			
@@ -16507,7 +17105,7 @@ var SNDK =
 			}
 			
 			function parseRequestRecursive (document, data)
-			{	
+			{				
 				for (var index in data)
 				{
 				 
@@ -16537,7 +17135,7 @@ var SNDK =
 						
 										
 						case "boolean":
-						{					
+						{								
 							document += "<"+ index +" type=\"boolean\">\n";
 							document += "<![CDATA[";
 							if (data[index] == true)
@@ -16559,24 +17157,42 @@ var SNDK =
 						{				
 							if (data[index].constructor == Array)
 							{
-		
-								//if (data[index].length > 0)
-								//{
-									document += "<"+ index +" type=\"list\">\n";	
-									for (var index2 in data[index]) 
+								
+								var islist = true;
+								for (index2 in data[index])
+								{
+									if (isNaN (index2))
 									{
-										document += "<item>\n";						
-										document = parseRequestRecursive (document, data[index][index2]);
-										document += "</item>\n";						
+										islist = false;
 									}
-									document += "</"+ index +">\n";					
-								//}
-								//else
-		//						{
-			//						document += "<"+ index +" type=\"object\">\n";
-				//					document = parseRequestRecursive (document, data[index]);
-					//				document += "</"+ index +">\n";						
-						//		}
+								}
+		
+								if (islist)
+								{
+										document += "<"+ index +" type=\"list\">\n";	
+										for (var index2 in data[index]) 
+										{
+											document += "<item>\n";						
+											document = parseRequestRecursive (document, data[index][index2]);
+											document += "</item>\n";						
+										}
+										document += "</"+ index +">\n";											
+								
+								}
+								else
+								{
+									document += "<"+ index +" type=\"hashtable\">\n";	
+																		
+										
+										//for (var index2 in data[index]) 
+										//{
+										//console.log (data[index])
+											
+											document = parseRequestRecursive (document, data[index]);
+										//}
+										document += "</"+ index +">\n";																											
+								
+								}
 							}
 							else if (data[index].constructor == Object)
 							{

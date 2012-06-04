@@ -1,27 +1,25 @@
 <style type="text/css">
+	#contentwrapper
+	{
+		float: right;
+		width: 100%;
+		height: 100%;
+		margin-left: -230px; /*Set left margin to -(RightColumnWidth)*/
+	}
 
-#contentwrapper
-{
-	float: right;
-	width: 100%;
-	height: 100%;
-	margin-left: -230px; /*Set left margin to -(RightColumnWidth)*/
-}
+	#contentcolumn
+	{
+		margin: 0 0px 0 230px; /*Set margin to 0 (LeftColumnWidth) 0 (RightColumnWidth)*/
+		height: 100%;
+	}
 
-#contentcolumn
-{
-	margin: 0 0px 0 230px; /*Set margin to 0 (LeftColumnWidth) 0 (RightColumnWidth)*/
-	height: 100%;
-}
-
-#rightcolumn
-{
-	float: right;
-	width: 230px; /*Width of right column in percentage*/
-	height: 100%;
-	z-index: 20;
-}
-
+	#rightcolumn
+	{
+		float: right;
+		width: 230px; /*Width of right column in percentage*/
+		height: 100%;
+		z-index: 20;
+	}
 </style>
 
 <body>				
@@ -42,7 +40,7 @@
 					WEB ENGINE CONSOLE
 				</h2>
 				<div class="Version">
-					version 2.0
+					version <%Write (sConsole.Runtime.GetVersionString ())%>
 				</div>
 				<div class="Notification">
 					Hello, <a onClick="sConsole.modal.edit.profile ();"><span id="name"><%Write ($user.Firstname)%></span></a>, you have <a>0 messages</a>

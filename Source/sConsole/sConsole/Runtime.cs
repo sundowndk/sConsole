@@ -122,6 +122,11 @@ namespace sConsole
 			return result;
 		}
 		
+		public static Version GetVersion ()
+		{
+			return System.Reflection.Assembly.GetAssembly (typeof (sConsole.Runtime)).GetName ().Version;			
+		}
+		
 		public static XmlDocument GetMenuXML (SorentoLib.Session session)
 		{
 			return Menu.ToXmlDocument ();

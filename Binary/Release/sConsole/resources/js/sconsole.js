@@ -20,35 +20,42 @@ var sConsole =
 			// base ([attributes])
 			// -------------------------------------------------------------------------------------------------------------------------
 			//
-			// .getContentElement ()
-			// .getUIElement ();
+			// .show ()
+			// .hide ()
+			// .refresh ()
+			// .dispose ()
+			//
+			// .getUIElement ()
 			//
 			// .getAttribute (string)
 			// .setAttribute (string, string)
-			//	
+			//
+			//		suiXML			init
+			//		suiURL			init	
 			//		title 			get/set
-			//		buttonLabel		get/set
+			//		buttonLabel1	get/set
+			//		buttonLabel2	get/set
 			//		onButton1Click	set
 			//		onButton2Click	set
 			//
-			
+			/**
+			 * @constructor
+			 */
 			base : function (attributes)
 			{
 				_attributes = attributes;
 				_temp = { initialized: false,
-						  modal: null,
-						  elements: new Array };
+						  modal: null};
 							
 				setAttributes ();
 				construct ();
-				init ();
-			
+				
 				this.show = functionShow;
 				this.hide = functionHide;
+				this.refresh = functionRefresh;
 				this.dispose = functionDispose;
 				
-				this.getUIElement = functionGetUIElement;
-				
+				this.getUIElement = functionGetUIElement;	
 				this.setAttribute = functionSetAttribute;
 				this.getAttribute = functionGetAttribute;	
 			
@@ -60,47 +67,44 @@ var sConsole =
 				// ------------------------------------		
 				function init ()
 				{				
+					refresh ();
 				}
 			
 				// ------------------------------------
 				// construct
 				// ------------------------------------	
 				function construct ()
-				{
-					_temp.modal = new sConsole.modal.window (_attributes);		
-				
-					var canvas = new SNDK.SUI.canvas ({appendTo: _temp.modal.getContentElement (), width: "800px", height: "430px"});
-					var container = new SNDK.SUI.container ({title: _attributes.title, stylesheet: "SUIContainerModal"});
-					
-					var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});
-					layoutbox1.addPanel ({tag: "panel1", size: "*"});
-					layoutbox1.addPanel ({tag: "panel2", size: "55px"});		
-				
-					var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-					layoutbox2.addPanel ({tag: "panel1", size: "*"});
-					layoutbox2.addPanel ({tag: "panel2", size: "210px"});	
-					
-					layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);
-					canvas.addUIElement (container);
-					container.addUIElement (layoutbox1);
+				{				
+					var onInit = 	function ()
+									{		
+										var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutboxNoborder"});
+										layoutbox1.addPanel ({tag: "panel1", size: "*"});	
+										_temp.modal.getUIElement ("container").addUIElement (layoutbox1);							
 																
-					if (_attributes.suiURL)
-					{
-						_temp.elements = SNDK.SUI.builder.construct ({URL: _attributes.suiURL, appendTo: layoutbox1.getPanel ("panel1")});
-			
-					}
-					else if (_attributes.suiXML)
-					{
-						_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
-					}
-					
-					_temp.elements.button1 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[0], width: "100px", onClick: eventOnClickButton1, disabled: true});
-					_temp.elements.button2 = new SNDK.SUI.button ({label: _attributes.buttonLabel.split ("|")[1], width: "100px", onClick: eventOnClickButton2, disabled: false});	
-					
-					layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button1);
-					layoutbox2.getPanel ("panel2").addUIElement (_temp.elements.button2);			
-			
-					SNDK.SUI.init ();
+										if (_attributes.suiURL)
+										{
+			//								_temp.elements = SNDK.SUI.builder.construct ({URL: _attributes.suiURL, appendTo: layoutbox1.getPanel ("panel1")});
+											_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
+										}
+										else if (_attributes.suiXML)
+										{
+											_temp.modal.addUIElementsByXML (_attributes.suiXML, layoutbox1.getPanel ("panel1"))
+			//								_temp.elements = SNDK.SUI.builder.construct ({XML: _attributes.suiXML, appendTo: layoutbox1.getPanel ("panel1")});
+										}
+																																								
+										_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton1);												
+										_temp.modal.getUIElement ("button2").setAttribute ("onClick", eventOnClickButton2);				
+										
+										SNDK.SUI.init ();
+										init ();
+										
+										if (attributes.onInit != null)
+										{
+											attributes.onInit ();
+										}
+									};
+									
+					_temp.modal = new sConsole.modal.window ({width: "800px", height: "430px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}, {type: "button", attributes: {tag: "button2"}}], busy: true, onInit: onInit});							
 				}	
 				
 				// ------------------------------------
@@ -108,12 +112,28 @@ var sConsole =
 				// ------------------------------------					
 				function setAttributes ()
 				{
-					if (!_attributes) _attributes = new Array ();
+					if (!_attributes) 
+						_attributes = new Array ();
 					
-					if (!_attributes.title) _attributes.title = "";
+					if (!_attributes.title) 
+						_attributes.title = "";
 					
-					if (!_attributes.buttonLabel) _attributes.buttonLabel = "|";
+					if (!_attributes.button1Label) 
+						_attributes.button1Label = "BUTTON1";
+					
+					if (!_attributes.button2Label) 
+						_attributes.button2Label = "BUTTON2";
 				}		
+				
+				// ------------------------------------
+				// Refresh
+				// ------------------------------------	
+				function refresh ()
+				{
+					_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+					_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.button1Label);						
+					_temp.modal.getUIElement ("button2").setAttribute ("label", _attributes.button2Label);
+				}
 				
 				// ------------------------------------
 				// Public functions
@@ -135,6 +155,14 @@ var sConsole =
 				}
 				
 				// ------------------------------------
+				// Refresh
+				// ------------------------------------	
+				function functionRefresh ()
+				{
+					refresh ();
+				}
+				
+				// ------------------------------------
 				// Dispose
 				// ------------------------------------	
 				function functionDispose ()
@@ -147,14 +175,7 @@ var sConsole =
 				// ------------------------------------
 				function functionGetUIElement (tag)
 				{	
-					if (_temp.elements[tag] != null)
-					{
-						return _temp.elements[tag];
-					}
-					else
-					{
-						throw "No UI element with tag '"+ tag +"' was found.";
-					}									
+					return _temp.modal.getUIElement (tag);
 				}	
 				
 				// ------------------------------------
@@ -163,7 +184,32 @@ var sConsole =
 				function functionGetAttribute (attribute)
 				{
 					switch (attribute)
-					{								
+					{			
+						case "title":
+						{
+							return _attributes[attribute];
+						}
+			
+						case "button1Label":
+						{
+							return _attributes[attribute];
+						}
+						
+						case "button2Label":
+						{
+							return _attributes[attribute];
+						}
+						
+						case "onButton1Click":
+						{
+							return _attributes[attribute];
+						}
+						
+						case "onButton2Click":
+						{
+							return _attributes[attribute];
+						}
+																				
 						default:
 						{
 							throw "No attribute with the name '"+ attribute +"' exist in this object";
@@ -178,6 +224,39 @@ var sConsole =
 				{
 					switch (attribute)
 					{
+						case "title":
+						{
+							_attributes[attribute] = value;
+							refresh ();
+							break;
+						}
+						
+						case "button1Label":
+						{
+							_attributes[attribute] = value;
+							refresh ();
+							break;
+						}
+						
+						case "button2Label":
+						{
+							_attributes[attribute] = value;
+							refresh ();
+							break;
+						}
+						
+						case "onButton1Click":
+						{
+							_attributes[attribute] = value;
+							break;
+						}
+						
+						case "onButton2Click":
+						{
+							_attributes[attribute] = value;
+							break;
+						}
+					
 						default:
 						{
 							throw "No attribute with the name '"+ attribute +"' exist in this object";
@@ -276,62 +355,106 @@ var sConsole =
 		
 			media : function (attributes)
 			{
-				if (!attributes) 
-					attributres = new Array ();
+				// ONINIT
+				var onInit =	function ()
+								{
+									if (!attributes) 
+										attributres = new Array ();
+									
+									if (!attributes.type)
+										attributes.type = "FILE";
+										
+									if (!attributes.subType)
+										attributes.subType = "All";
+										
+									if (!attributes.mimetypes)
+									{
+										switch (attributes.type.toUpperCase ())
+										{
+											case "FILE":
+											{
+												attributes.mimetypes = "";
+												break;
+											}
+											
+											case "IMAGE":
+											{
+												attributes.mimetypes = "image/jpeg;image/png;image/gif";
+											}
+										}
+									}
+									
+									if (!attributes.path)
+										attribtutes.path = "/media/%%FILENAME%%%%EXTENSION%%";
+									
+									if (!attributes.mediatransformations)
+										attributes.mediatransformations = "";
+										
+									if (!attributes.postuploadscript)
+										attributes.postuploadscript = "";
+										
+									if (attributes.subType.toUpperCase () == "ALL")
+									{
+										attributes.title = "Choose media";	
+									}
+									else
+									{
+										switch (attributes.subType.toUpperCase ())
+										{
+											case "LIBRARY":
+											{
+												attributes.title = "Choose media";
+												break;
+											}
+											
+											case "UPLOAD":
+											{
+												attributes.title = "Upload media";
+												break;
+											}
+										}	
+									}
+								
+									chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
+									chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
+									
+									// UPLOADFORM
+									var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
+									SNDK.tools.newElement ("input", {type: "hidden", name: "cmd", value: "Function", appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.function", value: "SorentoLib.Media.Upload", appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
+									
+									SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: attributes.path, appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: attributes.mimetypes, appendTo: uploadform});
+									SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
+									SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
+									
+									switch (attributes.type.toUpperCase ())
+									{
+										case "FILE":
+										{
+											SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
+											break;
+										}
+										
+										case "IMAGE":
+										{
+											SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
+											break;
+										}
+									}
+									
+									document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
+									uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
+													
+									chooser.show ();			
+								
+								
+								};
 				
-				if (!attributes.type)
-					attributes.type = "FILE";
-					
-				if (!attributes.subType)
-					attributes.subType = "All";
-					
-				if (!attributes.mimetypes)
-				{
-					switch (attributes.type.toUpperCase ())
-					{
-						case "FILE":
-						{
-							attributes.mimetypes = "";
-							break;
-						}
-						
-						case "IMAGE":
-						{
-							attributes.mimetypes = "image/jpeg;image/png;image/gif";
-						}
-					}
-				}
 				
-				if (!attributes.path)
-					attribtutes.path = "/media/%%FILENAME%%%%EXTENSION%%";
-				
-				if (!attributes.mediatransformations)
-					attributes.mediatransformations = "";
-					
-				if (!attributes.postuploadscript)
-					attributes.postuploadscript = "";
-					
-				if (attributes.subType.toUpperCase () == "ALL")
-				{
-					attributes.title = "Choose media";	
-				}
-				else
-				{
-					switch (attributes.subType.toUpperCase ())
-					{
-						case "LIBRARY":
-						{
-							attributes.title = "Choose media";
-							break;
-						}
-						
-						case "UPLOAD":
-						{
-							attributes.title = "Upload media";
-							break;
-						}
-					}	
-				}
 				
 				var media = null;
 			
@@ -536,42 +659,70 @@ var sConsole =
 				
 				
 				
-				var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
+				//var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
 				
-				chooser.getUIElement ("mediaupload").setAttribute ("onChange", upload);
-				chooser.getUIElement ("uploadframe").setAttribute ("onLoad", onUploadComplete);
-				
-				// UPLOADFORM
-				var uploadform = SNDK.tools.newElement ("form", {id: "uploadform", method: "POST", enctype: "multipart/form-data", target: "uploadframe"})
-				SNDK.tools.newElement ("input", {type: "hidden", name: "cmd", value: "Function", appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.function", value: "SorentoLib.Media.Upload", appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onsuccess", value: "/console/includes/upload", appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.onerror", value: "/console/includes/upload", appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "cmd.redirect", value: "False", appendTo: uploadform});
-				
-				SNDK.tools.newElement ("input", {type: "hidden", name: "path", value: attributes.path, appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "mimetypes", value: attributes.mimetypes, appendTo: uploadform});
-				SNDK.tools.newElement ("input", {type: "hidden", name: "mediatype", value: "public", appendTo: uploadform});	
-				SNDK.tools.newElement ("input", {type: "hidden", name: "mediatransformations", value: attributes.mediatransformations, appendTo: uploadform});
-				
-				switch (attributes.type.toUpperCase ())
-				{
-					case "FILE":
-					{
-						SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: ";"+ attributes.postuploadscript, appendTo: uploadform});
-						break;
-					}
 					
-					case "IMAGE":
-					{
-						SNDK.tools.newElement ("input", {type: "hidden", name: "postuploadscripts", value: "sconsole/media_image_thumbnail_small.xml;sconsole/media_image_thumbnail_large.xml;"+ attributes.postuploadscript, appendTo: uploadform});
-						break;
-					}
-				}
-				
-				document.getElementsByName ("mediaupload")[0].parentNode.appendChild (uploadform);
-				uploadform.appendChild (document.getElementsByName ("mediaupload")[0]);
+				var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: attributes.title, button1Label: "Select", button2Label: "Close", onClickButton1: onButton1, onClickButton2: onButton2, onInit: onInit});	
+			}	
+			
+			
+			,
+		
+			mediaTransformation : function (attributes)
+			{
+				var onButton1 =	function ()
+								{
+									chooser.dispose ();
+									
+									if (attributes.onDone != null)
+									{
+										setTimeout( function ()	{ attributes.onDone (chooser.getUIElement ("mediatransformations").getItem ().id); }, 1);
+									}
+								};
 								
+				var onButton2 =	function ()
+								{
+									chooser.dispose ();
+									
+									if (attributes.onDone != null)
+									{
+										setTimeout( function ()	{ attributes.onDone (null); }, 1);
+									}						
+								};
+								
+				var onChange = 	function ()
+								{
+									if (chooser.getUIElement ("mediatransformations").getItem ())
+									{
+										chooser.getUIElement ("button1").setAttribute ("disabled", false);
+									}
+									else
+									{
+										chooser.getUIElement ("button1").setAttribute ("disabled", true);
+									}
+								};					
+			
+				var suixml = "";
+				suixml += '<sui>';
+				suixml += '	<layoutbox type="horizontal">';
+				suixml += '		<panel size="*">';
+				suixml += '			<layoutbox type="vertical">';
+				suixml += '				<panel size="*">';
+				suixml += '					<listview tag="mediatransformations" width="100%" height="100%" focus="true">';
+				suixml += '						<column tag="id" />';
+				suixml += '						<column tag="title" label="Title" width="200px" visible="true" />';	
+				suixml += '					</listview>';
+				suixml += '				</panel>';
+				suixml += '			</layoutbox>';
+				suixml += '		</panel>';
+				suixml += '	</layoutbox>';
+				suixml += '</sui>';
+			
+				var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: "Choose mediatransformation", buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
+				
+				chooser.getUIElement ("mediatransformations").setItems (sorentoLib.mediaTransformation.list ());
+				chooser.getUIElement ("mediatransformations").setAttribute ("onChange", onChange);
+							
 				chooser.show ();			
 			}	
 			
@@ -860,8 +1011,13 @@ var sConsole =
 			var _temp = 	{ controls: 0,
 					  tabs: 0,
 					  controlWidth: "533px",
-					  controlWidthTabbed: "510px"
+					  controlWidthTabbed: "510px",
+					  top: 0,
+					  left: 0,
+					  isBusy: false
 					}
+					
+			setAttributes ();
 			
 			// Values
 			var _valuehidden = true;
@@ -870,10 +1026,15 @@ var sConsole =
 				
 			this.show = show;
 			this.hide = hide;	
+			this.busy = functionBusy;
+			this.showBusy = showBusy;
+			this.hideBusy = hideBusy;
 			this.dispose = dispose;
 			
 			this.getContentElement = functionGetContentElement;
 			this.getUIElement = functionGetUIElement;
+			this.addUIElement = functionAddUIElement;
+			this.addUIElementsByXML = functionAddUIElementsByXML;
 			
 			
 			// Construct
@@ -890,47 +1051,141 @@ var sConsole =
 			// ------------------------------------
 			function init ()
 			{
-				window.addEvent (window, 'resize', setDimensions);
+				
 			}
 		
 			// ------------------------------------
 			// Construct
 			// ------------------------------------
 			function construct ()
-			{		
+			{	
+				
+				
+				_temp.busy = new sConsole.modal.busy ({});
+				_temp.busy.show ();
+			
+						
+				var test = function ()
+				{
+					
+				
 				_elements["container"] = SNDK.tools.newElement ("div", "Modal", _id, document.body);	
-				_elements["container"].style.zIndex = 101 * sConsole.modal.depth;
+				
+				_elements["container"].style.zIndex = 100 * sConsole.modal.depth++;
 				
 				_elements["content"] = SNDK.tools.newElement ("div", "", null, _elements["container"]);
-		
+				_elements["content"].style.width = "100%";
+				_elements["content"].style.height = "100%";
+				
+				_elements["busy"] = SNDK.tools.newElement ("div", "ModalWindowBusy", null, _elements["container"])
 																				
 																								
-				_elements["shade"] = SNDK.tools.newElement ("div", "ModalWindowShade", _id + "_shade", document.documentElement);
-				_elements["shade"].style.zIndex = 100 * sConsole.modal.depth;
-				_elements["shade"].style.display = "none";
+		//		_elements["shade"] = SNDK.tools.newElement ("div", "ModalWindowShade", _id + "_shade", document.documentElement);
+		//		_elements["shade"].style.zIndex = 100 * sConsole.modal.depth;
+		//		_elements["shade"].style.display = "none";
 		
 				_elements["container"].style.display = "none";
+				_elements["busy"].style.display = "none";
 		
+				_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"]});				
+				_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
+				
+				_elements["canvas"].addUIElement (_elements["container1"]);
 			
-												
+		//	<canvas canScroll="false">	
+		//		<container tag="container" title="Edit page" icon="Icon32Edit" stylesheet="SUIContainerModal">
+													
 				SNDK.tools.changeOpacityByObject (_elements["container"], 0);								
-				SNDK.tools.changeOpacityByObject (_elements["shade"], 0);					
-			
-				sConsole.modal.depth++;
+				SNDK.tools.changeOpacityByObject (_elements["busy"], 0);						
+					
 				_initialized = true;
+				
+				
+				_elements["ui"] = {};
 				
 				if (_attributes.XML)
 				{
-					_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
+					//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
+					_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+					//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
 				}
 				
 				if (_attributes.SUIXML != null)
+				{				
+					_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["container1"] });	
+					//_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, parent: _elements["container1"] });	
+				}
+				
+				_elements["ui"]["canvas"] = _elements["canvas"];
+				_elements["ui"]["container"] = _elements["container1"];
+				
+				var count = 1;
+				for (i in _elements["ui"])
 				{
-					_elements["ui"] = SNDK.SUI.builder.construct ({URL: _attributes.SUIXML, appendTo: _elements["content"] });	
-		
+					try
+					{
+						switch (_elements["ui"][i].type.toUpperCase ())
+						{
+							case "TEXTBOX":
+							{
+								_elements["ui"][i].setAttribute ("tabIndex", count);
+								count++;
+								break;
+							}
+							
+							case "BUTTON":
+							{
+								_elements["ui"][i].setAttribute ("tabIndex", count);						
+								count++;
+								break;
+							}
+						}
+					}
+					catch (e)
+					{		
+						//console.log (e);
+					}				
+				}
+				
+				if (_attributes.titleBarUI)
+				{
+					for (index in _attributes.titleBarUI)
+					{
+						var element = _attributes.titleBarUI [index];
+						//console.log (count)
+						
+						element.attributes.tabIndex = count;
+						count++;
+						//var count = _elements["ui"].length;
+						
+						_elements["ui"][element.attributes.tag] = _elements["container1"].addTitleBarUIElement (element.type, element.attributes);
+						
+						//console.log (_elements["ui"][count])
+						
+						// _elements["container1"].addTitleBarUIElement (element.type, element.attributes);
+					}
 				}
 				
 				SNDK.SUI.init ();		
+				
+				window.addEvent (window, 'resize', setDimensions);
+				
+				
+					if (_attributes.onInit != null)
+					{	
+						_attributes.onInit ();
+					}
+				
+				}
+				
+				if (_attributes.onInit != null)
+				{		
+					setTimeout (test, 130);
+				}
+				else
+				{
+					test ();
+				}
 			}
 			
 			// ------------------------------------
@@ -970,24 +1225,161 @@ var sConsole =
 				
 			}	
 			
+			function setAttributes ()
+			{
+				if (!_attributes.dimensions)
+					_attributes.dimensions = "content";
+			
+				if ((!_attributes.width) && (!_attributes.height))
+				{ 
+						
+				switch (_attributes.dimensions.toLowerCase ())
+				{
+					case "content":
+					{
+						_attributes.width = "content";	
+						_attributes.height = "content";	
+						break;
+					}
+					
+					case "auto":
+					{
+						_attributes.width = "85%";	
+						_attributes.height = "85%";	
+						break;
+					}
+					
+					default:
+					{
+						_attributes.width = _attributes.dimensions;	
+						_attributes.height = _attributes.dimensions;
+						break;
+					}
+				}
+				}
+			
+			
+				// Width
+				if (!_attributes.width) 
+					_attributes.width = "content";	
+					
+				if (_attributes.width != "content")
+				{
+					if (_attributes.width.substring (_attributes.width.length - 1) == "%")
+					{	
+						_attributes.widthType = "percent";
+						_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
+					}
+					else
+					{	
+						_attributes.widthType = "pixel";
+						_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
+					}
+				}
+				
+				// Height
+				if (!_attributes.height) 
+					_attributes.height = "content";
+				
+				if (_attributes.height != "content")
+				{
+					if (_attributes.height.substring (_attributes.height.length - 1) == "%")
+					{
+						_attributes.heightType = "percent";
+						_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
+					}
+					else
+					{
+						_attributes.heightType = "pixel";
+						_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
+					}	
+				}
+			}
+				
 			function setDimensions ()
 			{
-				_elements["shade"].style.width = "0px";
-				_elements["shade"].style.height = "0px";	
+		//		_elements["shade"].style.width = "0px";
+		//		_elements["shade"].style.height = "0px";	
 				_elements["container"].style.display = "none";
 		
 				var pagesize = SNDK.tools.getPageSize ();
 				
 				_elements["container"].style.display = "block";
 							
-				_elements["shade"].style.width = pagesize[0] + "px";
-				_elements["shade"].style.height = pagesize[1] + "px";	
+		//		_elements["shade"].style.width = pagesize[0] + "px";
+		//		_elements["shade"].style.height = pagesize[1] + "px";	
 								
-				var width = _elements["container"].offsetWidth;
-				var height = _elements["container"].offsetHeight;
+			//	var width = _elements["container"].offsetWidth;
+			//	var height = _elements["container"].offsetHeight;
+				
+				var height = 0;
+				var width = 0;
+				
+				if (_attributes.width != "content")
+				{
+					switch (_attributes.widthType)
+					{
+						case "percent":
+						{
+							width = ((pagesize[0] * _attributes.width) / 100);
+							break;
+						}
+						
+						case "pixel":
+						{
+							width = _attributes.width;
+							break; 
+						}
+					}		
+				}
+				else
+				{
+					width = _elements["container"].offsetWidth;
+				}
+				
+				if (_attributes.height != "content")
+				{
+					switch (_attributes.heightType)
+					{
+						case "percent":
+						{
+							height = ((pagesize[1] * _attributes.height) / 100);
+							break;
+						}
+						
+						case "pixel":
+						{
+							height = _attributes.height;
+							break; 
+						}
+					}				
+				}
+				else
+				{
+					height = _elements["container"].offsetHeight;
+				}
+			
+				//var width = ((pagesize[0] * 85) / 100);
+				//var height = ((pagesize[1] * 85) / 100);
 				
 				
-				var test = SNDK.tools.getScrollOffsets ();
+				//console.log (width +"x"+ height +"   |    "+ _attributes.width +"x"+ _attributes.height);
+								
+				_elements["container"].style.width = width +"px";
+				_elements["container"].style.height = height +"px";
+				
+				_elements["busy"].style.width = (width - 30) +"px";
+				_elements["busy"].style.height = (height - 90) +"px";
+				
+				//_elements["container"].setAttribute ("width", "1000px");
+				//_elements["container"].setAttribute ("height", "1000px");
+				//_elements["container"].refresh ();
+				
+				//console.log ("PARENT:"+ SNDK.tools.getElementInnerHeight (_elements["container"]));
+				
+				SNDK.SUI.refresh ();
+				
+				//var test = SNDK.tools.getScrollOffsets ();
 				var test2 = SNDK.tools.getWindowSize ();
 				
 				
@@ -998,6 +1390,8 @@ var sConsole =
 				var top = (test2[1] - height) / 2;
 				var left = (test2[0] - width) / 2;
 				
+				_temp.top = top;
+				_temp.left = left;
 				
 		
 				_elements["container"].style.top = top +"px";
@@ -1005,9 +1399,56 @@ var sConsole =
 				
 			}			
 			
+			function busy ()
+			{
+				if (_temp.isBusy)
+				{
+					SNDK.animation.opacityFade (_elements["busy"], 60, 0, 150);
+				
+					setTimeout (	function () 
+									{ 
+										_elements["busy"].style.display = "none";	
+									}, 150);
+									
+					_temp.isBusy = false;
+				}
+				else
+				{
+					_elements["busy"].style.display = "block";	
+					SNDK.animation.opacityFade (_elements["busy"], 0, 60, 150);
+					
+					_temp.isBusy = true;
+				}
+			}
+			
 			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			// Methods
 			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------				
+		
+			function functionBusy ()
+			{
+				busy ();
+			}
+			
+			
+			function functionAddUIElement (element, appendTo)
+			{
+				
+			
+				_elements["ui"][element.getAttribute ("tag")] = element;
+			
+			}
+			
+			function functionAddUIElementsByXML (xml, appendTo)
+			{
+				var elements = SNDK.SUI.builder.construct ({XML: xml, appendTo: appendTo});
+				
+				for (i in elements)
+				{		
+					_elements["ui"][i] = elements[i];
+				
+				}
+			}
 		
 			function functionGetContentElement ()
 			{
@@ -1016,7 +1457,7 @@ var sConsole =
 		
 			function functionGetUIElement (tag)
 			{
-			//console.log (_elements.ui);
+			//console.log (tag);
 				if (_elements.ui[tag] != null)
 				{
 					return _elements.ui[tag];
@@ -1027,17 +1468,44 @@ var sConsole =
 				}									
 			}
 			
+			function showBusy ()
+			{
+				_elements["busy"].style.display = "block";
+				SNDK.animation.opacityFade (_elements["busy"], 0, 60, 150);
+			}
+			
+			function hideBusy ()
+			{
+				SNDK.animation.opacityFade (_elements["busy"], 60, 0, 150);
+				
+						setTimeout (	
+				function () 
+						{ 
+							_elements["busy"].style.display = "none";	
+						}, 150);
+		
+			}
+			
+			
 			// ------------------------------------
 			// Show
 			// ------------------------------------				
 			function show ()
 			{																																	
 				_elements["container"].style.display = "block";
-				_elements["shade"].style.display = "block";	
+		//		_elements["shade"].style.display = "block";	
 													
-				SNDK.animation.opacityFade (_elements["shade"], 0, 65, 300);
-				SNDK.animation.opacityFade (_elements["container"], 0, 100, 150);					
+		//		SNDK.animation.opacityFade (_elements["shade"], 0, 65, 300);
+				SNDK.animation.opacityFade (_elements["container"], 0, 100, 150);		
+														
 				setDimensions ();		
+				
+				var test = new SNDK.animation.animate ({ 	element: _elements["container"], 
+										  	  				duration: 400, 
+										  	  				fps: 60, 
+										  	  				top: {begin: (_temp.top + 20) +"px", end: _temp.top +"px", ease: "outexpo"}
+														});
+				test.play ();
 				
 				_valuehidden = false;
 			}
@@ -1050,15 +1518,30 @@ var sConsole =
 				if (!_valuehidden)
 				{
 					SNDK.animation.opacityFade (_elements["container"], 100, 0, 150);
-					SNDK.animation.opacityFade (_elements["shade"], 65, 0, 300);
+					
+					
+					_temp.busy.hide ();
+		//			SNDK.animation.opacityFade (_elements["shade"], 65, 0, 300);
+				}
+				
+				var test = new SNDK.animation.animate ({ 	element: _elements["container"], 
+										  	  				duration: 400, 
+										  	  				fps: 60, 
+										  	  				top: {begin: _temp.top +"px", end: (_temp.top - 20) +"px", ease: "outexpo"}
+														});
+				test.play ();
+				
+				if (_temp.isBusy)
+				{
+					busy ();
 				}
 		
 				setTimeout (	
 				function () 
 						{ 
 							_elements["container"].style.display = "none";	
-							_elements["shade"].style.display = "none";					
-						}, 301);
+		//					_elements["shade"].style.display = "none";					
+						}, 401);
 		
 			}
 			
@@ -1067,21 +1550,21 @@ var sConsole =
 			// ------------------------------------				
 			function dispose ()
 			{
-				sConsole.modal.depth--;
+				//sConsole.modal.depth--;
 				
 				
-				if (_temp.controls > 0)
-				{
-					for (i = 1; i <= _temp.controls; i++)
-					{
-						try
-						{
-							_elements["control"+ i].disabled (true);
-						}
-						catch (e)
-						{}
-					}
-				}
+		//		if (_temp.controls > 0)
+		//		{
+		//			for (i = 1; i <= _temp.controls; i++)
+		//			{
+		//				try
+		//				{
+		//					_elements["control"+ i].disabled (true);
+		//				}
+		//				catch (e)
+		//				{}
+		//			}
+		//		}
 			
 				if (!_valuehidden)
 				{
@@ -1091,9 +1574,32 @@ var sConsole =
 				setTimeout (	function () 
 						{ 
 							document.body.removeChild (_elements["container"]); 
-							document.documentElement.removeChild (_elements["shade"]); 		
+							//document.documentElement.removeChild (_elements["shade"]); 		
+		
+							window.removeEvent (window, 'resize', setDimensions);
 							
-							UI.modal[_attributes.tag] = null;						
+							_temp.busy.dispose ();
+												
+																																
+							for (index in _elements.ui)
+							{
+								try
+								{
+									_elements.ui[index].dispose ();					
+									//console.log (_elements.ui[index].getAttribute ("tag"))
+								}
+								catch (e)
+								{
+									console.log (e);
+									console.log ("CANNOT DISPOSE: ");
+									console.log (_elements.ui[index]);
+								}
+							}
+							
+							
+							//UI.modal[_attributes.tag] = null;
+							
+							
 							
 						}, 602);
 			}
@@ -1111,132 +1617,450 @@ var sConsole =
 			}
 		},
 	
+		
+		busy : function (_attributes)
+		{
+			// Init
+			var _initialized = false;
+			var _id = SNDK.tools.newGuid ();
+			var _elements = new Array ();
+			
+			if (_attributes.suiURL != null)
+			{
+				_attributes.SUIXML = _attributes.suiURL;
+			}
+				
+			var _temp = 	{ controls: 0,
+					  tabs: 0,
+					  controlWidth: "533px",
+					  controlWidthTabbed: "510px",
+					  top: 0,
+					  left: 0
+					}
+					
+			setAttributes ();
+			
+			// Values
+			var _valuehidden = true;
+		
+			// Methods
+				
+			this.show = show;
+			this.hide = hide;	
+			this.dispose = dispose;
+			
+			// Construct
+			construct ();
+			
+			// Init Control
+			init ();
+						
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// Functions
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------			
+			// ------------------------------------
+			// Init
+			// ------------------------------------
+			function init ()
+			{
+				window.addEvent (window, 'resize', refresh);
+			}
+		
+			// ------------------------------------
+			// Construct
+			// ------------------------------------
+			function construct ()
+			{		
+				_elements["shade"] = SNDK.tools.newElement ("div", "ModalWindowShade", _id + "_shade", document.documentElement);
+				_elements["shade"].style.zIndex = 100 * sConsole.modal.depth++;
+				_elements["shade"].style.display = "none";
+													
+				SNDK.tools.changeOpacityByObject (_elements["shade"], 0);					
+			
+				sConsole.modal.depth++;
+				_initialized = true;			
+			}
+			
+			// ------------------------------------
+			// Refresh
+			// ------------------------------------				
+			function refresh ()
+			{
+				setDimensions ();		
+			}	
+			
+			function setAttributes ()
+			{
+			}
+				
+			function setDimensions ()
+			{
+				_elements["shade"].style.width = "0px";
+				_elements["shade"].style.height = "0px";	
+		
+				var pagesize = SNDK.tools.getPageSize ();
+									
+				_elements["shade"].style.width = pagesize[0] + "px";
+				_elements["shade"].style.height = pagesize[1] + "px";							
+			}			
+			
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// Methods
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------				
+			// ------------------------------------
+			// Show
+			// ------------------------------------				
+			function show ()
+			{																																	
+				_elements["shade"].style.display = "block";	
+													
+				SNDK.animation.opacityFade (_elements["shade"], 0, 65, 125);
+				
+				_valuehidden = false;
+				
+				setDimensions ();				
+			}
+							
+			// ------------------------------------
+			// Hide
+			// ------------------------------------
+			function hide ()
+			{		
+				SNDK.animation.opacityFade (_elements["shade"], 65, 0, 300);
+		
+				setTimeout (	function () 
+								{ 
+									_elements["shade"].style.display = "none";					
+								}, 401);
+		
+			}
+			
+			// ------------------------------------
+			// Dispose
+			// ------------------------------------				
+			function dispose ()
+			{
+				sConsole.modal.depth--;
+					
+				if (!_valuehidden)
+				{
+					hide ();
+				}									
+				
+				setTimeout (	function () 
+								{ 					
+									document.documentElement.removeChild (_elements["shade"]); 																			
+								}, 602);
+			}
+			
+			
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			// Values
+			// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		},
+	
+		// -------------------------------------------------------------------------------------------------------------------------
+		// question ([attributes])
+		// -------------------------------------------------------------------------------------------------------------------------
+		//
+		//		title 			init
+		//		buttonLabel1	init
+		//		buttonLabel2	init
+		//		onDone			init
+		//
+		/**
+		 * @constructor
+		 */
 		question : function (attributes)
 		{
-			var modal = new sConsole.modal.window (attributes);
+			_attributes = attributes;
+			_temp = { initialized: false,
+					  modal: null,
+					  elements: new Array };
+						
+			setAttributes ();
+			construct ();
+							
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{	
+			}
 			
-			var action =	function (result)
-							{
-								modal.dispose ();
-								attributes.onDone (result);
-							};
-		
-			var canvas = new SNDK.SUI.canvas ({appendTo: modal.getContentElement (), width: "600px", height: "180px"});
-					
-			var container = new SNDK.SUI.container ({title: attributes.title, stylesheet: "SUIContainerModal"});
-					
-			var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
-			layoutbox1.addPanel ({tag: "panel3", size: "15px"});
-			layoutbox1.addPanel ({tag: "panel1", size: "*"});
-			layoutbox1.addPanel ({tag: "panel2", size: "48px"});
-		
-			var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});	
-			layoutbox2.addPanel ({tag: "panel1", size: "*"});
-			layoutbox2.addPanel ({tag: "panel2", size: "210px"});
-														
-			var text = new SNDK.SUI.text ({text: attributes.text});
-					
-			var button1 = new SNDK.SUI.button ({label: attributes.buttonLabel.split ("|")[0], width: "100px", onClick: function () {action (1)}});
-			var button2 = new SNDK.SUI.button ({label: attributes.buttonLabel.split ("|")[1], width: "100px", onClick: function () {action (2)}, focus: true});			
-																	
-			canvas.addUIElement (container);
-			container.addUIElement (layoutbox1);
-					
-			layoutbox1.getPanel ("panel1").addUIElement (text);
-			layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);			
-											
-			layoutbox2.getPanel ("panel2").addUIElement (button1);
-			layoutbox2.getPanel ("panel2").addUIElement (button2);
-					
-			SNDK.SUI.init ();
+			// ------------------------------------
+			// construct
+			// ------------------------------------		
+			function construct ()
+			{
 			
-			modal.show ();
+				var onInit =	function ()
+								{									
+									var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
+									layoutbox1.addPanel ({tag: "panel3", size: "15px"});
+									layoutbox1.addPanel ({tag: "panel1", size: "*"});
+									layoutbox1.addPanel ({tag: "panel2", size: "48px"});
+									_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+																						
+									_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+																												
+									layoutbox1.getPanel ("panel1").addUIElement (new SNDK.SUI.text ({text: attributes.text}));
+						
+									_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton1);
+									_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.button1Label);
+									_temp.modal.getUIElement ("button2").setAttribute ("onClick", eventOnClickButton2);
+									_temp.modal.getUIElement ("button2").setAttribute ("focus", true);
+									_temp.modal.getUIElement ("button2").setAttribute ("label", _attributes.button2Label);
+													
+									SNDK.SUI.init ();
+									init ();
+			
+									_temp.modal.show ();					
+								};
+			
+				_temp.modal = new sConsole.modal.window ({width: "800px", height: "200px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}, {type: "button", attributes: {tag: "button2"}}], busy: true, onInit: onInit});
+			}	
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				if (!_attributes) 
+					_attributes = new Array ();
+				
+				if (!_attributes.title) 
+					_attributes.title = "";
+				
+				if (!_attributes.button1Label) 
+					_attributes.button1Label = "BUTTON1";
+					
+				if (!_attributes.button2Label) 
+					_attributes.button2Label = "BUTTON2";
+			}	
+			
+			// ------------------------------------
+			// Events
+			// ------------------------------------
+			// ------------------------------------
+			// onClickButton1
+			// ------------------------------------
+			function eventOnClickButton1 ()
+			{
+				_temp.modal.dispose ();
+			
+				if (_attributes.onDone != null)
+				{
+					setTimeout( function ()	{ _attributes.onDone (1); }, 1);
+				}
+			}
+			
+			// ------------------------------------
+			// onClickButton2
+			// ------------------------------------
+			function eventOnClickButton2 ()
+			{
+				_temp.modal.dispose ();
+			
+				if (_attributes.onDone != null)
+				{
+					setTimeout( function ()	{ _attributes.onDone (2); }, 1);
+				}	
+			}
 		}	,
 	
+		// -------------------------------------------------------------------------------------------------------------------------
+		// warning ([attributes])
+		// -------------------------------------------------------------------------------------------------------------------------
+		//
+		//		title 			init
+		//		buttonLabel		init
+		//		onDone			init
+		//
+		/**
+		 * @constructor
+		 */
 		warning : function (attributes)
 		{
-			var modal = new sConsole.modal.window (attributes);
-			
-			var action = function ()
-			{
-				modal.dispose ();
-			
+			_attributes = attributes;
+			_temp = { initialized: false,
+					  modal: null,
+					  elements: new Array };
+						
+			setAttributes ();
+			construct ();
+				
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{	
+		
 			}
 			
-			var canvas = new SNDK.SUI.canvas ({appendTo: modal.getContentElement (), width: "600px", height: "200px"});
-					
-			var container = new SNDK.SUI.container ({title: "Warning!"});
-					
-			var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal"});
-			layoutbox1.addPanel ({tag: "panel1", size: "*"});
-			layoutbox1.addPanel ({tag: "panel2", size: "55px"});
-		
-			var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-			layoutbox2.addPanel ({tag: "panel1", size: "*"});
-			layoutbox2.addPanel ({tag: "panel2", size: "210px"});
-														
-			var label = new SNDK.SUI.label ({text: attributes.text});
-					
-			var button1 = new SNDK.SUI.button ({label: attributes.buttonLabel, width: "100px", onClick: function () {action ()}});
-																	
-			canvas.addUIElement (container);
-			container.addUIElement (layoutbox1);
-					
-			layoutbox1.getPanel ("panel1").addUIElement (label);
-			layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);			
-											
-			layoutbox2.getPanel ("panel2").addUIElement (button1);
-					
-			SNDK.SUI.init ();
+			// ------------------------------------
+			// construct
+			// ------------------------------------		
+			function construct ()
+			{
 			
-			modal.show ();
+				var onInit =	function ()
+								{									
+									var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
+									layoutbox1.addPanel ({tag: "panel3", size: "15px"});
+									layoutbox1.addPanel ({tag: "panel1", size: "*"});
+									layoutbox1.addPanel ({tag: "panel2", size: "48px"});
+									_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+																						
+									_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+																												
+									layoutbox1.getPanel ("panel1").addUIElement (new SNDK.SUI.text ({text: attributes.text}));
+						
+									_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton);
+									_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.buttonLabel);							
+									_temp.modal.getUIElement ("button1").setAttribute ("focus", true);							
+													
+									SNDK.SUI.init ();
+									init ();
+			
+									_temp.modal.show ();					
+								};
+			
+				_temp.modal = new sConsole.modal.window ({width: "800px", height: "200px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}], busy: true, onInit: onInit});
+			}	
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				if (!_attributes) 
+					_attributes = new Array ();
+				
+				if (!_attributes.title) 
+					_attributes.title = "";
+				
+				if (!_attributes.buttonLabel) 
+					_attributes.buttonLabel = "BUTTON";			
+			}	
+			
+			// ------------------------------------
+			// Events
+			// ------------------------------------
+			// ------------------------------------
+			// onClickButton
+			// ------------------------------------
+			function eventOnClickButton ()
+			{
+				_temp.modal.dispose ();
+			
+				if (_attributes.onDone != null)
+				{
+					setTimeout( function ()	{ _attributes.onDone (1); }, 1);
+				}
+			}	
 		}	,
 	
+		// -------------------------------------------------------------------------------------------------------------------------
+		// error ([attributes])
+		// -------------------------------------------------------------------------------------------------------------------------
+		//
+		//		title 			init
+		//		buttonLabel		init
+		//		onDone			init
+		//
+		/**
+		 * @constructor
+		 */
 		error : function (attributes)
 		{
-			var modal = new sConsole.modal.window (attributes);
-			
-			var action = function ()
-			{
-				modal.dispose ();
+			_attributes = attributes;
+			_temp = { initialized: false,
+					  modal: null,
+					  elements: new Array };
+						
+			setAttributes ();
+			construct ();
 				
-				if (attributes.onDone != null)
-				{
-					attributes.onDone ();
-				}
-				
-				
-			
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{	
 			}
 			
-			var canvas = new SNDK.SUI.canvas ({appendTo: modal.getContentElement (), width: "600px", height: "180px"});
-					
-			var container = new SNDK.SUI.container ({title: attributes.title, stylesheet: "SUIContainerModal"});
-					
-			var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
-			layoutbox1.addPanel ({tag: "panel1", size: "*"});
-			layoutbox1.addPanel ({tag: "panel2", size: "48px"});
-		
-			var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-			layoutbox2.addPanel ({tag: "panel1", size: "*"});
-			layoutbox2.addPanel ({tag: "panel2", size: "105px"});
-														
-			var text = new SNDK.SUI.text ({text: attributes.text});
-					
-			var button1 = new SNDK.SUI.button ({label: attributes.buttonLabel, width: "100px", onClick: function () {action ()}, focus: true});
-																	
-			canvas.addUIElement (container);
-			container.addUIElement (layoutbox1);
-					
-			layoutbox1.getPanel ("panel1").addUIElement (text);
-			layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);			
-											
-			layoutbox2.getPanel ("panel2").addUIElement (button1);
-					
-			SNDK.SUI.init ();
+			// ------------------------------------
+			// construct
+			// ------------------------------------		
+			function construct ()
+			{
 			
-			modal.show ();
+				var onInit =	function ()
+								{									
+									var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
+									layoutbox1.addPanel ({tag: "panel3", size: "15px"});
+									layoutbox1.addPanel ({tag: "panel1", size: "*"});
+									layoutbox1.addPanel ({tag: "panel2", size: "48px"});
+									_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+																						
+									_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+																												
+									layoutbox1.getPanel ("panel1").addUIElement (new SNDK.SUI.text ({text: attributes.text}));
+						
+									_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton);
+									_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.buttonLabel);							
+									_temp.modal.getUIElement ("button1").setAttribute ("focus", true);							
+													
+									SNDK.SUI.init ();
+									init ();
+			
+									_temp.modal.show ();					
+								};
+			
+				_temp.modal = new sConsole.modal.window ({width: "800px", height: "200px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}], busy: true, onInit: onInit});
+			}	
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				if (!_attributes) 
+					_attributes = new Array ();
+				
+				if (!_attributes.title) 
+					_attributes.title = "";
+				
+				if (!_attributes.buttonLabel) 
+					_attributes.buttonLabel = "BUTTON";			
+			}	
+			
+			// ------------------------------------
+			// Events
+			// ------------------------------------
+			// ------------------------------------
+			// onClickButton
+			// ------------------------------------
+			function eventOnClickButton ()
+			{
+				_temp.modal.dispose ();
+			
+				if (_attributes.onDone != null)
+				{
+					setTimeout( function ()	{ _attributes.onDone (1); }, 1);
+				}
+			}	
 		}	
+		
 		
 	},
 
@@ -1258,6 +2082,37 @@ var sConsole =
 	// ---------------------------------------------------------------------------------------------------------------
 	helpers :
 	{
+		// ------------------------------------
+		// arrayChecksum
+		// ------------------------------------	
+		arrayChecksum : function (value)
+		{			
+			var result = "";
+		
+			for (key in value)
+				{	
+				var segment = "";
+				
+				if (value[key] != null)
+				{	
+					if (typeof(value[key]) == "object")
+					{								 
+						segment = sConsole.helpers.arrayChecksum (value[key]);
+					}	
+					else
+					{
+						segment = value[key];
+					}
+				}	
+					
+				result += segment;
+			}				
+				
+			return result;			
+			//return hex_md5 (result);	
+		},
+		
+		
 		// ------------------------------------
 		// compareItems
 		// ------------------------------------	
@@ -1343,6 +2198,10 @@ var sConsole =
 	// ---------------------------------------------------------------------------------------------------------------
 	runtime :
 	{
+		URL : "",
+		
+		session : null,
+		
 		getMenuXML : function ()
 		{
 			var request = new SNDK.ajax.request ("/", "cmd=Ajax;cmd.function=sConsole.runtime.getMenuXML", "data", "POST", false);		

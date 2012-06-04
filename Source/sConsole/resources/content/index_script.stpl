@@ -1,27 +1,71 @@
-<script language = "JavaScript">													
-	// ##########################################################################################################################################
-	// # LOGIN
-	// ##########################################################################################################################################
-	var Login = 	function ()
-					{
-						UI.elements.content.usernameDUMMY.setAttribute ("disabled", true);
-						UI.elements.content.passwordDUMMY.setAttribute ("disabled", true);
-						UI.elements.content.login.setAttribute ("disabled", true);
-					
-						var form = document.getElementById ("FormLogin");
-						var username = UI.elements.content.usernameDUMMY.getAttribute ("value");
-						var password = UI.elements.content.passwordDUMMY.getAttribute ("value");
-
-						form["username"].value = username;			
-						form["password"].value = password;
+<script language = "JavaScript">										
+	var attributes = new Array ();
+	
+	// LOGIN
+	var login = 	function ()
+					{						
+						if (attributes.elements.usernameDUMMY.getAttribute ("value") != "" && attributes.elements.passwordDUMMY.getAttribute ("value") != "")
+						{					
+							attributes.elements.usernameDUMMY.setAttribute ("disabled", true);
+							attributes.elements.passwordDUMMY.setAttribute ("disabled", true);
+							attributes.elements.login.setAttribute ("disabled", true);
 						
-						form.submit ();									
+							get ();
+													
+							attributes.elements.form.submit ();							
+						}
+					};
+					
+	// GET
+	var get =		function ()
+					{						
+						var username = attributes.elements.usernameDUMMY.getAttribute ("value");
+						var password = attributes.elements.passwordDUMMY.getAttribute ("value");
+
+						attributes.elements.form["username"].value = username;			
+						attributes.elements.form["password"].value = password;				
+					};
+					
+	// SET
+	var set	=		function ()
+					{
+						var form = document.getElementById ("FormLogin");
+						var username = form["username"].value;
+						var password = form["password"].value
+								
+						attributes.elements.usernameDUMMY.setAttribute ("value", username);
+						attributes.elements.passwordDUMMY.setAttribute ("value", password);
+																		
+						form["username"].value = "";			
+						form["password"].value = "";
+															
+						if (username != "" && password != "")
+						{
+							attributes.elements.login.setAttribute ("focus", true);
+						}		
+						else
+						{
+							attributes.elements.usernameDUMMY.setAttribute ("focus", true);																
+						}						
+																		
+						onChange ();
 					};
 
-	// ##########################################################################################################################################
-	// # ERROR
-	// ##########################################################################################################################################
-	var Error = 	function ()
+	// ONCHANGE
+	var onChange = 	function ()
+					{
+						if (attributes.elements.usernameDUMMY.getAttribute ("value") != "" && attributes.elements.passwordDUMMY.getAttribute ("value") != "")
+		 				{
+		 					attributes.elements.login.setAttribute ("disabled", false);			 					
+		 				}
+		 				else
+		 				{
+		 					attributes.elements.login.setAttribute ("disabled", true);			 					
+		 				}
+					};
+
+	// ONERROR
+	var onError = 	function ()
 					{
 						var query = SNDK.tools.getQuery ();
 					
@@ -31,64 +75,29 @@
 						}
 						else if (query["error"] == "2")
 						{
-							sConsole.modal.error ({title: "Session timeout", text: "Session has been inactive for "+ UI.session.timeout/1000/60 +" minutes, and has therefor been terminated.", buttonLabel: "Ok"});
+							sConsole.modal.error ({title: "Session timeout", text: "Session has been inactive for "+ Math.round ((sConsole.runtime.session.timeout / 1000) / 60) +" minutes, and has therefor been terminated.", buttonLabel: "Ok"});
 						}						
-					};
-
-	// ##########################################################################################################################################
-	// # UI
-	// ##########################################################################################################################################					
-	UI.init = 		function ()
-					{		
-						UI.elements.content = SNDK.SUI.builder.construct ({URL: "<%Write ($contentxml)%>"});
-												
-						UI.elements.content.usernameDUMMY.setAttribute ("onChange", UI.refresh);
-						UI.elements.content.passwordDUMMY.setAttribute ("onChange", UI.refresh);							
-						UI.elements.content.login.setAttribute ("onClick", Login);
-						
-						window.onDomReady (UI.update); 
-																			 	
-						SNDK.SUI.init ();
 					};
 					
-	UI.refresh = 	function ()
-					{					
-		 				if (UI.elements.content.usernameDUMMY.getAttribute ("value") != "" && UI.elements.content.passwordDUMMY.getAttribute ("value") != "")
-		 				{
-		 					UI.elements.content.login.setAttribute ("disabled", false);			 					
-		 				}
-		 				else
-		 				{
-		 					UI.elements.content.login.setAttribute ("disabled", true);			 					
-		 				}
-					};		
-			
-	UI.update = 	function ()
+	var onInit =	function ()
 					{
-						var form = document.getElementById ("FormLogin");
-						var username = form["username"].value;
-						var password = form["password"].value
-								
-						UI.elements.content.usernameDUMMY.setAttribute ("value", username);
-						UI.elements.content.passwordDUMMY.setAttribute ("value", password);
-																		
-						form["username"].value = "";			
-						form["password"].value = "";
-															
-						if (username != "" && password != "")
-						{
-							UI.elements.content.login.setAttribute ("focus", true);
-						}		
-						else
-						{
-							UI.elements.content.usernameDUMMY.setAttribute ("focus", true);																
-						}						
+						attributes.elements = SNDK.SUI.builder.construct ({URL: sConsole.runtime.URL + "xml/index.xml"});
+												
+						attributes.elements.usernameDUMMY.setAttribute ("onChange", onChange);
+						attributes.elements.usernameDUMMY.setAttribute ("onEnter", login);							
+						attributes.elements.passwordDUMMY.setAttribute ("onChange", onChange);
+						attributes.elements.passwordDUMMY.setAttribute ("onEnter", login);		
+						attributes.elements.login.setAttribute ("onClick", login);
 						
-						Error ();
+						attributes.elements.form = document.getElementById ("FormLogin");
+												
+						set ();
 						
-						UI.refresh ();
+						onError ();
+																			 	
+						SNDK.SUI.init ();					
 					};
 
-	UI.init ();
+	window.onDomReady (onInit); 
 </script>
 

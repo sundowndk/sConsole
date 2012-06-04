@@ -1,38 +1,94 @@
+// -------------------------------------------------------------------------------------------------------------------------
+// warning ([attributes])
+// -------------------------------------------------------------------------------------------------------------------------
+//
+//		title 			init
+//		buttonLabel		init
+//		onDone			init
+//
+/**
+ * @constructor
+ */
 warning : function (attributes)
 {
-	var modal = new sConsole.modal.window (attributes);
-	
-	var action = function ()
-	{
-		modal.dispose ();
-	
+	_attributes = attributes;
+	_temp = { initialized: false,
+			  modal: null,
+			  elements: new Array };
+				
+	setAttributes ();
+	construct ();
+		
+	// ------------------------------------
+	// Private functions
+	// ------------------------------------
+	// ------------------------------------
+	// init
+	// ------------------------------------	
+	function init ()
+	{	
+
 	}
 	
-	var canvas = new SNDK.SUI.canvas ({appendTo: modal.getContentElement (), width: "600px", height: "200px"});
-			
-	var container = new SNDK.SUI.container ({title: "Warning!"});
-			
-	var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal"});
-	layoutbox1.addPanel ({tag: "panel1", size: "*"});
-	layoutbox1.addPanel ({tag: "panel2", size: "55px"});
-
-	var layoutbox2 = new SNDK.SUI.layoutbox ({type: "vertical"});
-	layoutbox2.addPanel ({tag: "panel1", size: "*"});
-	layoutbox2.addPanel ({tag: "panel2", size: "210px"});
-												
-	var label = new SNDK.SUI.label ({text: attributes.text});
-			
-	var button1 = new SNDK.SUI.button ({label: attributes.buttonLabel, width: "100px", onClick: function () {action ()}});
-															
-	canvas.addUIElement (container);
-	container.addUIElement (layoutbox1);
-			
-	layoutbox1.getPanel ("panel1").addUIElement (label);
-	layoutbox1.getPanel ("panel2").addUIElement (layoutbox2);			
-									
-	layoutbox2.getPanel ("panel2").addUIElement (button1);
-			
-	SNDK.SUI.init ();
+	// ------------------------------------
+	// construct
+	// ------------------------------------		
+	function construct ()
+	{
 	
-	modal.show ();
+		var onInit =	function ()
+						{									
+							var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
+							layoutbox1.addPanel ({tag: "panel3", size: "15px"});
+							layoutbox1.addPanel ({tag: "panel1", size: "*"});
+							layoutbox1.addPanel ({tag: "panel2", size: "48px"});
+							_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+																				
+							_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+																										
+							layoutbox1.getPanel ("panel1").addUIElement (new SNDK.SUI.text ({text: attributes.text}));
+				
+							_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton);
+							_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.buttonLabel);							
+							_temp.modal.getUIElement ("button1").setAttribute ("focus", true);							
+											
+							SNDK.SUI.init ();
+							init ();
+	
+							_temp.modal.show ();					
+						};
+	
+		_temp.modal = new sConsole.modal.window ({width: "800px", height: "200px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}], busy: true, onInit: onInit});
+	}	
+				
+	// ------------------------------------
+	// setDefaultAttributes
+	// ------------------------------------					
+	function setAttributes ()
+	{
+		if (!_attributes) 
+			_attributes = new Array ();
+		
+		if (!_attributes.title) 
+			_attributes.title = "";
+		
+		if (!_attributes.buttonLabel) 
+			_attributes.buttonLabel = "BUTTON";			
+	}	
+	
+	// ------------------------------------
+	// Events
+	// ------------------------------------
+	// ------------------------------------
+	// onClickButton
+	// ------------------------------------
+	function eventOnClickButton ()
+	{
+		_temp.modal.dispose ();
+	
+		if (_attributes.onDone != null)
+		{
+			setTimeout( function ()	{ _attributes.onDone (1); }, 1);
+		}
+	}	
 }	

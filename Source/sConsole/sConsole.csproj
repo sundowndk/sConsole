@@ -75,6 +75,7 @@
     <Compile Include="sConsole.Addin\Placerholder.cs" />
     <Compile Include="sConsole.Enums\IncludeType.cs" />
     <Compile Include="sConsole\Include.cs" />
+    <Compile Include="sConsole.Addin\Render.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
