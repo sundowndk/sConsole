@@ -143,10 +143,13 @@ media : function (attributes)
 									}
 									else
 									{
+										//sConsole.modal.question ({title: "Delete page", text: "Do you really want to delete this page ?", button1Label: "Yes", button2Label: "No"});
 										sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
 									}
 								}
-								
+							
+								console.log (chooser)
+										
 								chooser.getUIElement ("mediaupload").setAttribute ("disabled", false);
 								chooser.getUIElement ("button2").setAttribute ("disabled", false);
 								
