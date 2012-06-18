@@ -8,6 +8,7 @@
 				<js file="javascript/modal/question.js" />
 				<js file="javascript/modal/warning.js" />
 				<js file="javascript/modal/error.js" />								
+				<js file="javascript/modal/info.js" />
 				<class name="chooser">
 					<js file="javascript/modal/chooser/base.js" />
 					<js file="javascript/modal/chooser/usergroup.js" />

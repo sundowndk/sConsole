@@ -571,5 +571,6 @@
     <None Include="resources\xml\modal\edit\profile_change_password.xml" />
     <None Include="javascript\modal\chooser\mediatransformation.js" />
     <None Include="javascript\modal\busy.js" />
+    <None Include="javascript\modal\info.js" />
   </ItemGroup>
 </Project>
