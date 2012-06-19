@@ -98,9 +98,10 @@ window : function (_attributes)
 
 		_elements["container"].style.display = "none";
 		_elements["busy"].style.display = "none";
+		
 
-		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"]});				
-		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
+		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"], height: _attributes.height});				
+		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", height: _attributes.height});
 		
 		_elements["canvas"].addUIElement (_elements["container1"]);
 	
@@ -245,34 +246,39 @@ window : function (_attributes)
 			_attributes.dimensions = "content";
 	
 		if ((!_attributes.width) && (!_attributes.height))
-		{ 
+		{ 				
+			switch (_attributes.dimensions.toLowerCase ())
+			{
+				case "content":
+				{
+					_attributes.width = "content";	
+					_attributes.height = "content";	
+					break;
+				}
 				
-		switch (_attributes.dimensions.toLowerCase ())
-		{
-			case "content":
-			{
-				_attributes.width = "content";	
-				_attributes.height = "content";	
-				break;
-			}
-			
-			case "auto":
-			{
-				_attributes.width = "85%";	
-				_attributes.height = "85%";	
-				break;
-			}
-			
-			default:
-			{
-				_attributes.width = _attributes.dimensions;	
-				_attributes.height = _attributes.dimensions;
-				break;
+				case "auto":
+				{
+					_attributes.width = "85%";	
+					_attributes.height = "85%";	
+					break;
+				}
+				
+				case "full":
+				{
+					_attributes.width = "85%";	
+					_attributes.height = "85%";	
+					break;			
+				}
+				
+				default:
+				{
+					_attributes.width = _attributes.dimensions;	
+					_attributes.height = _attributes.dimensions;
+					break;
+				}
 			}
 		}
-		}
-	
-	
+		
 		// Width
 		if (!_attributes.width) 
 			_attributes.width = "content";	
@@ -289,6 +295,10 @@ window : function (_attributes)
 				_attributes.widthType = "pixel";
 				_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
 			}
+		}
+		else
+		{
+			_attributes.widthType = "content";		
 		}
 		
 		// Height
@@ -307,6 +317,10 @@ window : function (_attributes)
 				_attributes.heightType = "pixel";
 				_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
 			}	
+		}
+		else
+		{
+			_attributes.heightType = "content";		
 		}
 	}
 		
@@ -329,50 +343,47 @@ window : function (_attributes)
 		var height = 0;
 		var width = 0;
 		
-		if (_attributes.width != "content")
+		switch (_attributes.widthType)
 		{
-			switch (_attributes.widthType)
+			case "content":
 			{
-				case "percent":
-				{
-					width = ((pagesize[0] * _attributes.width) / 100);
-					break;
-				}
-				
-				case "pixel":
-				{
-					width = _attributes.width;
-					break; 
-				}
-			}		
-		}
-		else
-		{
-			width = _elements["container"].offsetWidth;
-		}
+				width = _elements["container"].offsetWidth;
+				break;
+			}
+										
+			case "pixel":
+			{
+				width = _attributes.width;
+				break; 
+			}
+			
+			case "percent":
+			{
+				width = ((pagesize[0] * _attributes.width) / 100);
+				break;
+			}
+		}		
 		
-		if (_attributes.height != "content")
+		switch (_attributes.heightType)
 		{
-			switch (_attributes.heightType)
+			case "content":
 			{
-				case "percent":
-				{
-					height = ((pagesize[1] * _attributes.height) / 100);
-					break;
-				}
-				
-				case "pixel":
-				{
-					height = _attributes.height;
-					break; 
-				}
-			}				
-		}
-		else
-		{
-			height = _elements["container"].offsetHeight;
-		}
-	
+				height = _elements["container"].offsetHeight;
+				break;
+			}
+			
+			case "pixel":
+			{
+				height = _attributes.height;
+				break; 
+			}
+
+			case "percent":
+			{
+				height = ((pagesize[1] * _attributes.height) / 100);
+				break;
+			}
+		}				
 		//var width = ((pagesize[0] * 85) / 100);
 		//var height = ((pagesize[1] * 85) / 100);
 		
@@ -401,8 +412,14 @@ window : function (_attributes)
 //			var top = test[1] + (test2[1] / 5);
 //			var left = ((pagesize[0]/2) - (width/2));
 
+	
+	
+
 		var top = (test2[1] - height) / 2;
 		var left = (test2[0] - width) / 2;
+		
+		console.log (top)
+		console.log (left)
 		
 		_temp.top = top;
 		_temp.left = left;

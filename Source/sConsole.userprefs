@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/warning.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/engine/access/index_script.stpl">
     <Files>
       <File FileName="sConsole/resources/content/engine/access/index_script.stpl" Line="178" Column="32" />
       <File FileName="sConsole/resources/xml/engine/access/user_create.xml" Line="25" Column="1" />
@@ -8,7 +8,8 @@
       <File FileName="sConsole/resources/content/index.stpl" Line="1" Column="1" />
       <File FileName="sConsole/resources/content/index_script.stpl" Line="74" Column="173" />
       <File FileName="sConsole/javascript/modal/question.js" Line="24" Column="22" />
-      <File FileName="sConsole/javascript/modal/warning.js" Line="41" Column="78" />
+      <File FileName="sConsole/javascript/modal/warning.js" Line="41" Column="90" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="405" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
