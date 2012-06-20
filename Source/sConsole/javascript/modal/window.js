@@ -86,8 +86,8 @@ window : function (_attributes)
 		_elements["container"].style.zIndex = 100 * sConsole.modal.depth++;
 		
 		_elements["content"] = SNDK.tools.newElement ("div", "", null, _elements["container"]);
-		_elements["content"].style.width = "100%";
-		_elements["content"].style.height = "100%";
+		//_elements["content"].style.width = "100%";
+		//_elements["content"].style.height = "100%";
 		
 		_elements["busy"] = SNDK.tools.newElement ("div", "ModalWindowBusy", null, _elements["container"])
 																		
@@ -100,8 +100,8 @@ window : function (_attributes)
 		_elements["busy"].style.display = "none";
 		
 
-		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"], height: _attributes.height});				
-		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", height: _attributes.height});
+		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: _attributes.width, height: _attributes.height});				
+		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: _attributes.width, height: _attributes.height});
 		
 		_elements["canvas"].addUIElement (_elements["container1"]);
 	
@@ -343,11 +343,13 @@ window : function (_attributes)
 		var height = 0;
 		var width = 0;
 		
+		SNDK.SUI.refresh ();
+		
 		switch (_attributes.widthType)
 		{
 			case "content":
-			{
-				width = _elements["container"].offsetWidth;
+			{				
+				width = _elements["canvas"]._elements["container"].offsetWidth;
 				break;
 			}
 										
@@ -368,7 +370,7 @@ window : function (_attributes)
 		{
 			case "content":
 			{
-				height = _elements["container"].offsetHeight;
+				height = _elements["canvas"]._elements["container"].offsetHeight;
 				break;
 			}
 			
@@ -402,7 +404,7 @@ window : function (_attributes)
 		
 		//console.log ("PARENT:"+ SNDK.tools.getElementInnerHeight (_elements["container"]));
 		
-		SNDK.SUI.refresh ();
+		//SNDK.SUI.refresh ();
 		
 		//var test = SNDK.tools.getScrollOffsets ();
 		var test2 = SNDK.tools.getWindowSize ();
@@ -418,8 +420,8 @@ window : function (_attributes)
 		var top = (test2[1] - height) / 2;
 		var left = (test2[0] - width) / 2;
 		
-		console.log (top)
-		console.log (left)
+//		console.log (height)
+//		console.log (width)
 		
 		_temp.top = top;
 		_temp.left = left;
