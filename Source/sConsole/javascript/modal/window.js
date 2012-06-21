@@ -86,8 +86,8 @@ window : function (_attributes)
 		_elements["container"].style.zIndex = 100 * sConsole.modal.depth++;
 		
 		_elements["content"] = SNDK.tools.newElement ("div", "", null, _elements["container"]);
-		//_elements["content"].style.width = "100%";
-		//_elements["content"].style.height = "100%";
+		_elements["content"].style.width = "100%";
+		_elements["content"].style.height = "100%";
 		
 		_elements["busy"] = SNDK.tools.newElement ("div", "ModalWindowBusy", null, _elements["container"])
 																		
@@ -98,10 +98,63 @@ window : function (_attributes)
 
 		_elements["container"].style.display = "none";
 		_elements["busy"].style.display = "none";
+				
+		var width = {};
+		var height = {};		
 		
+		switch (_attributes.widthType.toLowerCase ())
+		{
+			case "content":
+			{
+				width.canvas = "content";
+				width.container = "content";
+				break;
+			}
+			
+			case "pixel":
+			{
+				width.canvas = _attributes.width +"px";
+				width.container = "100%";
+				break;
+			}
+			
+			case "percent":
+			{
+				width.canvas = "100%";
+				width.container = "100%";
+				break;
+			}
+		}
+		
+		switch (_attributes.heightType.toLowerCase ())
+		{
+			case "content":
+			{
+				height.canvas = "content";
+				height.container = "content";
+				break;
+			}
+			
+			case "pixel":
+			{
+				height.canvas = _attributes.height +"px";
+				height.container = "100%";
+				break;
+			}
+			
+			case "percent":
+			{
+				height.canvas = "100%";
+				height.container = "100%";
+				break;
+			}
+		}		
+				
+		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: width.canvas, height: height.canvas});				
+		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: width.container, height: height.container});
 
-		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: _attributes.width, height: _attributes.height});				
-		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: _attributes.width, height: _attributes.height});
+//		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: _attributes.width, height: _attributes.height});				
+//		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: _attributes.width, height: _attributes.height});
 		
 		_elements["canvas"].addUIElement (_elements["container1"]);
 	
@@ -283,6 +336,11 @@ window : function (_attributes)
 		if (!_attributes.width) 
 			_attributes.width = "content";	
 			
+		if (_attributes.width == "full")
+		{
+			_attributes.width = "85%";
+		}
+			
 		if (_attributes.width != "content")
 		{
 			if (_attributes.width.substring (_attributes.width.length - 1) == "%")
@@ -304,6 +362,11 @@ window : function (_attributes)
 		// Height
 		if (!_attributes.height) 
 			_attributes.height = "content";
+			
+		if (_attributes.height == "full")
+		{
+			_attributes.height = "85%";
+		}
 		
 		if (_attributes.height != "content")
 		{
@@ -404,7 +467,7 @@ window : function (_attributes)
 		
 		//console.log ("PARENT:"+ SNDK.tools.getElementInnerHeight (_elements["container"]));
 		
-		//SNDK.SUI.refresh ();
+		SNDK.SUI.refresh ();
 		
 		//var test = SNDK.tools.getScrollOffsets ();
 		var test2 = SNDK.tools.getWindowSize ();

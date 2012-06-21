@@ -9,7 +9,7 @@
       <File FileName="sConsole/resources/content/index_script.stpl" Line="74" Column="173" />
       <File FileName="sConsole/javascript/modal/question.js" Line="24" Column="22" />
       <File FileName="sConsole/javascript/modal/warning.js" Line="41" Column="90" />
-      <File FileName="sConsole/javascript/modal/window.js" Line="424" Column="3" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="88" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
