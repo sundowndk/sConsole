@@ -114,7 +114,7 @@ media : function (attributes)
 	var onUploadComplete =	function ()
 							{
 								var mediaupload = chooser.getUIElement ("uploadframe").getAttribute ("content").mediaUpload;
-							
+														
 								if (mediaupload != null)
 								{
 									if (mediaupload.success)
@@ -144,14 +144,19 @@ media : function (attributes)
 									else
 									{
 										//sConsole.modal.question ({title: "Delete page", text: "Do you really want to delete this page ?", button1Label: "Yes", button2Label: "No"});
-										sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
+									//	sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
+									//sConsole.modal.info ({title: "Info", text: "Fields has been deleted from this pages template. Page has been autosaved to remove redundant data.", buttonLabel: "Ok"});
+									
+									
 									}
 								}
 							
-								console.log (chooser)
+							//console.log (chooser)
+								//console.log (chooser)
 										
 								chooser.getUIElement ("mediaupload").setAttribute ("disabled", false);
 								chooser.getUIElement ("button2").setAttribute ("disabled", false);
+	
 								
 								onChange ();
 							};

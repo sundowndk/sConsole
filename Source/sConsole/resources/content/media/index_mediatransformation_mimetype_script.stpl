@@ -1,4 +1,4 @@
-// #  <script language="JavaScript">
+// <script>
 // #######################################################################################################################################
 // # MIMETYPE
 // #######################################################################################################################################		
@@ -7,16 +7,17 @@ var mimetype =
 	// ADD
 	add : function ()
 	{
-		var item = {};
-		item.value = "";
+		var current = {};
+		current.value = "";
 	
-		mimetype.edit ({current: item});
+		mimetype.edit ({current: current});
 	},
 
 	// EDIT
 	edit : function (attributes)
 	{				
-		if (!attributes) attributes = new Array ();
+		if (!attributes) 
+			attributes = new Array ();
 	
 		if (attributes.current)
 		{
@@ -31,23 +32,29 @@ var mimetype =
 		// APPLY
 		var apply =		function ()
 						{
-							switch (attributes.mode)
-							{
-								case "new":
-								{
-									modal.getUIElement ("mimetypes").addItem (get ());
-									break;
-								}
-								
-								case "edit":
-								{
-									modal.getUIElement ("mimetypes").setItem (get ());
-									break;
-								}
-								
-							}
+							// SHOW BUSY			
+							modal2.busy ();
 							
-							modal2.dispose ();		
+							setTimeout (function () 
+										{												
+											switch (attributes.mode)
+											{
+												case "new":
+												{
+													modal.getUIElement ("mimetypes").addItem (get ());
+													break;
+												}
+												
+												case "edit":
+												{
+													modal.getUIElement ("mimetypes").setItem (get ());
+													break;
+												}
+												
+											}
+											
+											dispose ();
+										}, 150);											
 						};
 										
 		// SET	
@@ -84,35 +91,40 @@ var mimetype =
 							}									
 						};							
 	
+		// ONINIT
+		var onInit =	function ()
+						{
+							modal2.getUIElement ("button1").setAttribute ("onClick", apply);
+							modal2.getUIElement ("close").setAttribute ("onClick", dispose);		
+											
+							modal2.getUIElement ("mimetype").setAttribute ("onChange", onChange);
+							
+							switch (attributes.mode)
+							{
+								case "new":
+								{
+									modal2.getUIElement ("container").setAttribute ("title", "Add mimetype");
+									modal2.getUIElement ("button1").setAttribute ("label", "Add");
+									break;
+								}
+								
+								case "edit":
+								{
+									modal2.getUIElement ("container").setAttribute ("title", "Edit mimetype");
+									modal2.getUIElement ("button1").setAttribute ("label", "Apply");
+									break;
+								}
+							}
+											
+							// SET
+							set ();		
+							
+							// SHOW
+							modal2.show ();								
+						};
+	
 		// INIT
-		var modal2 = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_mimetype_edit.xml"});
-		modal2.getUIElement ("button1").setAttribute ("onClick", apply);
-		modal2.getUIElement ("close").setAttribute ("onClick", dispose);		
-						
-		modal2.getUIElement ("mimetype").setAttribute ("onChange", onChange);
-		
-		switch (attributes.mode)
-		{
-			case "new":
-			{
-				modal2.getUIElement ("container").setAttribute ("title", "Add mimetype");
-				modal2.getUIElement ("button1").setAttribute ("label", "Add");
-				break;
-			}
-			
-			case "edit":
-			{
-				modal2.getUIElement ("container").setAttribute ("title", "Edit mimetype");
-				modal2.getUIElement ("button1").setAttribute ("label", "Apply");
-				break;
-			}
-		}
-						
-		// SET
-		set ();		
-		
-		// SHOW
-		modal2.show ();		
+		var modal2 = new sConsole.modal.window ({width: "content", height: "content", busy: true, SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_mimetype_edit.xml", onInit: onInit});					
 	},
 	
 	// REMOVE

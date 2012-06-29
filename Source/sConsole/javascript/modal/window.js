@@ -553,7 +553,7 @@ window : function (_attributes)
 
 	function functionGetUIElement (tag)
 	{
-	//console.log (tag);
+	console.log (tag);
 		if (_elements.ui[tag] != null)
 		{
 			return _elements.ui[tag];

@@ -11,7 +11,7 @@
 	UI.init = 		function ()
 					{			
 						UI.elements.content.mediatransformations.setAttribute ("onChange", UI.onChange);
-						UI.elements.content.mediatransformations.setAttribute ("onChange", UI.onChange);							
+						UI.elements.content.mediatransformations.setAttribute ("onDoubleClick", mediatransformation.edit);
 						
 						UI.elements.content.mediatransformationcreate.setAttribute ("onClick", mediatransformation.create);
 						UI.elements.content.mediatransformationedit.setAttribute ("onClick", mediatransformation.edit);

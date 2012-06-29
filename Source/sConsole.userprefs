@@ -1,15 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/window.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/chooser/media.js">
     <Files>
-      <File FileName="sConsole/resources/content/engine/access/index_script.stpl" Line="178" Column="32" />
-      <File FileName="sConsole/resources/xml/engine/access/user_create.xml" Line="25" Column="1" />
-      <File FileName="sConsole/resources/xml/media/index.xml" Line="1" Column="1" />
-      <File FileName="sConsole/resources/content/index.stpl" Line="1" Column="1" />
-      <File FileName="sConsole/resources/content/index_script.stpl" Line="74" Column="173" />
-      <File FileName="sConsole/javascript/modal/question.js" Line="24" Column="22" />
-      <File FileName="sConsole/javascript/modal/warning.js" Line="41" Column="90" />
-      <File FileName="sConsole/javascript/modal/window.js" Line="88" Column="3" />
+      <File FileName="sConsole/resources/xml/media/mediatransformation_edit.xml" Line="30" Column="38" />
+      <File FileName="sConsole/resources/content/media/index_mediatransformation_script.stpl" Line="160" Column="85" />
+      <File FileName="sConsole/resources/xml/media/mediatransformation_create.xml" Line="14" Column="11" />
+      <File FileName="sConsole/resources/xml/media/mediatransformation_mimetype_edit.xml" Line="14" Column="11" />
+      <File FileName="sConsole/javascript/modal/chooser/mediatransformation.js" Line="6" Column="93" />
+      <File FileName="sConsole/javascript/modal/chooser/media.js" Line="154" Column="10" />
+      <File FileName="sConsole/javascript/modal/window.js" Line="556" Column="2" />
+      <File FileName="sConsole/javascript/modal/info.js" Line="61" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
