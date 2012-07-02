@@ -1,15 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/javascript/modal/chooser/media.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/includes/header.stpl">
     <Files>
-      <File FileName="sConsole/resources/xml/media/mediatransformation_edit.xml" Line="30" Column="38" />
-      <File FileName="sConsole/resources/content/media/index_mediatransformation_script.stpl" Line="160" Column="85" />
-      <File FileName="sConsole/resources/xml/media/mediatransformation_create.xml" Line="14" Column="11" />
-      <File FileName="sConsole/resources/xml/media/mediatransformation_mimetype_edit.xml" Line="14" Column="11" />
-      <File FileName="sConsole/javascript/modal/chooser/mediatransformation.js" Line="6" Column="93" />
-      <File FileName="sConsole/javascript/modal/chooser/media.js" Line="154" Column="10" />
-      <File FileName="sConsole/javascript/modal/window.js" Line="556" Column="2" />
-      <File FileName="sConsole/javascript/modal/info.js" Line="61" Column="3" />
+      <File FileName="sConsole/resources/content/engine/settings/index_script.stpl" Line="116" Column="14" />
+      <File FileName="sConsole/resources/content/includes/upload.stpl" Line="1" Column="1" />
+      <File FileName="sConsole/resources/content/includes/header.stpl" Line="47" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
