@@ -26,7 +26,7 @@
 					<panel size="*">							
 					</panel>
 					<panel size="110px">
-						<button tag="login" label="Login" />
+						<button tag="login" label="Login" stylesheet="button gray-gradient green-active glossy" width="100%" />
 					</panel>
 				</layoutbox>								
 			</panel>
