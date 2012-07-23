@@ -44,6 +44,8 @@
 															"path_content", "path_html", "path_media", "path_publicmedia", "path_snapshot", "path_script", "path_temp",
 															"smtp_server", "smtp_encoding"]});
 	
+		console.log (current.path_publicmedia)
+	
 		UI.elements.content.corehostname.setAttribute ("value", current.core_hostname);
 	
 		if (current.core_enablecache.toLowerCase () == "true")
@@ -105,13 +107,13 @@
 		item["database_password"] = UI.elements.content.databasepassword.getAttribute ("value");
 		item["database_prefix"] = UI.elements.content.databaseprefix.getAttribute ("value");
 	
-		item["core_pathcontent"] = UI.elements.content.pathcontent.getAttribute ("value");
-		item["core_pathhtml"] = UI.elements.content.pathhtml.getAttribute ("value");
-		item["core_pathmedia"] = UI.elements.content.pathmedia.getAttribute ("value");
-		item["core_pathpublicmedia"] = UI.elements.content.pathpublicmedia.getAttribute ("value");
-		item["core_pathsnapshot"] = UI.elements.content.pathsnapshot.getAttribute ("value");
-		item["core_pathscript"] = UI.elements.content.pathscript.getAttribute ("value");
-		item["core_pathtemp"] = UI.elements.content.pathtemp.getAttribute ("value");
+		item["path_content"] = UI.elements.content.pathcontent.getAttribute ("value");
+		item["path_html"] = UI.elements.content.pathhtml.getAttribute ("value");
+		item["path_media"] = UI.elements.content.pathmedia.getAttribute ("value");
+		item["path_publicmedia"] = UI.elements.content.pathpublicmedia.getAttribute ("value");
+		item["path_snapshot"] = UI.elements.content.pathsnapshot.getAttribute ("value");
+		item["path_script"] = UI.elements.content.pathscript.getAttribute ("value");
+		item["path_temp"] = UI.elements.content.pathtemp.getAttribute ("value");
 	
 		item["smtp_server"] = UI.elements.content.smtpserver.getAttribute ("value");
 		item["smtp_encoding"] = UI.elements.content.smtpencoding.getAttribute ("selectedItem").value;

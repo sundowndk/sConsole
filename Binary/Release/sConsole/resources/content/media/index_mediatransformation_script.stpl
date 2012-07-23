@@ -1,33 +1,79 @@
-// #  <script language="JavaScript">
+// <script>
 // #######################################################################################################################################
 // # GLOBAL
 // #######################################################################################################################################		
 var mediatransformation =
 {	
 	// CREATE
-	create : function ()
+	create : function (attributes)
 	{
+		if (!attributes)
+			attributes = new Array ();
+	
 		// CREATE			
 		var create =	function ()
 						{
-							//var item = get ();
+							// SHOW BUSY
+							modal.busy ();
 							
-																					
-							item = sorentoLib.mediaTransformation.new ();
-							item.title = get ().title;
-							sorentoLib.mediaTransformation.save (item);
-							
-							UI.elements.content.mediatransformations.addItem (item);
-							
-							modal.dispose ();
-							
-							mediatransformation.edit ({id: item.id});		
+							setTimeout (function () 
+										{			
+											get ();
+
+											sorentoLib.mediaTransformation.save (attributes.current);
+																																											
+											mediatransformation.edit ({current: attributes.current, row: UI.elements.content.mediatransformations.addItem (attributes.current)});
+																						
+											dispose ();
+										}, 150);																						
 						};			
-	
+
+		// DISPOSE
+		var dispose =	function ()
+						{
+							modal.getUIElement ("create").setAttribute ("disabled", true);
+							modal.getUIElement ("close").setAttribute ("disabled", true);		
+							modal.dispose ();							
+							modal = null;
+						};
+
+		// SET
+		var set =		function ()
+						{
+							attributes.current = sorentoLib.mediaTransformation.new ();
+							attributes.checksum = sConsole.helpers.arrayChecksum (attributes.current);						
+							onChange ();
+						};
+										
+		// GET
+		var get =		function ()
+						{
+							attributes.current.title = modal.getUIElement ("title").getAttribute ("value");							
+						};
+										
+		// ONINIT
+		var onInit =	function ()
+						{
+						
+							modal.getUIElement ("title").setAttribute ("onChange", onChange);		
+		
+							modal.getUIElement ("create").setAttribute ("onClick", create);
+							modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);		
+		
+							// SET
+							set ();
+		
+							// SHOW
+							modal.show ();		
+						
+						};
+						
 		// ONCHANGE
 		var onChange =	function ()
 						{
-							if ((modal.getUIElement ("title").getAttribute ("value") != ""))
+							get ();
+						
+							if ((sConsole.helpers.arrayChecksum (attributes.current) != attributes.checksum) && (modal.getUIElement ("title").getAttribute ("value") != ""))
 							{
 								modal.getUIElement ("create").setAttribute ("disabled", false);
 							}
@@ -37,23 +83,8 @@ var mediatransformation =
 							}										
 						};
 						
-		// GET
-		var get =		function ()
-						{
-							var item = new Array ();							
-							item.title = modal.getUIElement ("title").getAttribute ("value");
-							return item;
-						};
-
 		// INIT
-		var modal = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_create.xml"});
-						
-		modal.getUIElement ("title").setAttribute ("onChange", onChange);		
-		
-		modal.getUIElement ("create").setAttribute ("onClick", create);
-		modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);		
-		
-		modal.show ();		
+		var modal = new sConsole.modal.window ({width: "content", height: "content", busy: true, SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_create.xml", onInit: onInit});	
 	},
 
 	// EDIT
@@ -61,56 +92,93 @@ var mediatransformation =
 	{				
 		<%Include ("index_mediatransformation_mimetype_script.stpl")%>	
 	
-		if (!attributes) attributes = new Array ();
-	
-		if (!attributes.id)
+		if (!attributes) 
+			attributes = new Array ();
+				
+		if (!attributes.current)
 		{
+			attributes.row = UI.elements.content.mediatransformations.getItemRow ();			
 			attributes.current = sorentoLib.mediaTransformation.load (UI.elements.content.mediatransformations.getItem ().id);		
-		}
-		else
-		{
-			attributes.current = sorentoLib.mediaTransformation.load (attributes.id);
-		}
-					
+		}					
+							
 		// SAVE
 		var save = 		function ()
 						{
-							var item = get ();										
-							sorentoLib.mediaTransformation.save (item);	
-							UI.elements.content.mediatransformations.setItem (sorentoLib.mediaTransformation.load (item.id));
-										
-							modal.dispose ();		
+						// SHOW BUSY
+							modal.busy ();
+							
+							setTimeout (function () 
+										{																					
+											get ();
+																																	
+											sorentoLib.mediaTransformation.save (attributes.current);	
+											
+											UI.elements.content.mediatransformations.setItem (attributes.current, attributes.row);
+														
+											checksum = sConsole.helpers.arrayChecksum (attributes.current);
+							
+											onChange ();																										
+																					
+											modal.busy ();
+										}, 150);												
 						};
-										
+						
+		// DISPOSE
+		var dispose =	function ()
+						{
+							modal.getUIElement ("save").setAttribute ("disabled", true);
+							modal.getUIElement ("close").setAttribute ("disabled", true);		
+							modal.dispose ();							
+							modal = null;
+						};																				
+																		
 		// SET	
 		var set =		function ()
 						{
 							modal.getUIElement ("title").setAttribute ("value", attributes.current.title);
 							modal.getUIElement ("mimetypes").setItems (attributes.current.mimetypes);
 							modal.getUIElement ("script").setAttribute ("value", attributes.current.script);
+							
+							get ();
+							
+							checksum = sConsole.helpers.arrayChecksum (attributes.current);
 						};
 				
 		// GET		
 		var get = 		function ()
 						{
-							var item = {};
-							item.id = attributes.current.id;
-							item.title = modal.getUIElement ("title").getAttribute ("value");
-							item.mimetypes = modal.getUIElement ("mimetypes").getItems ();
-							item.script = modal.getUIElement ("script").getAttribute ("value");
+							attributes.current.title = modal.getUIElement ("title").getAttribute ("value");
+							attributes.current.mimetypes = modal.getUIElement ("mimetypes").getItems ();
+							attributes.current.script = modal.getUIElement ("script").getAttribute ("value");
+						};													
+						
+		// ONINIT						
+		var onInit =	function ()
+						{												
+							modal.getUIElement ("title").setAttribute ("onChange", onChange);
+							modal.getUIElement ("mimetypes").setAttribute ("onChange", onChange);
+							modal.getUIElement ("mimetypes").setAttribute ("onDoubleClick", mimetype.edit);
+							modal.getUIElement ("mimetypeadd").setAttribute ("onClick", mimetype.add);
+							modal.getUIElement ("mimetypeedit").setAttribute ("onClick", mimetype.edit);
+							modal.getUIElement ("mimetyperemove").setAttribute ("onClick", mimetype.remove);		
+							modal.getUIElement ("script").setAttribute ("onChange", onChange);
 							
-							return item;								
-						};
+							modal.getUIElement ("save").setAttribute ("onClick", save);
+							modal.getUIElement ("close").setAttribute ("onClick", dispose);		
 						
-		var dispose =	function ()
-						{
-							modal.dispose ();
-						};
+							// SET
+							set ();
 						
+							// SHOW
+							modal.show ();								
+						};
+											
 		// ONCHANGE	
 		var onChange =	function ()
 						{							
-							if ((sConsole.helpers.compareItems ({array1: attributes.current, array2: get ()})) && (modal.getUIElement ("title").getAttribute ("value") != ""))
+							get ();
+														
+							if ((sConsole.helpers.arrayChecksum (attributes.current) != checksum) && (modal.getUIElement ("title").getAttribute ("value") != ""))						
 							{
 								modal.getUIElement ("save").setAttribute ("disabled", false);
 							}
@@ -132,22 +200,7 @@ var mediatransformation =
 						};							
 	
 		// INIT
-		var modal = new sConsole.modal.window ({SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_edit.xml"});
-		modal.getUIElement ("save").setAttribute ("onClick", save);
-		modal.getUIElement ("close").setAttribute ("onClick", dispose);		
-						
-		modal.getUIElement ("title").setAttribute ("onChange", onChange);
-		modal.getUIElement ("mimetypes").setAttribute ("onChange", onChange);
-		modal.getUIElement ("mimetypeadd").setAttribute ("onClick", mimetype.add);
-		modal.getUIElement ("mimetypeedit").setAttribute ("onClick", mimetype.edit);
-		modal.getUIElement ("mimetyperemove").setAttribute ("onClick", mimetype.remove);		
-		modal.getUIElement ("script").setAttribute ("onChange", onChange);
-						
-		// SET
-		set ();		
-		
-		// SHOW
-		modal.show ();		
+		var modal = new sConsole.modal.window ({dimensions: "auto", busy: true, SUIXML: "<%Write (SorentoLib.Services.Config.GetString ("sconsole", "url"))%>xml/media/mediatransformation_edit.xml", onInit: onInit});
 	},
 	
 	// DELETE
@@ -164,7 +217,7 @@ var mediatransformation =
 							}
 						};
 	
-		sConsole.modal.question ({title: "Delete mediatransformation", text: "Do you really want to delete this mediatransformation ?", buttonLabel: "Yes|No", onDone: action});
+		sConsole.modal.question ({title: "Delete mediatransformation", text: "Do you really want to delete this mediatransformation ?", button1Label: "Yes", button2Label: "No", onDone: action});
 	}	
 }
 

@@ -40,13 +40,14 @@
 					WEB ENGINE CONSOLE
 				</h2>
 				<div class="Version">
-					version <%Write (sConsole.Runtime.GetVersionString ())%>
+					<%$version = sConsole.Runtime.GetVersion ()%>
+					version <%Write ($version.Major)%>.<%Write ($version.Minor)%>
 				</div>
 				<div class="Notification">
-					Hello, <a onClick="sConsole.modal.edit.profile ();"><span id="name"><%Write ($user.Firstname)%></span></a>, you have <a>0 messages</a>
+					Hello, <a onClick="sConsole.modal.edit.profile ();"><span id="name"><%Write ($user.Firstname)%></span></a>
 				</div>
 				<div class="Actions">
-					<a onClick="">Restart</a> | <a onClick="UI.session.logout ();">Logout</a>
+					<a onClick="sConsole.runtime.session.logout ();">Logout</a>
 				</div>
 			</div>
 			<div id="navigation" class="navigation">

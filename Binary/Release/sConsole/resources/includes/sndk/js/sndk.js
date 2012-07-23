@@ -78,7 +78,7 @@ var SNDK =
 			}
 		},
 		
-		delete : function (name, path, domain) 
+		remove : function (name, path, domain) 
 		{
 			if (SNDK.cookie.get (name)) document.cookie = name + "=" +
 			((path) ? ";path=" + path : "") +
@@ -94,6 +94,170 @@ var SNDK =
 	// ---------------------------------------------------------------------------------------------------------------
 	tools :
 	{
+		setButtonLabel : function (element, text)
+		{
+			if (element)
+			{
+				if (element.childNodes[0])
+				{
+					element.childNodes[0].nodeValue = text;
+				}
+				else if (element.value)
+				{
+					element.value = text;
+				}
+				else
+				{
+					element.innerHTML = text;
+				}
+			}
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** getTicks																																		**
+		// ***************************************************************************************************************************************************
+		// ** Return ticks since epoch.																														**
+		// ***************************************************************************************************************************************************
+		getTicks : function ()
+		{		
+		    return new Date ().getTime ();
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** getStyle																																		**
+		// ***************************************************************************************************************************************************
+		// ** Returns value of the current style on the specifed element.																					**
+		// ***************************************************************************************************************************************************	
+		getStyle : function (element, property)
+		{
+			var result = null;
+					
+			if (client.browser == "Explorer" &&  parseInt (client.version) < 9)
+			{
+				// Internet Explore 8 and below does not work with getComputedStyle, 
+				// so we use currentStyle instead.
+				
+				// Stylenames are abit differrent when using currentStyle, and only the
+				// moste used are being altered here. Fell free to add more if need.
+				
+				// PADDING
+				if (property == "padding-left") property = "paddingLeft";
+				if (property == "padding-right") property = "paddingRight";
+				if (property == "padding-top") property = "paddingTop";
+				if (property == "padding-bottom") property = "paddingBottom";
+				
+				// MARGIN
+				if (property == "margin-left") property = "marginLeft";
+				if (property == "margin-right") property = "marginRight";		
+				if (property == "margin-top") property = "marginTop";
+				if (property == "margin-bottom") property = "marginBottom";	
+				
+				// BORDER
+				if (property == "border-left-width") property = "borderLeftWidth";
+				if (property == "border-right-width") property = "borderRightWidth";		
+				if (property == "border-top-width") property = "borderTopWidth";
+				if (property == "border-bottom-width") property = "borderBottomWidth";				
+				
+				result = element.currentStyle[property];
+			}
+			else	
+			{
+				// All moderen browsers work with getComputedStyle.
+			
+				result = document.defaultView.getComputedStyle (element, null).getPropertyValue (property);
+			}
+			
+			return result;
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** newGuid																																		**
+		// ***************************************************************************************************************************************************
+		// ** Create new GUID, that is compatible with C# and other popular languages.																		**
+		// ***************************************************************************************************************************************************		
+		newGuid : function ()
+		{
+			var chars = '0123456789abcdef'.split ('');
+		
+			var uuid = [], rnd = Math.random, r;
+			uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+			uuid[14] = '4'; // version 4
+		
+			for (var index = 0; index < 36; index++)
+			{
+				if (!uuid[index])
+				{
+					r = 0 | rnd ()*16;
+					uuid[index] = chars[(index == 19) ? (r & 0x3) | 0x8 : r & 0xf];
+				}
+			}
+		
+			return uuid.join ('');
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** getXML																																		**
+		// ***************************************************************************************************************************************************
+		// ** Get XML document from URL.																													**
+		// ***************************************************************************************************************************************************		
+		getXML : function (URL)
+		{
+			var xmlhttp = SNDK.tools.getXmlHttpObject ();
+			xmlhttp.open ("GET", URL + "?"+ Math.random(), false);
+											
+			xmlhttp.send (null);		
+			xmldoc = xmlhttp.responseXML;
+			
+			return xmldoc;
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** randomNumber																																	**
+		// ***************************************************************************************************************************************************
+		// ** Returns a random number between two values.																									**
+		// ***************************************************************************************************************************************************
+		randomNumber : function (begin, end)
+		{
+			return Math.floor ((end-begin) * Math.random ()) + begin;		
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** reloadURL																																		**
+		// ***************************************************************************************************************************************************
+		// ** Reloads the current window.																													**
+		// ***************************************************************************************************************************************************
+		reloadURL : function ()
+		{
+			document.location.reload (true);
+		},
+		
+		// ***************************************************************************************************************************************************
+		// ** setURL																																		**
+		// ***************************************************************************************************************************************************
+		// ** Set given URL on the current window, if no frame is specified.																				**
+		// ***************************************************************************************************************************************************
+		setURL : function (url, frame)
+		{
+			if (frame == null)
+			{
+				if (url == document.location.href)
+				{
+					SNDK.tools.reloadURL ();
+				}
+				else
+				{			
+					document.location.href = url;
+				}
+			}
+			else
+			{
+				parent.frames[frame].location = url;
+			}		
+		},
+		
+		
+		
+		
 		derefItem : function (array)
 		{
 			var result;
@@ -139,50 +303,13 @@ var SNDK =
 			return result;
 		},	
 		
-		randomNumber : function (begin, end)
-		{
-			return Math.floor((end-begin)*Math.random()) + begin;		
-		},
 		
 		
-		getXML : function (URL)
-		{
-			var xmlhttp = SNDK.tools.getXmlHttpObject ();
-			xmlhttp.open ("GET", URL + "?"+ Math.random(), false);
-											
-			xmlhttp.send (null);		
-			xmldoc = xmlhttp.responseXML;
-			
-			return xmldoc;
-		},
 		
-		reloadURL : function ()
-		{
-			document.location.reload (true);
-		},
 		
-		setURL : function (url, frame)
-		{
-			if (frame == null)
-			{
-				var oldurl = document.location.href;
-				if (url == oldurl)
-				{
-					document.location.reload(true);
-				}
-				else
-				{			
-					document.location.href = url;
-				}
-						
-		//				alert(document.location.href)				
-		//				window.location.href = url; 
-			}
-			else
-			{
-				parent.frames[frame].location = url;
-			}		
-		},
+		
+		
+		
 		
 		derefArray : function (array)
 		{
@@ -427,44 +554,7 @@ var SNDK =
 			return key;
 		},
 				
-		// ------------------------------------
-		// getStyle
-		// ------------------------------------	
-		getStyle : function (element, property)
-		{
-			var result = null;
-			if (element.currentStyle)
-			{
-				if (property == "padding-left") property = "paddingLeft";
-				if (property == "padding-right") property = "paddingRight";
-				if (property == "padding-top") property = "paddingTop";
-				if (property == "padding-bottom") property = "paddingBottom";
-				
-				if (property == "margin-left") property = "marginLeft";
-				if (property == "margin-right") property = "marginRight";		
-				if (property == "margin-top") property = "marginTop";
-				if (property == "margin-bottom") property = "marginBottom";	
-				
-				if (property == "border-left-width") property = "borderLeftWidth";
-				if (property == "border-right-width") property = "borderRightWidth";		
-				if (property == "border-top-width") property = "borderTopWidth";
-				if (property == "border-bottom-width") property = "borderBottomWidth";			
-				
-		//		var test = "";
-		//		for (var i in element.currentStyle)
-		//		{
-		//			test += i +" | ";
-		//		}
-		//		alert (test);
 		
-				result = element.currentStyle[property];
-			}	
-			else if (window.getComputedStyle)
-			{
-				result = document.defaultView.getComputedStyle (element, null).getPropertyValue (property);
-			}
-			return result;
-		},
 		
 		// ------------------------------------
 		// getStyledMargin
@@ -530,6 +620,42 @@ var SNDK =
 			
 			return result;
 		},
+		
+		
+		getElementStyledBoxSize : function (element)
+		{
+			var result = new Array ();
+			result["vertical"] = 0;
+			result["horizontal"] = 0;
+		
+			var dimensions = new Array ();
+			
+			// PADDING
+			dimensions["paddingLeft"] = parseInt (SNDK.tools.getStyle (element, "padding-left"));
+			dimensions["paddingRight"] = parseInt (SNDK.tools.getStyle (element, "padding-right"));
+			dimensions["paddingTop"] = parseInt (SNDK.tools.getStyle (element, "padding-top"));
+			dimensions["paddingBottom"] = parseInt (SNDK.tools.getStyle (element, "padding-bottom"));
+			
+			// MARGIN
+			dimensions["marginLeft"] = parseInt (SNDK.tools.getStyle (element, "margin-left"));
+			dimensions["marginRight"] = parseInt (SNDK.tools.getStyle (element, "margin-right"));
+			dimensions["marginTop"] = parseInt (SNDK.tools.getStyle (element, "margin-top"));
+			dimensions["marginBottom"] = parseInt (SNDK.tools.getStyle (element, "margin-bottom"));				
+			
+			//BORDER
+			dimensions["borderLeft"] = parseInt (SNDK.tools.getStyle (element, "border-left-width"));
+			dimensions["borderRight"] = parseInt (SNDK.tools.getStyle (element, "border-right-width"));
+			dimensions["borderTop"] = parseInt (SNDK.tools.getStyle (element, "border-top-width"));
+			dimensions["borderBottom"] = parseInt (SNDK.tools.getStyle (element, "border-bottom-width"));	
+			
+			//console.log (dimensions)	
+			
+			result["vertical"] = (dimensions.paddingTop + dimensions.paddingBottom + dimensions.marginTop + dimensions.marginBottom + dimensions.borderTop + dimensions.borderBottom);
+			result["horizontal"] = (dimensions.paddingLeft + dimensions.paddingRight + dimensions.marginLeft + dimensions.marginRight + dimensions.borderLeft + dimensions.borderRight);
+			
+			return result;
+		},
+		
 		
 		// ------------------------------------
 		// getElementStyleWidth
@@ -638,7 +764,7 @@ var SNDK =
 		getElementInnerWidth : function (element)
 		{
 			// LeftMargin
-			var leftmargin = SNDK.tools.getStyle (element, "margin-left");
+			var leftmargin = SNDK.tools.getStyle (element, "margin-left");	
 			
 			if (leftmargin != null && leftmargin != "auto")
 			{
@@ -669,7 +795,7 @@ var SNDK =
 				
 			// Width
 			var width = element.offsetWidth;
-			
+				
 			// Done
 			return width - leftmargin - rightmargin - leftpadding - rightpadding;		
 		},
@@ -1053,29 +1179,6 @@ var SNDK =
 			}
 		
 			return element;
-		},
-		
-		// ------------------------------------
-		// newGuid
-		// ------------------------------------		
-		newGuid : function ()
-		{
-			var chars = '0123456789abcdef'.split('');
-		
-			var uuid = [], rnd = Math.random, r;
-			uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
-			uuid[14] = '4'; // version 4
-		
-			for (var i = 0; i < 36; i++)
-			{
-				if (!uuid[i])
-				{
-					r = 0 | rnd()*16;
-					uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r & 0xf];
-				}
-			}
-		
-			return uuid.join('');
 		},
 		
 		// ------------------------------------
@@ -2000,8 +2103,8 @@ var SNDK =
 		scene: function(options)
 		{
 			var _options = options;
-			var _temp = { initialized: false,
-				    };
+			var _temp = { initialized: false
+				    	};
 				    
 			var _animations = new Array ();
 		
@@ -2720,8 +2823,7 @@ var SNDK =
 					  lastid: "",
 					  lastfocus: "",
 					  animations: new Array (),
-					  categoryheight: null,
-					  
+					  categoryheight: null			  
 					};
 		
 			_attributes.id = SNDK.tools.newGuid ();
@@ -3430,11 +3532,46 @@ var SNDK =
 			
 									case "textarea":
 									{
+										//console.log ("textarea")
+										//if (node.childNodes.length > 0)
+										//{
+											//for (var index2 = 1; index2 < node.childNodes.length; index2++)
+											//{
+										//		var child = node.firstChild;
+												//console.log (child)
+												//if ((child.tagName.toLowerCase () == "codemirror") || (child.tagName.toLowerCase () == "tinymce"))
+												//{
+										//			attributes.provider = child.tagName;
+													
+										//			console.log (child)
+													//attributes.provider = "codemirror";
+										//			attributes.providerConfig = parseAttributes (child.attributes);
+												//}																			
+											//}		
+										//}
+										
 										if (node.childNodes.length > 0)
-										{
-											attributes.provider = node.childNodes[1].tagName;
-											attributes.providerConfig = parseAttributes (node.childNodes[1].attributes);
-										}
+										{							
+											var items = new Array ();
+			
+											for (var index2 = 0; index2 < node.childNodes.length; index2++)
+											{
+												var child = node.childNodes.item (index2);
+												if (child.tagName == "codemirror")
+												{
+													attributes.provider = "codemirror";									
+													attributes.providerConfig = parseAttributes (child.attributes);
+												}
+												else if (child.tagName == "tinymce")
+												{
+													attributes.provider = "tinymce";
+													attributes.providerConfig = parseAttributes (child.attributes);	
+												}																																					
+											}																				
+											
+											attributes.items = items;
+										}							
+										
 			
 										elements[attributes.tag] = new SNDK.SUI.textarea (attributes);
 										Parent.addUIElement (elements[attributes.tag]);
@@ -3513,88 +3650,1161 @@ var SNDK =
 			}
 		},
 	
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Listview ([attributes])
-		// -------------------------------------------------------------------------------------------------------------------------
-		//
-		//	addItem (item)
-		//	removeItem ([row])
-		//
-		//	setItem (item, [row])
-		//	getItem ([row])
-		//	setItems (items)
-		//	getItems ()
-		//
-		//	refresh ()
-		//	getAttributes (value)
-		//	setAttributes (key, value)
-		//
-		//		id		get
-		//		tag		get/set
-		//		stylesheet	get/set
-		//		width		get/set
-		//		height		get/set
-		//		managed		get/set
-		//		appendTo	get/set
-		//		disabled	get/set
-		//		onFocus		get/set
-		//		onBlur		get/set
-		//		onChange	get/set
-		//		columns		get/set
-		//		items		get/set
-		//		selectedRow	get/set
-		//		treeview	get/set		
-		//
-		//
-		// .addItem (array)
-		// .removeItem (int)
-		// .removeAllItems ();
-		// .moveItemUp ()
-		// .moveItemDowm ()
-		//
-		// .getItem ()
-		// .setItem (array)
-		// .getItems ()
-		// .setItems (array(array))
-		//
-		// .setAttribute (string, value)
-		// .getAttribute (string)
-		//
-		// -------------------------------------------------------------------------------------------------------------------------
-		// column = {title, tag, width, visible}
-		// -------------------------------------------------------------------------------------------------------------------------
-		//
-		// CHANGELOG:
-		// v1.04:
-		//	- Fixed Width/Height calculations. Dimensions should be set correct now, when using percentages.
-		//
-		// v1.03: 
-		//	- setItems fixed, array will be dereffed correctly.
-		//
-		// v1.02:
-		//	- Added support for treeview mode. 
-		//	- Changed row onClick to row onMouseDown. Makes the control feel more responsive.
-		//
-		// v1.01:
-		//	- Added get/set attribute. Cleaner way to access internal values. Depricated get/set will be remove on a later date. 
-		//
-		// v1.00:
-		//	- Initial release.
-		
 		/**
-		 * @constructor
-		 */
-		listview : function (attributes)
+		* @constructor
+		*/
+		canvas : function (attributes)
+		{
+			var _elements = new Array ();
+			var _attributes = attributes;				
+			
+			var _temp = 	{ 
+								initialized: false,
+					  			uiElements: new Array ()		  		
+							};
+			
+			// Set attributes
+			setAttributes ();	
+			
+			// Private functions
+			this._attributes = _attributes;
+			this._elements = _elements;
+			this._temp = _temp;	
+			this._init = init;
+			
+			// Functions		
+			this.refresh = functionRefresh;			
+			this.dispose = functionDispose;
+			this.addUIElement = functionAddUIElement;
+			this.getUIElement = functionGetUIElement;
+			this.setAttribute = functionSetAttribute;
+			this.getAttribute = functionGetAttribute;	
+			
+			// Construct
+			construct ();
+										
+			// Initialize
+			SNDK.SUI.addInit (this);
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{
+			}
+			
+			// ------------------------------------
+			// construct
+			// ------------------------------------	
+			function construct ()
+			{
+				// Container
+				_elements["container"] = SNDK.tools.newElement ("div", {});
+				_elements["container"].setAttribute ("id", _attributes.id);
+				
+				if (_attributes.canScroll)
+				{
+					_elements["container"].style.overflow = "auto";		
+				}		
+				else
+				{
+					_elements["container"].style.overflow = "hidden";		
+				}
+																			
+				// Hook Events
+				window.addEvent (window, 'SUIREFRESH', refresh);	
+			}	
+				
+			// ------------------------------------
+			// refresh
+			// ------------------------------------		
+			function refresh ()
+			{	
+				// Only refresh if control has been initalized.	
+				if (_temp.initialized)
+				{
+					_elements["container"].className = _attributes.stylesheet;
+				}
+				
+				setDimensions ();
+			}
+			
+			// ------------------------------------
+			// refresh
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				// Id
+				_attributes.id = SNDK.tools.newGuid ();
+			
+				// Stylesheet
+				if (!_attributes.stylesheet) _attributes.stylesheet = "SUICanvas";	
+				
+				// Managed
+				if (!_attributes.managed)
+					_attributes.managed = false;				
+			
+				// Width
+				if (!_attributes.width) 
+					_attributes.width = "100%";				
+				
+				if (_attributes.width == "content")
+				{
+					_attributes.width = 0;
+					_attributes.widthType = "content";
+				}			
+				else if (_attributes.width.substring (_attributes.width.length - 1) == "%")
+				{
+					_attributes.widthType = "percent";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
+				}
+				else
+				{
+					_attributes.widthType = "pixel";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
+				}		
+				
+				// Height
+				if (!_attributes.height) 
+					_attributes.height = "100%";
+				
+				if (_attributes.height == "content")
+				{
+					_attributes.height = 0;
+					_attributes.heightType = "content";
+				}
+				else if (_attributes.height.substring (_attributes.height.length - 1) == "%")
+				{
+					_attributes.heightType = "percent";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
+				}
+				else
+				{
+					_attributes.heightType = "pixel";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
+				}
+								
+				if (!_attributes.canScroll) 
+					_attributes.canScroll = false;			
+			}		
+								
+			// ------------------------------------
+			// setDimensions
+			// ------------------------------------
+			function setDimensions ()
+			{		
+				// Only set dimensions if control has been initalized.	
+				if (_temp.initialized)
+				{	
+					var parent = _elements["container"].parentNode;			
+					var width = 0;
+					var height = 0;
+					
+					// Refresh all child elements.
+					for (i in _temp.uiElements)
+					{		
+						_temp.uiElements[i].refresh ();
+					}			
+												
+					// Find width.
+					switch (_attributes.widthType.toLowerCase ())
+					{
+						// Width is content.
+						case "content":
+						{
+							width = 0;			
+							for (i in _temp.uiElements)
+							{																		
+								if ((_temp.uiElements[i]._attributes.widthType == "pixel") || (_temp.uiElements[i]._attributes.widthType == "content"))
+								{	
+									if (width < _temp.uiElements[i]._elements["container"].offsetWidth)
+									{
+										width = _temp.uiElements[i]._elements["container"].offsetWidth;
+									}							
+								}
+							}																				
+							break;
+						}
+						
+						// Width is in pixels.
+						case "pixel":
+						{
+							width = _attributes.width;
+							break;
+						}
+						
+						// Width is percent.
+						case "percent":
+						{
+							width = (SNDK.tools.getElementInnerWidth (parent) * _attributes.width) / 100;
+							//console.log ("canvas: "+ SNDK.tools.getElementInnerWidth (parent))	
+							break;
+						}
+					}
+			
+					// Find height.
+					switch (_attributes.heightType.toLowerCase ())
+					{
+						// Height is content.
+						case "content":
+						{
+							height = 0;						
+							for (i in _temp.uiElements)
+							{							
+								if ((_temp.uiElements[i]._attributes.heightType == "pixel") || (_temp.uiElements[i]._attributes.heightType == "content"))
+								{						
+									height += _temp.uiElements[i]._elements["container"].offsetHeight;
+								}
+							}									
+							break;
+						}
+					
+						// Height is in pixels.
+						case "pixel":
+						{
+							height = _attributes.height;
+							break;
+						}
+						
+						// Height is in percent.
+						case "percent":
+						{
+							height = (SNDK.tools.getElementInnerHeight (parent) * _attributes.height) / 100;
+							break;
+						}
+					}
+							
+					// Set width & height.
+					_elements["container"].style.width = width +"px";
+					_elements["container"].style.height = height +"px";
+			
+					// If canvas can scroll, we need to make room for the scrollbar.		
+					if ((_attributes.canScroll) && (_attributes.heightType.toLowerCase () != "content"))
+					{
+						var contentheight = 0;			
+						for (i in _temp.uiElements)
+						{		
+							if (_temp.uiElements[i]._attributes.heightType == "pixel" || _temp.uiElements[i]._attributes.heightType == "content")
+							{									
+								contentheight += parseInt (_temp.uiElements[i]._attributes.height);
+							}
+						}						
+					
+						if (contentheight > height)
+						{
+							width = width - window.scrollbarWidth;
+						}			
+					}						
+					
+					// All child elements that use percentage needs to have their width and height updated accordingly.
+					for (i in _temp.uiElements)
+					{
+						var refresh = false;			
+						if (_temp.uiElements[i]._attributes.widthType == "percent")
+						{						
+							_temp.uiElements[i]._attributes.managedWidth = (width * _temp.uiElements[i]._attributes.width) / 100;
+							refresh = true;
+						}
+						
+						if (_temp.uiElements[i]._attributes.heightType == "percent")
+						{
+							_temp.uiElements[i]._attributes.managedHeight = (height * _temp.uiElements[i]._attributes.height) / 100;
+							refresh = true;
+						}
+						
+						if (refresh)
+						{
+							_temp.uiElements[i].refresh ();
+						}
+					}
+				}
+			}	
+			
+			// ------------------------------------
+			// addUIElement
+			// ------------------------------------							
+			function addUIElement (element)
+			{
+			 	_temp.uiElements[_temp.uiElements.length] = element;
+			 		 	
+			 	element.setAttribute ("managed", true);
+			 	element.setAttribute ("appendTo", _elements["container"]);
+			}
+			
+			// ------------------------------------
+			// getUIElement
+			// ------------------------------------							
+			function getUIElement (tag)
+			{
+				for (i in _temp.uiElements)
+				{
+					if (_temp.uiElements[i].getAttribute ("tag") == tag)
+					{
+						return _temp.uiElements[i];	
+					}
+				}
+				
+				throw ("No element with tag '"+ tag +"' was found in this canvas.");
+			}
+			// ------------------------------------
+			// Public functions
+			// ------------------------------------
+			// ------------------------------------
+			// refresh
+			// ------------------------------------				
+			function functionRefresh ()
+			{
+				refresh ();
+			}			
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}			
+							
+			// ------------------------------------
+			// addUIElement
+			// ------------------------------------							
+			function functionAddUIElement (element)
+			{
+				addUIElement (element);
+			}
+			
+			// ------------------------------------
+			// getUIElement
+			// ------------------------------------							
+			function functionGetUIElement (tag)
+			{
+				return getUIElement (tag)
+			}
+										
+			// ------------------------------------
+			// getAttribute
+			// ------------------------------------								
+			function functionGetAttribute (attribute)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "tag":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "stylesheet":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "width":
+					{
+						switch (_attributes.widthType.toLowerCase ())
+						{
+							case "content":
+							{
+								return "content";
+							}
+							
+							case "pixel":
+							{
+								return _attributes.width + "px";						
+							}
+							
+							case "percent":
+							{
+								return _attributes.width + "%";						
+							}
+						}			
+					}
+					
+					case "height":
+					{
+						switch (_attributes.heightType.toLowerCase ())
+						{
+							case "content":
+							{
+								return "content";
+							}
+							
+							case "pixel":
+							{
+								return _attributes.height + "px";						
+							}
+							
+							case "percent":
+							{
+								return _attributes.height + "%";						
+							}
+						}						
+					}
+					
+					case "canScroll":
+					{
+						return _attributes[attribute];			
+					}			
+										
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}	
+				
+			// ------------------------------------
+			// setAttribute
+			// ------------------------------------						
+			function functionSetAttribute (attribute, value)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						throw "Attribute with name ID is ready only.";
+						break;
+					}
+					
+					case "tag":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
+					
+					case "stylesheet":
+					{
+						_attributes[attribute] = value;
+						break;				
+					}
+					
+					case "width":
+					{
+						if (value.toLowerCase () == "content")
+						{
+							_attributes.widthType = "content";
+							_attributes.width = "content";
+						}			
+						else if (value.substring (value.length, 3) == "%")
+						{
+							_attributes.widthType = "percent";
+							_attributes.width = value.substring (0, value.length - 1)			
+						}
+						else
+						{
+							_attributes.widthType = "pixel";
+							_attributes.width = value.substring (0, value.length - 2)
+						}	
+						
+						refresh ();
+						
+						break;			
+					}
+			
+					case "height":
+					{
+						if (value.toLowerCase () == "content")
+						{
+							_attributes.heightType = "content";
+							_attributes.height = "content";
+						}
+						else if (value.substring (value.length, 3) == "%")
+						{
+							_attributes.heightType = "percent";
+							_attributes.height = value.substring (0, value.length - 1)			
+						}
+						else
+						{
+							_attributes.heightType = "pixel";
+							_attributes.height = value.substring (0, value.length - 2)
+						}	
+						
+						refresh ();
+						
+						break;			
+					}
+					
+					case "canScroll":
+					{
+						_attributes[attribute] = value;					
+						break;
+					}			
+										
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}					
+		},
+	
+		/**
+		* @constructor
+		*/
+		container : function (attributes)
 		{
 			var _elements = new Array ();
 			var _attributes = attributes;				
 			var _temp = 	{ initialized: false,
-					  id: SNDK.tools.newGuid (),
-					  selectedRow: -1,			  
-					  isDirty: true,
+					  uiElements: new Array (),
 					  cache: new Array (),
-					  bla: false
+					  calculatedWidth: 0,
+					  calculatedHeight: 0	 
 					};
+			
+			_attributes.id = SNDK.tools.newGuid ();
+			
+			setAttributes ();	
+			
+			// Private functions
+			this._attributes = _attributes;
+			this._elements = _elements;
+			this._temp = _temp;	
+			this._init = init;
+			
+			// Functions				
+			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
+			this.addTitleBarUIElement = functionAddTitleBarUIElement;
+			//this.getTitleBarUIElement = funcitonGetTitleBarUIElement;
+			this.addUIElement = functionAddUIElement;
+			this.setAttribute = functionSetAttribute;
+			this.getAttribute = functionGetAttribute;
+			
+			// Construct
+			construct ();
+										
+			// Initialize
+			SNDK.SUI.addInit (this);
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{
+				updateCache ();
+			}
+			
+			// ------------------------------------
+			// construct
+			// ------------------------------------	
+			function construct ()
+			{
+				// Container
+				_elements["container"] = SNDK.tools.newElement ("div", {});
+				_elements["container"].setAttribute ("id", _attributes.id);		
+				_elements["container"].className = _attributes.stylesheet;		
+															
+				// Top
+				_elements["top"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
+			
+				// TopLeft
+				_elements["topleft"] = SNDK.tools.newElement ("div", {className: "TopLeft", appendTo: _elements["top"]});
+					
+				// TopCenter
+				_elements["topcenter"] = SNDK.tools.newElement ("div", {className: "TopCenter", appendTo: _elements["top"]});
+				_elements["topcenter"].style.overflow = "hidden";
+				
+				// Titlebar
+				_elements["titlebar"] = SNDK.tools.newElement ("div", {className: "TitleBar", appendTo: _elements["topcenter"]});
+									
+				// TopRight
+				_elements["topright"] = SNDK.tools.newElement ("div", {className: "TopRight", appendTo: _elements["top"]});
+													
+				// Content
+				_elements["content"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
+				_elements["content"].style.clear = "both";			
+					
+				// ContentLeft
+				_elements["contentleft"] = SNDK.tools.newElement ("div", {className: "ContentLeft", appendTo: _elements["content"]});
+							
+				// ContentCenter
+				_elements["contentcenter"] = SNDK.tools.newElement ("div", {className: "ContentCenter", appendTo: _elements["content"]});		
+				if (_attributes.canScroll)
+				{
+					_elements["contentcenter"].style.overflow = "auto";		
+				}		
+				else
+				{
+					_elements["contentcenter"].style.overflow = "hidden";		
+				}		
+																														
+				// ContentRight
+				_elements["contentright"] = SNDK.tools.newElement ("div", {className: "ContentRight", appendTo: _elements["content"]});
+				
+				// Bottom	
+				_elements["bottom"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
+				_elements["bottom"].style.clear = "both";		
+								
+				// BottomLeft
+				_elements["bottomleft"] = SNDK.tools.newElement ("div", {className: "BottomLeft", appendTo: _elements["bottom"]});	
+			
+				// BottomCenter
+				_elements["bottomcenter"] = SNDK.tools.newElement ("div", {className: "BottomCenter", appendTo: _elements["bottom"]});
+					
+				// BottomRight
+				_elements["bottomright"] = SNDK.tools.newElement ("div", {className: "BottomRight", appendTo: _elements["bottom"]});
+			
+				// Icon	
+				_elements["icon"] = SNDK.tools.newElement ("div", {className: "Icon", appendTo: _elements["topcenter"]});
+								
+				// Title	
+				_elements["title"] = SNDK.tools.newElement ("div", {className: "Title", appendTo: _elements["topcenter"]});	
+				SNDK.tools.textSelectionDisable (_elements["title"]);													
+				
+				// Hook Events
+				window.addEvent (window, 'SUIREFRESH', refresh);							
+			}	
+			
+			// ------------------------------------
+			// refresh
+			// ------------------------------------		
+			function refresh ()
+			{	
+				// Only refresh if control has been initalized.	
+				if (_temp.initialized)
+				{		
+				
+					_elements["container"].className = _attributes.stylesheet;
+					if (_attributes.icon != "")
+					{
+						_elements["icon"].className = "Icon "+ _attributes.icon;
+						_elements["icon"].style.display = "block";
+					}
+					else			
+					{
+						_elements["icon"].style.display = "none";
+					}
+					
+					_elements["title"].innerHTML = _attributes.title;		
+				}
+								
+				setDimensions ();
+			}			
+			
+			// ------------------------------------
+			// refresh
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}
+			
+			function addTitleBarUIElement (type, attributes)
+			{
+				if (!attributes)
+					attributes = new Array ();
+					
+				attributes.appendTo = _elements["titlebar"];
+			
+				switch (type.toUpperCase ())
+				{
+					case "BUTTON":
+					{
+						var count = _temp.uiElements.length;
+				
+			 			_temp.uiElements[count] = new SNDK.SUI.button (attributes);
+			 				 			
+			 			return _temp.uiElements[count];
+			 		 		 			
+						break;
+					}						
+				}
+			}
+				
+			function getTitleBarUIElement (tag)
+			{
+			
+			}
+			
+			// ------------------------------------
+			// updateCache
+			// ------------------------------------		
+			function updateCache ()
+			{
+				if (!_temp.cacheUpdated)
+				{
+					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
+					_temp.cache["containerWidth"] = SNDK.tools.getElementStyledWidth (_elements["topleft"]) + SNDK.tools.getElementStyledWidth (_elements["topright"]);
+					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["topleft"]) + SNDK.tools.getElementStyledHeight (_elements["bottomleft"]);
+				}
+				
+				_temp.cacheUpdated = true;	
+			}			
+						
+			// ------------------------------------
+			// setAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				// Stylesheet
+				if (!_attributes.stylesheet) 
+					_attributes.stylesheet = "SUIContainer";	
+					
+				// Managed
+				if (!_attributes.managed) 
+					_attributes.managed = false;	
+						
+				// Width
+				if (!_attributes.width) 
+					_attributes.width = "100%";				
+					
+					
+				if (_attributes.width == "content")
+				{			
+					_attributes.widthType = "content";			
+				}
+				else if (_attributes.width.substring (_attributes.width.length - 1) == "%")
+				{
+					_attributes.widthType = "percent";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
+				}
+				else
+				{
+					_attributes.widthType = "pixel";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
+				}				
+						
+				// Height
+				if (!_attributes.height) 
+					_attributes.height = "100%";				
+					
+				if (_attributes.height == "content")
+				{			
+					_attributes.heightType = "content";
+				}
+				else if (_attributes.height.substring (_attributes.height.length - 1) == "%")
+				{
+					_attributes.heightType = "percent";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
+				}
+				else
+				{
+					_attributes.heightType = "pixel";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
+				}				
+				
+				// canScroll
+				if (!_attributes.canScroll) 
+					_attributes.canScroll = false;
+						
+				// Icon
+				if (!_attributes.icon) 
+					_attributes.icon = "";
+						
+				// Title
+				if (!_attributes.title) 
+					_attributes.title = "";															
+			
+			}		
+						
+			// ------------------------------------	
+			// setDimensions
+			// ------------------------------------			
+			function setDimensions ()
+			{
+				// Only set dimensions if control has been initalized.	
+				if (_temp.initialized)
+				{	
+					var width = {};
+					var height = {};
+					var combinedheightofchildren = 0;
+					
+					// Refresh all child elements.
+					for (index in _temp.uiElements)
+					{							
+						_temp.uiElements[index].refresh ();
+					}			
+			
+					// Find width.
+					switch (_attributes.widthType.toLowerCase ())
+					{
+						case "content":
+						{
+							width.container = 0;				
+							for (i in _temp.uiElements)
+							{								
+								if ((_temp.uiElements[i]._attributes.widthType == "pixel") || (_temp.uiElements[i]._attributes.widthType == "content"))
+								{											
+									if (width.container < _temp.uiElements[i]._elements["container"].offsetWidth)					
+									{
+										width.container = _temp.uiElements[i]._elements["container"].offsetWidth + _temp.cache.containerWidth;
+									}							
+								}
+							}													
+							break;
+						}
+						
+						case "pixel":
+						{
+							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
+							break;
+						}
+						
+						case "percent":
+						{
+							if (_attributes.managed)
+							{
+								width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
+							}
+							else
+							{
+								swidth.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
+							}
+							break;
+						}
+					}
+			
+					// Find height.
+					switch (_attributes.heightType.toLowerCase ())
+					{
+						case "content":
+						{
+							height.container = 0;
+						
+							for (i in _temp.uiElements)
+							{		
+								if ((_temp.uiElements[i]._attributes.heightType == "pixel") || (_temp.uiElements[i]._attributes.heightType == "content") )
+								{									
+									height.container += _temp.uiElements[i]._elements["container"].offsetHeight + _temp.cache.containerHeight; 
+								}
+							}									
+							break;
+						}
+					
+						case "pixel":
+						{
+							height.container = _attributes.height - _temp.cache.containerPadding["vertical"];
+							break;
+						}
+						
+						case "percent":
+						{
+							if (_attributes.managed)
+							{
+								height.container = _attributes.managedHeight - _temp.cache.containerPadding["vertical"];				
+							}
+							else
+							{
+								height.container = ((SNDK.tools.getElementInnerHeight (_elements["container"].parentNode) * _attributes.height) / 100) - _temp.cache.containerPadding["vertical"];
+							}
+							break;
+						}
+					}
+			
+					// Set width & height.
+					width.topCenter = width.container - _temp.cache.containerWidth;
+					width.contentCenter = width.container - _temp.cache.containerWidth;
+					width.bottomCenter = width.container - _temp.cache.containerWidth; 
+					width.child = width.container - _temp.cache.containerWidth;
+			
+					height.contentLeft = height.container - _temp.cache.containerHeight;
+					height.contentCenter = height.container - _temp.cache.containerHeight;
+					height.contentRight = height.container - _temp.cache.containerHeight; 
+					height.child = height.container - _temp.cache.containerHeight;
+					
+					_elements["container"].style.width = width.container + "px";
+					_elements["topcenter"].style.width = width.topCenter + "px";
+					_elements["contentcenter"].style.width = width.contentCenter + "px";
+					_elements["bottomcenter"].style.width = width.bottomCenter +"px";							
+					
+					_elements["container"].style.height = height.container +"px";
+					_elements["contentleft"].style.height = height.contentLeft +"px";
+					_elements["contentcenter"].style.height = height.contentCenter +"px";			
+					_elements["contentright"].style.height = height.contentRight +"px";			
+								
+					// If canvas can scroll, we need to make room for the scrollbar.		
+					if ((_attributes.canScroll) && (_attributes.heightType.toLowerCase () != "content"))
+					{
+						var contentheight = 0;
+						for (index in _temp.uiElements)
+						{		
+							if (_temp.uiElements[index]._attributes.heightType == "pixel")
+							{									
+								contentheight += parseInt (_temp.uiElements[index]._attributes.height);
+							}
+						}						
+					
+						if (contentheight > height.child)
+						{
+							width.child = width.child - window.scrollbarWidth;
+						}			
+					}	
+							
+					// All child elements that use percentage needs to have their width and height updated accordingly.
+					for (index in _temp.uiElements)
+					{
+						var refresh = false;			
+						if (_temp.uiElements[index]._attributes.widthType == "percent")
+						{
+							_temp.uiElements[index]._attributes.managedWidth = (width.child * _temp.uiElements[index]._attributes.width) / 100;
+							refresh = true;
+						}
+						
+						if (_temp.uiElements[index]._attributes.heightType == "percent")
+						{
+							_temp.uiElements[index]._attributes.managedHeight = (height.child * _temp.uiElements[index]._attributes.height) / 100;
+							refresh = true;
+						}
+						
+						if (refresh)
+						{
+							_temp.uiElements[index].refresh ();
+						}
+					}			
+				}
+			}			
+			// ------------------------------------
+			// Public functions
+			// ------------------------------------		
+			// ------------------------------------
+			// refresh
+			// ------------------------------------				
+			function functionRefresh ()
+			{
+				refresh ();
+			}		
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}				
+			
+			function functionAddTitleBarUIElement (type, attributes)
+			{
+				return addTitleBarUIElement (type, attributes)
+			}
+			
+			function functionGetTitleBarUIElement (tag)
+			{
+				return getTitleBarUIElement (tag);
+			}
+			
+			// ------------------------------------
+			// content
+			// ------------------------------------				
+			function functionContent ()
+			{
+				return _elements["contentcenter"];
+			}
+			
+			// ------------------------------------
+			// addUIElement
+			// ------------------------------------							
+			function functionAddUIElement (element)
+			{
+				var count = _temp.uiElements.length;
+				
+			 	_temp.uiElements[count] = element;
+			 		 	
+			 	element.setAttribute ("managed", true);
+			 	element.setAttribute ("appendTo", _elements["contentcenter"]);
+			}		
+			
+			// ------------------------------------
+			// getAttribute
+			// ------------------------------------						
+			function functionGetAttribute (attribute)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "tag":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "stylesheet":
+					{
+						return _attributes[attribute];
+					}
+					
+					case "width":
+					{
+						if (_attributes.widthType == "percent")
+						{
+							return _attributes.width + "%";
+						}
+			
+						if (_attributes.widthType == "pixel")
+						{
+							return _attributes.width + "px";
+						}
+					}
+					
+					case "height":
+					{
+						if (_attributes.heightType == "percent")
+						{
+							return _attributes.height + "%";
+						}
+			
+						if (_attributes.heightType == "pixel")
+						{
+							return _attributes.height + "px";
+						}
+					}
+					
+					case "appendTo":
+					{
+						return _attributes[attribute];			
+					}			
+					
+					case "managed":
+					{
+						return _attributes[attribute];			
+					}
+					
+					case "canScroll":
+					{
+						return _attributes[attribute];
+					}
+			
+					case "title":
+					{
+						return _attributes[attribute];			
+					}
+					
+					case "icon":
+					{
+						return _attributes[attribute];			
+					}
+							
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}
+			
+			// ------------------------------------
+			// setAttribute
+			// ------------------------------------						
+			function functionSetAttribute (attribute, value)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						throw "Attribute with name ID is ready only.";
+						break;
+					}
+					
+					case "tag":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
+					
+					case "stylesheet":
+					{
+						_attributes[attribute] = value;
+						break;				
+					}
+					
+					case "width":
+					{
+						if (value.substring (value.width.length, 3) == "%")
+						{
+							_attributes.widthType = "percent";
+							_attributes.width = value.width.substring (0, value.width.length - 1)			
+						}
+						else
+						{
+							_attributes.widthType = "pixel";
+							_attributes.width = value.width.substring (0, value.width.length - 2)
+						}	
+						break;			
+					}
+					
+					case "appendTo":
+					{
+						_attributes[attribute] = value;	
+						_attributes.appendTo.appendChild (_elements["container"]);			
+						break;
+					}			
+					
+					case "managed":
+					{
+						_attributes[attribute] = value;
+			
+						if (value)
+						{
+							window.removeEvent (window, 'SUIREFRESH', refresh);		
+						}
+						else
+						{
+							window.addEvent (window, 'SUIREFRESH', refresh);
+						}
+			
+						break;
+					}
+					
+					case "canScroll":
+					{
+						_attributes[attribute] = value;
+					}
+			
+					case "title":
+					{
+						_attributes[attribute] = value;
+						refresh ();
+						break;
+					}
+			
+					case "icon":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
+							
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}										
+		},
+	
+		/**
+		* @constructor
+		*/
+		listview : function (attributes)
+		{
+			var _elements = new Array ();
+			var _attributes = attributes;				
+			var _temp =	{ 	initialized: false,
+						  	id: SNDK.tools.newGuid (),
+						  	selectedRow: -1,			  
+							isDirty: true,
+							cache: new Array (),
+							bla: false,
+							doubleClickTicks: 0,
+							doubleClickRow: ""
+						};
 			
 			_attributes.id = SNDK.tools.newGuid ();
 			
@@ -3607,54 +4817,35 @@ var SNDK =
 			this._init = init;
 			
 			// Functions
-			this.refresh = functionRefresh;
-			this.dispose = functionDispose;
-			this.setAttribute = functionSetAttribute;
-			this.getAttribute = functionGetAttribute;
-		
 			this.addItem = functionAddItem;
 			this.addItems = functionAddItems;
 			this.removeItem = functionRemoveItem;	
-		
+			
 			this.setItem = functionSetItem;
 			this.getItem = functionGetItem;	
 			this.setItems = functionSetItems;
 			this.getItems = functionGetItems;
 			this.getItemRow = functionGetItemRow;
-		
-		
-		//	this.removeAllItems = functionRemoveAllItems;
+			
+			this.refresh = functionRefresh;
+			this.dispose = functionDispose;
+			
+			this.setAttribute = functionSetAttribute;
+			this.getAttribute = functionGetAttribute;
+			
+			
+			
+			//	this.removeAllItems = functionRemoveAllItems;
 			this.moveItemUp = functionMoveItemUp;
 			this.moveItemDown = functionMoveItemDown;
 			this.canItemMove = functionCanItemMove;
-		//	this.canItemMove = functionCanItemMove;
-		
-						
-							
-			// GetSet		
-		//	this.id = getsetId;
-		//	this.tag = getsetTag;
-							
-		//	this.width = getsetWidth;
-		//	this.height = getsetHeight;
-		
-		//	this.focus = getsetFocus;
-		//	this.disabled = getsetDisabled;		
-		
-		//	this.onFocus = getsetOnFocus;
-		//	this.onBlur = getsetOnBlur;
-		//	this.onChange = getsetOnChange;
-			
-		//	this.selectedIndex = getsetSelectedIndex;
-		//	this.selectedItem = getsetSelectedItem;
-		//	this.count = getsetCount;
-					
+			//	this.canItemMove = functionCanItemMove;
+													
 			// Construct
 			construct ();
 					
 			// Initialize
 			SNDK.SUI.addInit (this);
-				
 			// ------------------------------------
 			// Private functions
 			// ------------------------------------
@@ -3665,7 +4856,7 @@ var SNDK =
 			{	
 				updateCache ();
 			}
-		
+			
 			// ------------------------------------
 			// construct
 			// ------------------------------------
@@ -3678,7 +4869,7 @@ var SNDK =
 															
 				// Top
 				_elements["top"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
-		
+			
 				// TopLeft
 				_elements["topleft"] = SNDK.tools.newElement ("div", {className: "TopLeft", appendTo: _elements["top"]});
 					
@@ -3703,10 +4894,9 @@ var SNDK =
 						_elements["columnheaders"][index].innerHTML = _attributes.columns[index].label;
 						_elements["columnheaders"][index].style.overflow = "hidden";
 						_elements["columnheaders"][index].style.whiteSpace = "nowrap";
-		//				_elements["columnheaders"][index].style.width = _attributes.columns[index].width;
 					}
 				}
-		
+			
 				// Content
 				_elements["content"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
 				_elements["content"].style.clear = "both";			
@@ -3727,7 +4917,7 @@ var SNDK =
 								
 				// BottomLeft
 				_elements["bottomleft"] = SNDK.tools.newElement ("div", {className: "BottomLeft", appendTo: _elements["bottom"]});	
-		
+			
 				// BottomCenter
 				_elements["bottomcenter"] = SNDK.tools.newElement ("div", {className: "BottomCenter", appendTo: _elements["bottom"]});
 					
@@ -3739,101 +4929,6 @@ var SNDK =
 				_elements["contentcenter"].onblur = eventOnBlur;		
 				
 				window.addEvent (window, 'SUIREFRESH', refresh);					
-			}	
-				
-			// ------------------------------------
-			// refresh
-			// ------------------------------------		
-			function refresh ()
-			{	
-				// Only refresh if control has been initalized.	
-				if (_temp.initialized)
-				{
-					// If disabled, change to disabled stylesheet.
-					if (_attributes.disabled)
-					{
-						_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Disabled";
-						_elements["contentcenter"].removeAttribute("tabIndex");
-					} 
-					else
-					{			
-						// Set tabindex, it might have been removed if the control was disabled.
-						_elements["contentcenter"].setAttribute("tabIndex", 0);
-						
-						// See if control is in focus or blur, change stylesheet accoridingly.
-						if (_attributes.focus)
-						{
-							_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Focus";
-							setFocus ();
-						}
-						else
-						{
-							_elements["container"].className = _attributes.stylesheet;
-						}						
-					}				
-				}
-				
-				//if (_temp.isDirty)
-				//	{
-				setDimensions ();
-				//}
-		
-				if (_temp.initialized)
-				{
-					if (_temp.isDirty)
-					{
-					
-						var redr = 					function () 
-							{
-						// Remove all current rows.
-						_elements["contentcenter"].innerHTML = " ";				
-						_elements["rows"] = new Array ();
-						
-						// Redraw all rows.
-										
-						_elements["contentcenter"].style.display ="none";
-						drawRows ({treeviewMatchValue: null});		
-						_elements["contentcenter"].style.display ="block";
-						
-						
-						// Redraw selected row.
-						setSelectedRow (_temp.selectedRow);
-						
-						_temp.isDirty = false;	
-		
-							 
-							}
-					
-						setTimeout 
-						(redr , 
-							
-							0);	
-					
-					}			
-				}
-			}
-			
-			// ------------------------------------
-			// dispose
-			// ------------------------------------			
-			function dispose ()
-			{
-				window.removeEvent (window, 'SUIREFRESH', refresh);				
-			}		
-			
-			// ------------------------------------
-			// updateCache
-			// ------------------------------------		
-			function updateCache ()
-			{
-				if (!_temp.cacheUpdated)
-				{
-					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
-					_temp.cache["containerWidth"] = SNDK.tools.getElementStyledWidth (_elements["topleft"]) + SNDK.tools.getElementStyledWidth (_elements["topright"]);
-					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["topleft"]) + SNDK.tools.getElementStyledHeight (_elements["bottomleft"]);
-				}
-				
-				_temp.cacheUpdated = true;	
 			}	
 						
 			// ------------------------------------
@@ -3882,7 +4977,7 @@ var SNDK =
 				// Disabled
 				if (!_attributes.disabled) 
 					_attributes.disabled = false;		
-		
+			
 				// Items
 				if (!_attributes.items) 
 				{
@@ -3920,7 +5015,7 @@ var SNDK =
 				{
 					throw "When control is in treeview mode, treeviewLinkColumns needs to be specified.";
 				}
-		
+			
 				// unique
 				if (!_attributes.unique) 
 				{
@@ -3934,7 +5029,15 @@ var SNDK =
 				
 				// selectedRow
 				if (!_attributes.selectedRow) 
-					_attributes.selectedRow -1;
+					_attributes.selectedRow = -1;
+					
+				// onClick
+				if (!_attributes.onClick)
+					_attributes.onClick = null;			
+					
+				// onDoubleClick
+				if (!_attributes.onDoubleClick)
+					_attributes.onDoubleClick = null;			
 					
 				// onFocus
 				if (!_attributes.onFocus)
@@ -3956,7 +5059,7 @@ var SNDK =
 				{
 					if (!_attributes.columns[index].width) 
 						_attributes.columns[index].width = "*";	
-		
+			
 					if (_attributes.columns[index].width != "*")
 					{							
 						if (_attributes.columns[index].width.substring (_attributes.columns[index].width.length - 1) == "%")
@@ -3976,298 +5079,7 @@ var SNDK =
 					}
 				}						
 			}		
-		
-			function derefItems (array)
-			{
-				var temp = new Array ();
-				
-				for (index in array)
-				{
-					var index2 = temp.length;						
-					temp[index2] = derefItem (array[index])							
-				}
-					
-				return temp;				
-			}
-		
-			function derefItem (item)
-			{
-				var result = new Array ();
 									
-				for (key in item)
-				{				
-					var column = null;
-					var condense;
-					var value;
-								
-					for (index2 in _attributes.columns)			
-					{
-						var c = _attributes.columns[index2];
-						if (c.condense != null)
-						{	
-							if (c.tag == key)
-							{
-								column = column = c.tag;
-								condense = c.condense;
-								break;
-							}
-						}
-						else if (c.tag == key)
-						{									
-							column = c.tag;
-							break;
-						}				
-					}
-		
-					if (column == null)
-					{			
-						continue;
-					}
-								
-					if ((typeof(item[key]) == "object") && (column.visible == true))
-					{
-						value = "";
-						for (index2 in item[key])
-						{									
-							value += item[key][index2]["value"] +", ";
-						}				
-							
-						value = SNDK.string.trimEnd (value, ", ");							
-					}
-					else				
-					{
-						value = item[key];				
-					}										
-										
-					//console.log (column +" "+ value)			
-					
-					result[column] = value;
-				}
-								
-				return result;		
-			}	
-			
-		
-			function derefItem_a (item)
-			{
-				var result = new Array ();
-									
-				for (key in item)
-				{				
-					var column = null;
-					var condense;
-					var value;
-								
-					for (index2 in _attributes.columns)			
-					{
-						if (_attributes.columns[index2].condense != null)
-						{	
-							if (_attributes.columns[index2].tag == key)
-							{
-							column = column = _attributes.columns[index2].tag;
-							condense = _attributes.columns[index2].condense;
-							break;
-							}
-						//console.log (key +" "+ _attributes.columns[index2].condense.split (":")[0])
-						//if (key == _attributes.columns[index2].condense.split (":")[0])
-						//	{						
-							
-						//		column = _attributes.columns[index2].tag;
-						//		condense = _attributes.columns[index2].condense.split (":")[1];						
-						//		break;
-						//	}
-						}
-						else if (_attributes.columns[index2].tag == key)
-						{									
-							column = _attributes.columns[index2].tag;					
-							break;
-						}				
-					}
-		
-					if (column == null)
-					{			
-						continue;
-					}
-									
-					if (typeof(item[key]) == "object")
-					{
-						value = "";
-						for (index2 in item[key])
-						{									
-							value += item[key][index2]["value"] +", ";
-						}				
-							
-						value = SNDK.string.trimEnd (value, ", ");							
-					}
-					else				
-					{
-						value = item[key];				
-					}										
-										
-					//console.log (column +" "+ value)			
-					
-					result[column] = value;
-				}
-								
-				return result;		
-			}
-		
-			function derefItem2 (item)
-			{
-				var result = new Array ();
-				
-				for (index in item)
-				{				
-					var column;
-					var value;
-					
-					if (_attributes.columns[index] =! null)
-					{
-						if (_attributes.columns[index].condense != null)
-						{
-							if (typeof(item[index]) == "object")
-							{
-								column = _attributes.columns[index].condense.split (":")[0];
-								condense = _attributes.columns[index].condense.split (":")[1];
-							
-								value = "";
-								for (index2 in item[index])
-								{
-									value += item[index][index2][condense] +", ";						
-								}
-							
-								value = SNDK.string.trimEnd (value, ", ");
-							}
-							else
-							{
-								column = index;
-								value = item[index];																				
-							}
-						}				
-						
-						result[column] = value;
-					}
-				}
-								
-				return result;		
-			}
-		
-			function derefItemold (item)
-			{
-				var temp = new Array ();
-				
-				for (index in item)
-				{						
-					var column = null;
-					for (bla2 in _attributes.columns)
-					{
-						if (_attributes.columns[bla2].condense != null)
-						{
-							column = _attributes.columns[bla2].condense.split (":")[0];
-							break;
-						}
-					
-						if (_attributes.columns[bla2].tag == index)
-						{
-							column = _attributes.columns[bla2];
-							break;
-						}
-					}
-						
-					if (column == null)
-					{
-						continue;				
-					}
-						
-					if (typeof(item[index]) == "object")
-					{
-							var test = "";
-							for (bla1 in item[index])
-							{
-								test += item[index][bla1][column.condense.split (":")[1]] +", ";						
-							}
-							
-							test = SNDK.string.trimEnd (test, ", ");
-										
-							temp[index] = test;				
-					}
-					else				
-					{
-						temp[index] = item[index];
-					}							
-				}	
-				
-				return temp;		
-			}
-		
-			function derefArray (array)
-			{
-				var temp = new Array ();
-				for (index in array)
-				{
-					var index2 = temp.length;
-					temp[index2] = new Array ();
-			
-		//			columnnames = "";
-									
-		//			for (bla3 in _attributes.columns)
-		//			{
-		//				columnnames += _attributes.columns[bla3].tag +";;";							
-		//			}
-			
-					
-					
-					for (index3 in array[index])
-					{
-						
-						var column = null;
-						for (bla2 in _attributes.columns)
-						{
-							if (_attributes.columns[bla2].tag == index3)
-							{
-								column = _attributes.columns[bla2];					
-							}
-						}
-						
-						if (column == null)
-						{
-							continue;				
-						}
-						
-						//console.log (column)
-																		
-						if (typeof(array[index][index3]) == "object")
-						{
-						
-						
-							var test = "";
-							for (bla1 in array[index][index3])
-							{
-								test += array[index][index3][bla1][column.condense] +", ";
-								//console.log (array[index][index3][bla1])					
-							}
-							
-							test = SNDK.string.trimEnd (test, ", ");
-						
-							//var test = array[index][index3]
-							temp[index2][index3] = test;
-						
-						}
-						else				
-						{
-							temp[index2][index3] = array[index][index3];				
-						}
-						
-						//console.log (typeof(temp[index2][index3]))
-						
-					}			
-				}
-		
-				//_attributes.items = temp;	
-				
-				return temp;		
-			}
-								
 			// ------------------------------------
 			// setDimensions
 			// ------------------------------------
@@ -4278,7 +5090,7 @@ var SNDK =
 					var width = {};
 					var height = {};
 					var combinedheightofchildren = 0;
-		
+			
 					if (!_attributes.managed && _attributes.widthType != "pixel")
 					{					
 						width.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
@@ -4287,7 +5099,7 @@ var SNDK =
 					{			
 						if (_attributes.managed && _attributes.widthType == "percent")
 						{
-		
+			
 							width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
 						}
 						else
@@ -4295,8 +5107,8 @@ var SNDK =
 							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
 						}			
 					}	
-		
-		
+			
+			
 					if (!_attributes.managed && _attributes.heightType != "pixel")
 					{					
 						height.container = ((SNDK.tools.getElementInnerHeight (_elements["container"].parentNode) * _attributes.height) / 100) - _temp.cache.containerPadding["vertical"];
@@ -4320,7 +5132,7 @@ var SNDK =
 					height.contentLeft = height.container - _temp.cache.containerHeight;
 					height.contentCenter = height.container - _temp.cache.containerHeight;
 					height.contentRight = height.container - _temp.cache.containerHeight;
-		
+			
 					
 					_elements["container"].style.width = width.container + "px";
 					_elements["topcenter"].style.width = width.topCenter + "px";
@@ -4331,11 +5143,11 @@ var SNDK =
 					_elements["contentleft"].style.height = height.contentLeft + "px";
 					_elements["contentcenter"].style.height = height.contentCenter +"px";
 					_elements["contentright"].style.height = height.contentRight +"px";
-		
-		
+			
+			
 					var totalheightofrows = 0;
-		
-		
+			
+			
 					for (index in _attributes.items)
 					{
 						totalheightofrows += 25;
@@ -4345,7 +5157,7 @@ var SNDK =
 					{
 						width.topCenter = width.topCenter - window.scrollbarWidth;
 					}				
-		
+			
 					var totalwidth = 0;														
 					var dynamics = new Array ();
 						
@@ -4393,7 +5205,90 @@ var SNDK =
 					}						
 				}
 			}	
+				
+			// ------------------------------------
+			// refresh
+			// ------------------------------------		
+			function refresh ()
+			{	
+				// Only refresh if control has been initalized.	
+				if (_temp.initialized)
+				{
+					// If disabled, change to disabled stylesheet.
+					if (_attributes.disabled)
+					{
+						_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Disabled";
+						_elements["contentcenter"].removeAttribute("tabIndex");
+					} 
+					else
+					{			
+						// Set tabindex, it might have been removed if the control was disabled.
+						_elements["contentcenter"].setAttribute("tabIndex", 0);
+						
+						// See if control is in focus or blur, change stylesheet accoridingly.
+						if (_attributes.focus)
+						{
+							_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Focus";
+							setFocus ();
+						}
+						else
+						{
+							_elements["container"].className = _attributes.stylesheet;
+						}						
+					}				
+				}
+					
+				setDimensions ();
 			
+				if (_temp.initialized)
+				{
+					if (_temp.isDirty)
+					{			
+						var draw = 	function () 
+									{
+										// Remove all current rows.
+										_elements["contentcenter"].innerHTML = " ";				
+										_elements["rows"] = new Array ();
+						
+										// Redraw all rows.								
+										_elements["contentcenter"].style.display ="none";
+										drawRows ({treeviewMatchValue: null});		
+										_elements["contentcenter"].style.display ="block";
+										
+										// Redraw selected row.
+										setSelectedRow (_temp.selectedRow);
+						
+										_temp.isDirty = false;						 
+									};
+					
+						setTimeout (draw, 0);				
+					}			
+				}
+			}
+										
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}		
+			
+			// ------------------------------------
+			// updateCache
+			// ------------------------------------		
+			function updateCache ()
+			{
+				if (!_temp.cacheUpdated)
+				{
+					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
+					_temp.cache["containerWidth"] = SNDK.tools.getElementStyledWidth (_elements["topleft"]) + SNDK.tools.getElementStyledWidth (_elements["topright"]);
+					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["topleft"]) + SNDK.tools.getElementStyledHeight (_elements["bottomleft"]);
+				}
+				
+				_temp.cacheUpdated = true;	
+			}		
+				
 			// ------------------------------------
 			// drawRows
 			// ------------------------------------			
@@ -4401,20 +5296,17 @@ var SNDK =
 			{
 				if (!_attributes.treeview)
 				{
-					// Draw rows for normal view.
-					// for (index in _attributes.items)
-					var len = _attributes.items.length;
-					for (var index = 0; index < len; index++)			
+					// Draw rows for normal view.			
+					var length = _attributes.items.length;
+					for (var index = 0; index < length; index++)			
 					{
 						drawRow ({itemIndex: index, indentDepth: indentdepth});
 					}					
 				}
 				else
 				{
-					// Draw rows for treeview.
-				
-					var indentdepth = -1;
-					
+					// Draw rows for treeview.		
+					var indentdepth = -1;			
 					if (options)
 					{
 						if (options.indentDepth != null)
@@ -4424,13 +5316,11 @@ var SNDK =
 					}
 					
 					indentdepth++;
-		
-					for (index in _attributes.items)
-					//var len = _attributes.items.length;
-					//for (var index = 0; index <= len; index++)			
-					{		
-					//console.log (index);
-						// TODO: Needs to be cleaned.
+			
+					var length = _attributes.items.length;
+					for (var index = 0; index < length; index++)			
+					//for (index in _attributes.items)			
+					{					
 						var test =_attributes.items[index][_temp.treeviewChildColumn];
 						
 						if (test == _attributes.treeviewRootValue)
@@ -4447,126 +5337,60 @@ var SNDK =
 					}
 				}	
 			}	
-			
+				
 			// ------------------------------------
 			// drawRow
 			// ------------------------------------	
-			function drawRow (options)
+			function drawRow (attributes)
 			{
-				var row = _elements["rows"].length;
-				var roww;
+				var rowcount = _elements["rows"].length;
+				var container = document.createDocumentFragment ()		
+				var row = new Array ();
+					
+				row[0] = SNDK.tools.newElement ("div", {className: "ItemRow", id: _attributes.id +"_"+ rowcount, appendTo: container});
+				row[0].style.overflow = "hidden";
+				row[0].style.width = "100%";
+				row[0].onmousedown = eventOnRowClick;
+				row["itemIndex"] = attributes.itemIndex;
+				row["indentDepth"] = attributes.indentDepth;
 			
-				//_elements["contentcenter"].innerHTML += '<div class="ItemRow" id="'+ _attributes.id +'_'+ row +'" > </div>';
-					document.createDocumentFragment ()
-				var t2 = document.createDocumentFragment ()
-				
-				roww = new Array ();
-				//_elements["rows"][row][0] = document.getElementById (_attributes.id +'_'+ row);
-				//_elements["rows"][row][0] = SNDK.tools.newElement ("div", {className: "ItemRow", id: _attributes.id +"_"+ row, appendTo: _elements["contentcenter"]});		
-				roww[0] = SNDK.tools.newElement ("div", {className: "ItemRow", id: _attributes.id +"_"+ row, appendTo: t2});		
-				roww["itemIndex"] = options.itemIndex;
-				roww["indentDepth"] = options.indentDepth;
-				roww[0].style.overflow = "hidden";
-				roww[0].style.width = "100%";
-				roww[0].onmousedown = eventOnRowClick;
-		
-				SNDK.tools.textSelectionDisable (roww[0]);
-		
-				for (column in _attributes.columns)
+				SNDK.tools.textSelectionDisable (row[0]);
+			
+				for (columncount in _attributes.columns)
 				{				
-					if (_attributes.columns[column].visible)
-					{
-						//_elements["rows"][row][column + 1] = SNDK.tools.newElement ("div", {className: "ItemColumn", id: _attributes.id +"_"+ row +"_"+ column, appendTo: _elements["rows"][row][0]});
-						var t = SNDK.tools.newElement ("div", {className: "ItemColumn", id: _attributes.id +"_"+ row +"_"+ column, appendTo: roww[0]});
-						
-						var content = "";
-		
+					if (_attributes.columns[columncount].visible)
+					{	
+						var content = "";			
+						var column = SNDK.tools.newElement ("div", {className: "ItemColumn", id: _attributes.id +"_"+ rowcount +"_"+ columncount, appendTo: row[0]});				
+			
 						if (_attributes.treeview)
 						{
-							if (column == 1)
+							if (columncount == 1)
 							{
-								content += "<span style='padding-left: "+ (options.indentDepth * 20) +"px;'> </span>";
+								content += "<span style='padding-left: "+ (attributes.indentDepth * 20) +"px;'> </span>";
 							}
 						}
 						
-						if (_attributes.columns[column].tag != null)
+						if (_attributes.columns[columncount].tag != null)
 						{
-							content += _attributes.items[options.itemIndex][_attributes.columns[column].tag];
+							content += _attributes.items[attributes.itemIndex][_attributes.columns[columncount].tag];
 						}
 						else
 						{
-							content += _attributes.items[options.itemIndex][column];					
+							content += _attributes.items[attributes.itemIndex][columncount];					
 						}
-										
-		//				_elements["rows"][row][column + 1].innerHTML = content;			
-		//				_elements["rows"][row][column + 1].style.width = _attributes.columns[column].calculatedWidth - 10 +"px";
-		//				_elements["rows"][row][column + 1].style.overflow = "hidden";
-		//				_elements["rows"][row][column + 1].style.whiteSpace = "nowrap";
-						
-						t.innerHTML = content;			
-						
-						t.style.width = _attributes.columns[column].calculatedWidth - 10 +"px";
-						t.style.overflow = "hidden";
-						t.style.whiteSpace = "nowrap";
-						
-						
-						//_elements["rows"][row][column + 1] = t;
-						
+														
+						column.innerHTML = content;							
+						column.style.width = _attributes.columns[columncount].calculatedWidth - 10 +"px";
+						column.style.overflow = "hidden";
+						column.style.whiteSpace = "nowrap";
 					}
 				}
 				
-				_elements["rows"][row] = roww;
-				
-				_elements["contentcenter"].appendChild (t2);
-			}	
+				_elements["rows"][rowcount] = row;		
+				_elements["contentcenter"].appendChild (container);
+			}			
 			
-			function drawRowOLD (options)
-			{
-				var row = _elements["rows"].length;
-			
-				_elements["rows"][row] = new Array ();
-				_elements["rows"][row][0] = SNDK.tools.newElement ("div", {className: "ItemRow", id: _attributes.id +"_"+ row, appendTo: _elements["contentcenter"]});
-				_elements["rows"][row]["itemIndex"] = options.itemIndex;
-				_elements["rows"][row]["indentDepth"] = options.indentDepth;
-				_elements["rows"][row][0].style.overflow = "hidden";
-				_elements["rows"][row][0].style.width = "100%";
-				_elements["rows"][row][0].onmousedown = eventOnRowClick;
-		
-				SNDK.tools.textSelectionDisable (_elements["rows"][row][0]);
-		
-				for (column in _attributes.columns)
-				{				
-					if (_attributes.columns[column].visible)
-					{
-						_elements["rows"][row][column + 1] = SNDK.tools.newElement ("div", {className: "ItemColumn", id: _attributes.id +"_"+ row +"_"+ column, appendTo: _elements["rows"][row][0]});
-						
-						var content = "";
-		
-						if (_attributes.treeview)
-						{
-							if (column == 1)
-							{
-								content += "<span style='padding-left: "+ (options.indentDepth * 20) +"px;'> </span>";
-							}
-						}
-						
-						if (_attributes.columns[column].tag != null)
-						{
-							content += _attributes.items[options.itemIndex][_attributes.columns[column].tag];
-						}
-						else
-						{
-							content += _attributes.items[options.itemIndex][column];					
-						}
-										
-						_elements["rows"][row][column + 1].innerHTML = content;			
-						_elements["rows"][row][column + 1].style.width = _attributes.columns[column].calculatedWidth - 10 +"px";
-						_elements["rows"][row][column + 1].style.overflow = "hidden";
-						_elements["rows"][row][column + 1].style.whiteSpace = "nowrap";
-					}
-				}
-			}	
-						
 			// ------------------------------------
 			// setFocus
 			// ------------------------------------				
@@ -4576,7 +5400,7 @@ var SNDK =
 			}		
 				
 			// ------------------------------------
-			// setSelectedRow
+			// setSelectedRow (row)
 			// ------------------------------------		
 			function setSelectedRow (row)
 			{		
@@ -4586,66 +5410,114 @@ var SNDK =
 				}
 			
 				_temp.selectedRow = parseInt (row);
-		
+			
 				if (_temp.selectedRow != -1)
 				{
 					_elements["rows"][_temp.selectedRow][0].className = "ItemRow ItemRowSelected";			
-				}
-		
-				//eventOnChange ();
+				}	
 			}	
+				
+			// ------------------------------------
+			// removeItem ([itemindex])
+			// ------------------------------------					
+			function removeItem (itemIndex)
+			{
+				var row = _temp.selectedRow;
+					
+				if (itemIndex != null)
+				{
+					// Find row via itemindex.
+					for (i in _elements["rows"])
+					{				
+						if (_elements["rows"][i].itemIndex == itemIndex)
+						{					
+							row = i;
+							break;
+						}			
+					}			
+					
+					// If the itemindex was not found, then there is no need to continue.
+					return;
+				}		
+					
+				removeRow (row);		
+			}
 			
 			// ------------------------------------
-			// removeRow
+			// removeAllItems
+			// ------------------------------------					
+			function removeAllItems ()
+			{
+				_attributes.items = new Array ();
+				refresh ();
+				eventOnChange ();
+			}
+																																		
+			// ------------------------------------
+			// removeRow ([row])
 			// ------------------------------------					
 			function removeRow (row)
-			{			
-				var currentindentdepth = _elements["rows"][row].indentDepth;
-						
-				_attributes.items.splice (_elements["rows"][row].itemIndex, 1);
-				_temp.selectedRow = -1;
-				_temp.isDirty = true;
-		
-				refresh ();		
-		
-				if (!_attributes.treeview)
+			{				
+				// Check if row is valid.		
+				if (row != -1 && row <= _elements.rows.length)
 				{
-					if (row < _elements.rows.length)
-					{
-						setSelectedRow (row );
-					}				
-					else
-					{
-						setSelectedRow (row - 1);
-					}
+					// Remove item from item list.
+					var currentindentdepth = _elements["rows"][row].indentDepth;
+					_attributes.items.splice (_elements["rows"][row].itemIndex, 1);
+					_temp.isDirty = true;
+								
+					// If row was the selected one, we need to deal with that.
+					if (row == _temp.selectedRow)
+					{							
+						_temp.selectedRow = -1;
+					
+						var currentindentdepth = _elements["rows"][row].indentDepth;
+			
+						if (!_attributes.treeview)
+						{										
+							// Top row removed with rows below.
+							if (row == 0 && _elements.rows.length > 1)
+							{
+								_temp.selectedRow = 0;
+							}
+							// Bottom row removed with no rows below.
+							else if (row == (_elements.rows.length - 1))
+							{
+								_temp.selectedRow = (row - 1);
+							}
+							// Middle row removed with rows below.				
+							else if (row < _elements.rows.length)
+							{
+								_temp.selectedRow = row;
+							}
+						}
+						else
+						{					
+							
+							if ((row < _elements.rows.length - 1) && _elements.rows[row+1].indentDepth == currentindentdepth)
+							{
+								_temp.selectedRow = row;
+							}
+							// Bottom row removed with no rows below.
+							else if (row == (_elements.rows.length - 1))
+							{						
+								_temp.selectedRow = (row - 1);					
+							}
+							// Bottom row removed with rows below that are not at the same depth.
+							else if ((row < _elements.rows.length -1) && (_elements.rows[row+1].indentDepth != currentindentdepth))
+							{
+								_temp.selectedRow = (row - 1);
+							}					
+						}			
+					}			
+				
+					refresh ();		
+					eventOnChange ();				
 				}
 				else
 				{
-					// If there is a row belove with same depth move cursor down.
-					if (row < _elements.rows.length && _elements.rows[row].indentDepth == currentindentdepth)
-					{
-						setSelectedRow (row);
-					}
-					else
-					{
-						// Since there where no row below with same depth, search for row above with same depth.
-						// If no row is found above, cursor will be deselected.
-						for (index = row -1 ; index >= 0; index--)
-						{
-							if (_elements.rows[index].indentDepth == currentindentdepth)
-							{
-								setSelectedRow (index);
-								break;				
-							}
-							else if (_elements.rows[index].indentDepth < currentindentdepth)
-							{
-								break;
-							}					
-						}
-					}
+					throw "Cannot remove row "+ row +" of "+ (_elements.rows.length - 1) +"";	
 				}
-				
-				eventOnChange ();
 			}	
 			
 			// ------------------------------------
@@ -4661,13 +5533,13 @@ var SNDK =
 				
 				_attributes.items[index1] = temp2;
 				_attributes.items[index2] = temp1;
-		
+			
 				_temp.isDirty = true;
 				refresh ();
 				eventOnChange ();
 			}
-		
-		
+			
+			
 			// ------------------------------------
 			// getNumberOfRowChildren (row)
 			// ------------------------------------		
@@ -4677,390 +5549,119 @@ var SNDK =
 			
 				if (_attributes.treeview)
 				{
-					for (index = row + 1; index < _elements.rows.length; index++)
+					for (i = (row + 1); i < _elements.rows.length; i++)
 					{
-						if (_elements.rows[index].indentDepth == _elements.rows[row].indentDepth || _elements.rows[index].indentDepth < _elements.rows[row].indentDepth)
-						{
+						if (_elements.rows[i].indentDepth == _elements.rows[row].indentDepth || _elements.rows[i].indentDepth < _elements.rows[row].indentDepth)
+						{				
 							break;
 						}
-						
-						result++;
+						result++;			
 					}
 				}
 				
 				return result;	
 			}
-		
-				
+			
+			// ------------------------------------
+			// addItem (item)
+			// ------------------------------------				
 			function addItem (item)
 			{
+				var result = 0;
+			
 				if (_attributes.unique)
 				{					
-					for (index in _attributes.items)
+					for (i in _attributes.items)
 					{
-						if (_attributes.items[index][_attributes.uniqueColumn] == item[_attributes.uniqueColumn])
-						{
-							return;
+						if (_attributes.items[i][_attributes.uniqueColumn] == item[_attributes.uniqueColumn])
+						{					
+							result = i;
+							return i;
 						}
-					}		
+					}				
 				}
-				
+			
+				result = _attributes.items.length;
+				_attributes.items[result] = derefItem (item);			
 					
-				_attributes.items[_attributes.items.length] = derefItem (item);
 				_temp.isDirty = true;
-			}	
-			
-			// ------------------------------------
-			// Public functions
-			// ------------------------------------						
-			// ------------------------------------
-			// refresh
-			// ------------------------------------				
-			function functionRefresh ()
-			{
-				refresh ();
-			}	
 				
-		
-			// ------------------------------------
-			// addItems
-			// ------------------------------------								
-			function functionAddItems (items)
-			{
-				for (index in items)
-				{
-					addItem (items[index]);
-				}
-		
-				if (_temp.initialized)
-				{
-					refresh ();
-					eventOnChange ();
-				}		
-			}
-				
-			// ------------------------------------
-			// addItem
-			// ------------------------------------						
-			function functionAddItem (item)
-			{		
-				addItem (item);
-					
-				if (_temp.initialized)
-				{
-			//		var newitem = new Array ();
-			//		for (index in item)
-			//		{
-			//			newitem[index] = item[index];
-			//		}
-					
-		//			_attributes.items[_attributes.items.length] = derefItem (item);
-					
-					
-					refresh ();
-					eventOnChange ();		
-				}
-		//		else
-		//		{			
-		//			_attributes.items[_attributes.items.length] = derefItem (item);
-		//		}
-			
-			// TODO: fix this
-		//		var newitem = new Array ();	
-		//		for (index in item)
-		//		{
-		//			if (isNaN (index))
-		//			{
-		//				newitem[index] = item[index];					
-		//			}
-		//			else
-		//			{
-		//				if (_attributes.columns[index].tag != null)
-		//				{
-		//					newitem[_attributes.columns[index].tag] = item[index];
-		//				}
-		//				else
-		//				{
-		//					newitem[index] = item[index];
-		//				}		
-		//			}
-		//		}
-				
+				return result
 			}	
 				
 			// ------------------------------------
-			// removeItem
-			// ------------------------------------						
-			function functionRemoveItem (row)
+			// derefItem
+			// ------------------------------------
+			function derefItem (item)
 			{
-				if (row != null)
-				{
-					removeRow (row);				
-				}
-				else if (_temp.selectedRow >= 0)
+				var result = new Array ();
+									
+				for (key in item)
 				{				
-					removeRow (_temp.selectedRow);
-				}				
+					var columnname = null;
+					var condense;
+					var value;
+								
+					for (index in _attributes.columns)			
+					{
+						var column = _attributes.columns[index];
+			//				if (c.condense != null)
+			//				{	
+			//					if (c.tag == key)
+			//					{
+			//						column = c.tag;
+			//						condense = c.condense;
+			//						break;
+			//					}
+			//				}
+						if (column.tag == key)
+						{									
+							columnname = column.tag;
+							break;
+						}				
+					}
+			
+					if (columnname == null)
+					{			
+						continue;
+					}
+								
+			//			if ((typeof(item[key]) == "object") && (column.visible == true))
+			//			{
+			//				value = "";
+			//				for (index2 in item[key])
+			//				{									
+			//					value += item[key][index2]["value"] +", ";
+			//				}				
+			//					
+			//				value = SNDK.string.trimEnd (value, ", ");							
+			//			}
+			//			else				
+			//			{
+						value = item[key];				
+			//			}										
+																
+					result[columnname] = value;
+				}
+								
+				return result;		
 			}	
 			
 			// ------------------------------------
-			// moveItemUp
-			// ------------------------------------						
-			function functionMoveItemUp (row)
+			// derefItems
+			// ------------------------------------	
+			function derefItems (array)
 			{
-				if (row == null)
-				{
-					row = _temp.selectedRow;
-				}
-		
-				var from;
-				var to;
-		
-				if (!_attributes.treeview)
-				{
-					if (row > 0)
-					{
-						moveItem (row, row - 1);
-						setSelectedRow (row - 1);
-						
-						from = row;
-						to = row -1;
-					}		
-				}
-				else
-				{
-					if (row > 0)
-					{
-				
-						if (_elements.rows[row - 1].indentDepth == _elements.rows[row].indentDepth)
-						{	
-							moveItem (row, row - 1);
-							setSelectedRow (row - 1);		
-							
-							from = row;
-							to = row - 1;
-		
-						}
-						else
-						{
-							for (index = row - 1; index >= 0; index--)
-							{
-								if (_elements.rows[index].indentDepth == _elements.rows[row].indentDepth)
-								{
-									var row1 = row;
-									var row2 = index;
-									moveItem (row1, row2);
-									setSelectedRow (row2);
-									
-									from = row1;
-									to = row2;
-									
-									break;				
-								}
-								else if (_elements.rows[index].indentDepth < _elements.rows[row].indentDepth)
-								{
-									break;
-								}					
-							}				
-						}								
-					}
-				}	
-				
 				var result = new Array ();
-				result[0] = from;
-				result[1] = to;
 				
-				return result;			
-			}
-			
-			// ------------------------------------
-			// moveItemDown
-			// ------------------------------------								
-			function functionMoveItemDown (row)
-			{
-				if (row == null)
-				{
-					row = _temp.selectedRow;
+				for (i in array)
+				{			
+					result[result.length] = derefItem (array[i]);
 				}
-				
-				var from;
-				var to;
-		
-				if (!_attributes.treeview)
-				{
-					if (row < _elements.rows.length - 1)
-					{
-						moveItem (row, row + 1);
-						setSelectedRow (row + 1);
-						
-						from = row;
-						to = row + 1;
-					}
-				}
-				else
-				{
-					if (row < _elements.rows.length)
-					{
-						if (_elements.rows[row + 1].indentDepth == _elements.rows[row].indentDepth)
-						{	
-							moveItem (row, row + 1);
-							setSelectedRow (row + getNumberOfRowChildren (row + 1) + 1);
-							
-							from = row;
-							to = row + 1;
-						}
-						else
-						{
-							var row1 = row;
-							var row2 = null;
-							var row3 = null;															
-		
-							for (index = row + 1; index < _elements.rows.length; index++)
-							{
-								if (_elements.rows[index].indentDepth == _elements.rows[row].indentDepth)
-								{	
-									if (row2 == null)
-									{
-										row2 = index;
-									}		
-									else
-									{
-										row3 = index - row2;
-										break;
-									}
-									
-								}
-								else if (_elements.rows[index].indentDepth < _elements.rows[row].indentDepth)
-								{
-									break;
-								}					
-							}				
-							
-							if (row3 == null)
-							{
-								row3 = row1 + 1;
-							}
-							
-							if (row2 != null)
-							{					
-								moveItem (row1, row2);
-								setSelectedRow (row3);				
-								
-								from = row1;
-								to = row3; 
-							}
-						}				
-					}
-				}
-				
-				var result = new Array ();
-				result[0] = from;
-				result[1] = to;
-				
-				return result;
-			}
-			
-			// ------------------------------------
-			// removeAllItems
-			// ------------------------------------						
-			function functionRemoveAllItems ()
-			{
-				_attributes.items = new Array ();
-				refreshItems ();
-				eventOnChange ();
-			}			
-		
-			// ------------------------------------
-			// canItemMove
-			// ------------------------------------						
-			function functionCanItemMove (row)
-			{
-				var result = {up: false, down: false};
-				
-				if (!row)
-				{
-					row = _temp.selectedRow;
-				}
-				
-				// Figure out if item can move UP
-				if (!_attributes.treeview)
-				{
-					if (row > 0)
-					{
-						result.up = true;
-					}		
-				}
-				else
-				{
-					if (row > 0)
-					{
-				
-						if (_elements.rows[row - 1].indentDepth == _elements.rows[row].indentDepth)
-						{	
-							result.up = true;
-						}
-						else
-						{
-							for (index = row - 1; index >= 0; index--)
-							{
-								if (_elements.rows[index].indentDepth == _elements.rows[row].indentDepth)
-								{
-									result.up = true;
-									break;				
-								}
-								else if (_elements.rows[index].indentDepth < _elements.rows[row].indentDepth)
-								{
-									break;
-								}					
-							}				
-						}								
-					}
-				}		
-				
-				// Figure out if item can move DOWN
-				if (!_attributes.treeview)
-				{
-					if (row < _elements.rows.length - 1)
-					{
-						result.down = true;
-					}
-				}
-				else
-				{
-					if (row < _elements.rows.length)
-					{
-						if (_elements.rows[row + 1].indentDepth == _elements.rows[row].indentDepth)
-						{	
-							result.down = true;
-						}
-						else
-						{				
-							for (index = row + 1; index < _elements.rows.length; index++)
-							{
-								if (_elements.rows[index].indentDepth == _elements.rows[row].indentDepth)
-								{	
-									result.down = true;
-								}
-								else if (_elements.rows[index].indentDepth < _elements.rows[row].indentDepth)
-								{
-									break;
-								}					
-							}									
-						}				
-					}
-				}		
-						
-				return result;
-			}
-				
-			
-			function functionGetItemRow ()
-			{
-				return _temp.selectedRow;
-			
-			}
-			
-			
+					
+				return result;				
+			}		
+					
 			// ------------------------------------
 			// getAttribute
 			// ------------------------------------						
@@ -5089,7 +5690,7 @@ var SNDK =
 						{
 							return _attributes.width + "%";
 						}
-		
+			
 						if (_attributes.widthType == "pixel")
 						{
 							return _attributes.width + "px";
@@ -5102,7 +5703,7 @@ var SNDK =
 						{
 							return _attributes.height + "%";
 						}
-		
+			
 						if (_attributes.heightType == "pixel")
 						{
 							return _attributes.height + "px";
@@ -5123,17 +5724,27 @@ var SNDK =
 					{
 						return _attributes[attribute];			
 					}			
-		
+			
+					case "onClick":
+					{
+						return _attributes[attribute];			
+					}			
+			
+					case "onDoubleClick":
+					{
+						return _attributes[attribute];			
+					}			
+			
 					case "onFocus":
 					{
 						return _attributes[attribute];			
 					}			
-		
+			
 					case "onBlur":
 					{
 						return _attributes[attribute];			
 					}			
-		
+			
 					case "onChange":
 					{
 						return _attributes[attribute];			
@@ -5143,7 +5754,7 @@ var SNDK =
 					{		
 						return _temp.selectedRow;
 					}					
-		
+			
 					case "treeview":
 					{		
 						return _attributes.treeview;				
@@ -5206,7 +5817,7 @@ var SNDK =
 					case "managed":
 					{
 						_attributes[attribute] = value;
-		
+			
 						if (value)
 						{
 							window.removeEvent (window, 'SUIREFRESH', refresh);		
@@ -5215,7 +5826,7 @@ var SNDK =
 						{
 							window.addEvent (window, 'SUIREFRESH', refresh);
 						}
-		
+			
 						break;
 					}
 					
@@ -5225,13 +5836,25 @@ var SNDK =
 						refresh ();
 						break;
 					}	
-		
+			
+					case "onClick":
+					{
+						_attributes[attribute] = value;
+						break;
+					}			
+			
+					case "onDoubleClick":
+					{
+						_attributes[attribute] = value;
+						break;
+					}			
+			
 					case "onFocus":
 					{
 						_attributes[attribute] = value;
 						break;
 					}			
-		
+			
 					case "onBlur":
 					{
 						_attributes[attribute] = value;
@@ -5249,7 +5872,7 @@ var SNDK =
 						setSelectedRow (value);
 						break;
 					}		
-		
+			
 					case "treeview":
 					{
 						_attributes[attribute] = value;
@@ -5263,6 +5886,16 @@ var SNDK =
 					}
 				}	
 			}						
+			// ------------------------------------
+			// Public functions
+			// ------------------------------------						
+			// ------------------------------------
+			// refresh
+			// ------------------------------------				
+			function functionRefresh ()
+			{
+				refresh ();
+			}			
 			
 			// ------------------------------------
 			// dispose
@@ -5270,86 +5903,24 @@ var SNDK =
 			function functionDispose ()
 			{
 				dispose ();
-			}		
-							
-							
+			}	
+								
 			// ------------------------------------
-			// Events
-			// ------------------------------------					
-			// ------------------------------------
-			// onFocus
-			// ------------------------------------					
-			function eventOnFocus ()
-			{
-				if (!_attributes.disabled)
-				{
-					if (!_attributes.focus)
-					{
-						_attributes.focus = true;
-						refresh ();
-		
-						if (_attributes.onFocus != null)
-						{
-							setTimeout( function ()	{ _attributes.onFocus (); }, 1);
-						}			
-					}				
-				}
-			}
-		
-			// ------------------------------------
-			// onBlur
-			// ------------------------------------							
-			function eventOnBlur ()
-			{
-				if (!_attributes.disabled)
-				{
-					if (_attributes.focus)
-					{	
-						_attributes.focus = false;
-						refresh ();
-		
-						if (_attributes.onBlur != null)
-						{
-							setTimeout( function ()	{ _attributes.onBlur (); }, 1);
-						}			
-					}	
-				}
-			}
-		
-			// ------------------------------------
-			// onChange
-			// ------------------------------------							
-			function eventOnChange ()
-			{
-				if (!_attributes.disabled)
-				{		
-					if (_attributes.onChange != null)
-					{
-						setTimeout( function ()	{ _attributes.onChange (); }, 1);
-					}			
-				}
-			}
-		
-			// ------------------------------------
-			// onItemClick
-			// ------------------------------------							
-			function eventOnRowClick ()
-			{
-				if (!_attributes.disabled)
-				{		
-		
-					setSelectedRow (this.id.split("_")[1])
+			// addItem
+			// ------------------------------------						
+			function functionAddItem (item)
+			{					
+				var result = addItem (item);
 					
-					eventOnChange ();
-									
-		//			if (_attributes.onClick != null)
-		//			{
-		//				setTimeout( function ()	{ _attributes.onClick (); }, 1);
-		//			}							
+				if (_temp.initialized)
+				{
+					refresh ();
+					eventOnChange ();		
 				}
-			}
-		
-		
+				
+				return result;
+			}	
+			
 			// ------------------------------------
 			// getItem
 			// ------------------------------------						
@@ -5374,7 +5945,7 @@ var SNDK =
 						}
 					}	
 				}
-			}
+			}	
 			
 			// ------------------------------------
 			// setItem
@@ -5384,8 +5955,18 @@ var SNDK =
 				if (_temp.initialized)
 				{					
 					if (row != null)
-					{			
-						_attributes.items [_element.rows[row].itemIndex] = derefItem (item);
+					{	
+						
+			//				for (index in _elements.rows)
+			//				{
+			//					if (_element.rows[row].itemIndex == row)
+			//					{
+						_attributes.items [row] = derefItem (item);
+			//					}				
+			//				}
+							
+			//				_attributes.items [_element.rows[row].itemIndex] = derefItem (item);							
+						
 						_temp.isDirty = true;
 						refresh ();								
 					}
@@ -5398,16 +5979,41 @@ var SNDK =
 					
 					eventOnChange ();
 				}
-			}
-		
+			}	
+				
+			// ------------------------------------
+			// removeItem
+			// ------------------------------------						
+			function functionRemoveItem (itemIndex)
+			{	
+				removeItem (itemIndex);	
+			}	
+				
+			// ------------------------------------
+			// addItems
+			// ------------------------------------								
+			function functionAddItems (items)
+			{
+				for (i in items)
+				{
+					addItem (items[i]);
+				}
+			
+				if (_temp.initialized)
+				{
+					refresh ();
+					eventOnChange ();
+				}		
+			}	
+			
 			// ------------------------------------
 			// getItems
 			// ------------------------------------						
 			function functionGetItems ()
 			{
 				return _attributes.items;
-			}
-		
+			}	
+			
 			// ------------------------------------
 			// setItems
 			// ------------------------------------						
@@ -5419,20 +6025,390 @@ var SNDK =
 					
 					if (_temp.initialized)
 					{
-		//			_attributes.items = items;
+			//			_attributes.items = items;
 						_temp.isDirty = true;
 						refresh ();			
 						eventOnChange ();
 					}
 				}
+			}	
+			
+			// ------------------------------------
+			// removeAllItems
+			// ------------------------------------						
+			function functionRemoveAllItems ()
+			{
+				removeAllItems ();	
+			}	
+				
+			// ------------------------------------
+			// removeRow
+			// ------------------------------------						
+			function functionRemoveRow (row)
+			{
+				if (row != null)
+				{	
+					removeRow (row);
+				}
+				else		
+				{
+					removeRow (_temp.selectedRow);
+				}
+			}		
+			
+			// ------------------------------------
+			// canItemMove
+			// ------------------------------------						
+			function functionCanItemMove (row)
+			{
+				var result = {up: false, down: false};
+			
+				if (!row)
+				{
+					row = _temp.selectedRow;
+				}
+			
+				// Figure out if item can move up.
+				if (!_attributes.treeview)
+				{
+					if (row > 0)
+					{
+						result.up = true;
+					}
+				}
+				else
+				{
+					if (row > 0)
+					{	
+						if (_elements.rows[row - 1].indentDepth == _elements.rows[row].indentDepth)
+						{	
+							result.up = true;
+						}
+						else
+						{
+							for (i = (row - 1); i >= 0; i--)
+							{
+								if (_elements.rows[i].indentDepth == _elements.rows[row].indentDepth)
+								{
+									result.up = true;
+									break;				
+								}
+								else if (_elements.rows[i].indentDepth < _elements.rows[row].indentDepth)
+								{
+									break;
+								}					
+							}				
+						}								
+					}
+				}
+				
+				// Figure out if item can move down.
+				if (!_attributes.treeview)
+				{
+					if (row < _elements.rows.length - 1)
+					{
+						result.down = true;
+					}
+				}
+				else
+				{
+					if (row < (_elements.rows.length - 1))
+					{
+						if (_elements.rows[row + 1].indentDepth == _elements.rows[row].indentDepth)
+						{	
+							result.down = true;
+						}
+						else
+						{				
+							for (i = (row + 1); i < _elements.rows.length; i++)
+							{
+								if (_elements.rows[i].indentDepth == _elements.rows[row].indentDepth)
+								{	
+									result.down = true;
+								}
+								else if (_elements.rows[i].indentDepth < _elements.rows[row].indentDepth)
+								{
+									break;
+								}					
+							}									
+						}				
+					}	
+				}
+			
+				return result;
 			}
-		}
-		
-		
-		
-		
-		
-		,
+			
+			// ------------------------------------
+			// moveItemUp
+			// ------------------------------------						
+			function functionMoveItemUp (row)
+			{	
+				var from;
+				var to;
+				var select;
+				
+				// If no row given, just use the currently selected one.
+				if (!row )
+				{		
+					row = _temp.selectedRow;				
+				}
+				
+				// Check if row is valid.
+				if ((row >= _elements.rows.length) || (row == -1))
+				{
+					throw "Cannot move row '"+ row +"' of "+ (_elements.rows.length - 1) +"";
+				}
+				
+				// If row is not the first, than lets continue.
+				if (row > 0)
+				{		
+					if (!_attributes.treeview)
+					{			
+						from = row;
+						to = (row -1);
+						select = (row - 1);
+					}				
+					else
+					{
+						// If row above is of same depth, just move up.	
+						if (_elements.rows[(row - 1)].indentDepth == _elements.rows[row].indentDepth)
+						{	
+							from = row;
+							to = (row - 1);
+							select = (row - 1);
+						}			
+						else
+						{
+							// Figure out how many rows we need to move up before we hit a row on the same depth, if it exists.
+							for (i = (row - 1); i >= 0; i--)
+							{
+								if (_elements.rows[i].indentDepth == _elements.rows[row].indentDepth)
+								{						
+									from = row;
+									to = i;
+									select = i;
+									
+									break;				
+								}
+								else if (_elements.rows[i].indentDepth < _elements.rows[row].indentDepth)
+								{
+									break;
+								}					
+							}				
+						}								
+					}
+				}	
+					
+				// Move rows around, but only if eveything is ok.
+				if ((from != null) && (to != null) && (select != null))
+				{
+					moveItem (from, to);
+					setSelectedRow (select);
+				}
+				else
+				{
+					throw "Cannot move row '"+ row +"' of "+ (_elements.rows.length - 1) +"";
+				}
+				
+				// Create result.
+				var result = new Array ();
+				result[0] = from;
+				result[1] = to;
+				
+				// All done.	
+				return result;			
+			}
+			
+			// ------------------------------------
+			// moveItemDown
+			// ------------------------------------								
+			function functionMoveItemDown (row)
+			{	
+				var from;
+				var to;
+				var select;
+			
+				// If no row given, just use the currently selected one.
+				if (!row)
+				{
+					row = _temp.selectedRow;
+				}
+				
+				// Check if row is valid.
+				if ((row >= _elements.rows.length) || (row == -1))
+				{
+					throw "Cannot move row '"+ row +"' of "+ (_elements.rows.length - 1) +"";
+				}
+				
+				// If row is not the last one, than lets continue.
+				if (row < (_elements.rows.length - 1))
+				{		
+					if (!_attributes.treeview)
+					{					
+						from = row;
+						to = (row + 1);
+						select = (row + 1);
+					}
+					else
+					{
+						// If row below i of same depth, just move down.
+						if (_elements.rows[(row + 1)].indentDepth == _elements.rows[row].indentDepth)
+						{												
+							from = row;
+							to = (row + 1);
+							select = row + (getNumberOfRowChildren ((row + 1)) + 1)
+						}
+						else
+						{										
+							// Figure out how many rows we need to move down before we hit a row of the same depth, if it exists.
+							for (i = (row + 1); i < _elements.rows.length; i++)
+							{																		
+								if (_elements.rows[i].indentDepth == _elements.rows[row].indentDepth)
+								{
+									to = i;
+									break;
+								}
+							}
+											
+							from = row;								
+							select = (from + getNumberOfRowChildren (to) + 1)
+						}				
+					}
+				}
+				
+				// Move rows around, but only if eveything is ok.
+				if ((from != null) && (to != null) && (select != null))
+				{
+					moveItem (from, to);
+					setSelectedRow (select);
+				}
+				else
+				{
+					throw "Cannot move row '"+ row +"' of "+ (_elements.rows.length - 1) +"";
+				}
+				
+				// Create result.
+				var result = new Array ();
+				result[0] = from;
+				result[1] = to;
+				
+				// All done.
+				return result;
+			}
+			
+			// ------------------------------------
+			// getItemRow
+			// ------------------------------------		
+			function functionGetItemRow ()
+			{
+				return _temp.selectedRow;
+			
+			}
+			// ------------------------------------
+			// Events
+			// ------------------------------------					
+			// ------------------------------------
+			// onFocus
+			// ------------------------------------					
+			function eventOnFocus ()
+			{
+				if (!_attributes.disabled)
+				{
+					if (!_attributes.focus)
+					{
+						_attributes.focus = true;
+						refresh ();
+			
+						if (_attributes.onFocus != null)
+						{
+							setTimeout( function ()	{ _attributes.onFocus (); }, 1);
+						}			
+					}				
+				}
+			}
+			
+			// ------------------------------------
+			// onBlur
+			// ------------------------------------							
+			function eventOnBlur ()
+			{
+				if (!_attributes.disabled)
+				{
+					if (_attributes.focus)
+					{	
+						_attributes.focus = false;
+						refresh ();
+			
+						if (_attributes.onBlur != null)
+						{
+							setTimeout( function ()	{ _attributes.onBlur (); }, 1);
+						}			
+					}	
+				}
+			}
+			
+			// ------------------------------------
+			// onChange
+			// ------------------------------------							
+			function eventOnChange ()
+			{
+				if (!_attributes.disabled)
+				{		
+					if (_attributes.onChange != null)
+					{
+						setTimeout( function ()	{ _attributes.onChange (); }, 1);
+					}			
+				}
+			}
+			
+			// ------------------------------------
+			// onItemClick
+			// ------------------------------------							
+			function eventOnRowClick ()
+			{
+				if (!_attributes.disabled)
+				{	
+					var row = this.id.split("_")[1];	
+					var doubleclick = false;
+												
+					if (((SNDK.tools.getTicks () - _temp.doubleClickTicks) < 500) && (row == _temp.doubleClickRow) )
+					{			
+						_temp.doubleClickTicks = 0;
+						doubleclick = true;
+					}
+					else
+					{
+						_temp.doubleClickTicks = SNDK.tools.getTicks ();
+						_temp.doubleClickRow = row;
+					}
+					
+					if ((row == _temp.selectedRow) && (doubleclick == false))
+					{
+						row = -1;
+					}
+					
+					setSelectedRow (row)
+					
+					eventOnChange ();
+												
+					if (doubleclick)
+					{
+						if (_attributes.onDoubleClick != null)
+						{
+							setTimeout( function ()	{ _attributes.onDoubleClick (); }, 1);
+						}							
+					}
+					else
+					{
+						if (_attributes.onClick != null)
+						{
+							setTimeout( function ()	{ _attributes.onClick (); }, 1);
+						}							
+					}
+				}
+			}
+						
+		},
 	
 		// -------------------------------------------------------------------------------------------------------------------------
 		// checkbox ([attributes])
@@ -6025,6 +7001,754 @@ var SNDK =
 		},
 	
 		// -------------------------------------------------------------------------------------------------------------------------
+		// layoutbox ([attributes])
+		// -------------------------------------------------------------------------------------------------------------------------
+		//
+		// .addPanel ({tag, size})
+		// .getPanel (tag)
+		//
+		//	.addUIElement (uielement)
+		//	.getAttribute (string)
+		//	.setAttribute (string, string)
+		//
+		//		tag		get/set
+		//
+		// .getAttribute (string)
+		// .setAttribute (string, string)
+		//	
+		//	id		get
+		//	tag		get/set
+		//	stylesheet	get/set
+		//	width		get/set
+		//	height		get/set
+		//	appendTo	get/set			
+		//	managed		get/set
+		//
+		// CHANGELOG:
+		//
+		// v1.01:
+		//	- Added managed mode.
+		//	- Fixed panel render, should now be more accurate and faster.
+		//
+		// v1.00:
+		//	- Initial release.
+		
+		/**
+		 * @constructor
+		 */
+		layoutbox : function (attributes)
+		{
+			var _elements = new Array ();
+			var _attributes = attributes;
+			var _temp = 	{ initialized: false,
+				 	  cache: new Array (),
+				 	  contentHeight: 0
+					};
+		
+			_attributes.id = SNDK.tools.newGuid ();
+			
+			setAttributes ();	
+			
+			// Private functions
+			this._attributes = _attributes;
+			this._elements = _elements;
+			this._temp = _temp;	
+			this._init = init;	
+			
+			this._height = getContainerHeight ();
+			
+			// Functions		
+			this.refresh = functionRefresh;	
+			this.dispose = functionDispose;
+			this.addPanel = functionAddPanel;
+			this.getPanel = functionGetPanel;		
+			this.setAttribute = functionSetAttribute;
+			this.getAttribute = functionGetAttribute;
+		
+			// Construct
+			construct ();
+										
+			// Initialize
+			SNDK.SUI.addInit (this);
+				
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------		
+			function init ()
+			{
+				updateCache ();
+			}
+			
+			// ------------------------------------
+			// construct
+			// ------------------------------------	
+			function construct ()
+			{
+				// Container
+				_elements["container"] = SNDK.tools.newElement ("div", {});
+				_elements["container"].setAttribute ("id", _attributes.id);
+																	
+				// Hook Events
+				window.addEvent (window, 'SUIREFRESH', refresh);				
+			}	
+				
+			// ------------------------------------
+			// refresh
+			// ------------------------------------		
+			function refresh ()
+			{	
+				// Only refresh if control has been initalized.	
+				if (_temp.initialized)
+				{		
+					_elements["container"].className = _attributes.stylesheet;	
+				}
+				
+				setDimensions ();
+			}
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------			
+			function dispose ()
+			{
+				window.removeEvent (window, 'SUIREFRESH', refresh);				
+			}
+			
+			// ------------------------------------
+			// updateCache
+			// ------------------------------------		
+			function updateCache ()
+			{
+				if (!_temp.cacheUpdated)
+				{
+					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
+					//_temp.cache["panelPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
+				}
+				
+				_temp.cacheUpdated = true;	
+			}	
+						
+						
+			function getContainerHeight ()
+			{
+				if (_temp.initialized)
+				{
+					return _elements["container"].style.container;
+				}
+				else
+				{
+					return 0;		
+				}
+			}
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				// Stylesheet
+				if (!_attributes.stylesheet) 
+					_attributes.stylesheet = "SUILayoutbox";	
+		
+				// Managed
+				if (!_attributes.managed)
+					_attributes.managed = false;				
+			
+				// Width
+				if (!_attributes.width) 
+					_attributes.width = "100%";				
+					
+				if (_attributes.width.substring (_attributes.width.length - 1) == "%")
+				{
+					_attributes.widthType = "percent";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
+				}
+				else
+				{
+					_attributes.widthType = "pixel";
+					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
+				}		
+				
+				// Height
+				if (!_attributes.height) 
+					_attributes.height = "100%";
+					
+				if (_attributes.height == "content")
+				{
+					_attributes.heightType = "content";
+				}
+				else if (_attributes.height.substring (_attributes.height.length - 1) == "%")
+				{
+					_attributes.heightType = "percent";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
+				}
+				else
+				{
+					_attributes.heightType = "pixel";
+					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
+				}								
+								
+				_attributes.panels = new Array ();							
+			}		
+								
+			// ------------------------------------
+			// setDimensions
+			// ------------------------------------
+			function setDimensions ()
+			{		
+				if (_temp.initialized)
+				{			
+					var width = {};	
+					var height = {};
+					var combinedheightofchildren = 0;
+		
+					if (!_attributes.managed && _attributes.widthType != "pixel")
+					{					
+						width.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
+					}
+					else
+					{			
+						if (_attributes.managed && _attributes.widthType == "percent")
+						{
+							width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
+							//console.log ("managed: "+ _attributes.managedWidth);
+						}
+						else
+						{
+							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
+						}			
+					}	
+		
+					if (!_attributes.managed && _attributes.heightType != "pixel")
+					{					
+						height.container = ((SNDK.tools.getElementInnerHeight (_elements["container"].parentNode) * _attributes.height) / 100) - _temp.cache.containerPadding["vertical"];
+					}
+					else
+					{									
+						if (_attributes.managed && _attributes.heightType == "content")
+						{
+							height.container = 200;
+						}
+						else if (_attributes.managed && _attributes.heightType == "percent")
+						{
+							height.container = _attributes.managedHeight - _temp.cache.containerPadding["vertical"];				
+							
+						}
+						else
+						{
+							height.container = _attributes.height - _temp.cache.containerPadding["vertical"];
+						}			
+					}	
+					
+					_elements["container"].style.width = width.container +"px";				
+					_elements["container"].style.height = height.container +"px"; 				
+					
+					//console.log ("layoutbox: "+ width.container +" x "+ height.container);
+					
+					var dynamics = new Array ();
+					var combinedsize = 0;						
+		
+					for (index in _attributes.panels)
+					{
+						if (_attributes.panels[index]._attributes.hidden)
+						{
+							continue;
+						}
+						
+						var size = 0;
+						var panel = _attributes.panels[index];
+										
+						switch (_attributes.panels[index]._attributes.sizeType)
+						{
+							case "percent":
+							{					
+								if (_attributes.type == "horizontal")
+								{
+									size =  Math.floor ((height.container * panel._attributes.size) / 100);
+								}
+								else if (_attributes.type == "vertical")
+								{
+									size =  Math.floor ((width.container * panel._attributes.size) / 100);
+								}											
+								combinedsize += size;							
+								break;
+							}
+							
+							case "pixel":
+							{
+								size = panel._attributes.size;					
+								combinedsize += size;					
+								break;
+							}				
+							
+							case "dynamic":
+							{
+								dynamics[dynamics.length] = index;
+		
+								continue;
+							}						
+						}
+		
+						_attributes.panels[index]._attributes.calculatedSize = size;											
+					}
+					
+					if (_attributes.type == "horizontal")
+					{	
+						dynamicsize = Math.floor ((height.container - combinedsize) / dynamics.length);
+					}
+					else if (_attributes.type == "vertical")
+					{
+						dynamicsize = Math.floor ((width.container - combinedsize) / dynamics.length);
+					}				
+													
+					for (index in dynamics)
+					{
+						_attributes.panels[dynamics[index]]._attributes.calculatedSize = dynamicsize;	
+					}		
+								
+					for (index in _attributes.panels)
+					{
+						if (_attributes.panels[index]._attributes.hidden)
+						{
+							continue;
+						}
+					
+						var panel = _attributes.panels[index];
+						var dimensions = {};
+						
+						var e = _attributes.panels[index]._elements["container"];
+		
+		
+						if (_attributes.type == "horizontal")
+						{
+							dimensions.width = width.container - SNDK.tools.getElementStyledPadding (e)["horizontal"];
+							dimensions.height = _attributes.panels[index]._attributes.calculatedSize - SNDK.tools.getElementStyledPadding (e)["vertical"];
+							dimensions.cssfloat = "none";
+						}
+						else if (_attributes.type == "vertical")
+						{
+							dimensions.width = _attributes.panels[index]._attributes.calculatedSize - SNDK.tools.getElementStyledPadding (e)["horizontal"];
+							dimensions.height = height.container - SNDK.tools.getElementStyledPadding (e)["vertical"];
+							dimensions.cssfloat = "left";				
+						}	
+						
+						e.style.width = dimensions.width +"px";
+						e.style.height = dimensions.height +"px";
+						e.style.cssFloat = dimensions.cssfloat;
+						
+						var combinedheightofchildren = 0;
+								
+						if (panel._attributes.canScroll)
+						{
+							for (index in panel._temp.uiElements)
+							{		
+								if (panel._temp.uiElements[index]._attributes.heightType == "pixel")
+								{									
+									combinedheightofchildren += parseInt (panel._temp.uiElements[index]._attributes.height);
+								}
+							}						
+						
+							if (combinedheightofchildren > dimensions.height)
+							{
+								dimensions.width = dimensions.width - window.scrollbarWidth;
+							}													
+						}					
+													
+						for (index in panel._temp.uiElements)
+						{
+							//console.log (panel._elements["container"].scrollTop)
+											
+							var scroll = panel._elements["container"].scrollTop;
+						
+							if (panel._temp.uiElements[index]._attributes.widthType == "percent")
+							{
+								panel._temp.uiElements[index]._attributes.managedWidth = (dimensions.width * panel._temp.uiElements[index]._attributes.width) / 100;
+							}
+					
+							if (panel._temp.uiElements[index]._attributes.heightType == "percent")
+							{
+								panel._temp.uiElements[index]._attributes.managedHeight = (dimensions.height * panel._temp.uiElements[index]._attributes.height) / 100;
+							}
+						
+							panel._temp.uiElements[index].refresh ();
+							
+							panel._elements["container"].scrollTop = scroll;
+						}								
+					}		
+				}
+			}				
+								
+			// ------------------------------------
+			// Public functions
+			// ------------------------------------		
+			// ------------------------------------
+			// refresh
+			// ------------------------------------				
+			function functionRefresh ()
+			{
+				refresh ();
+			}		
+			
+			// ------------------------------------
+			// dispose
+			// ------------------------------------				
+			function functionDispose ()
+			{
+				dispose ();
+			}	
+			
+			function newPanel (attributes)
+			{
+				var _attributes = attributes;
+				var _elements = new Array ();
+				var _temp =	{ uiElements: new Array (),
+							contentHeight: 0
+						}
+		
+				setAttributes ();
+				
+				// Private functions		
+				this._attributes = _attributes;
+				this._elements = _elements;
+				this._temp = _temp;
+		
+				// Functions						
+				this.addUIElement = functionAddUIElement;
+				this.getContentElement = functionGetContentElement;	
+				this.setAttribute = functionSetAttribute;
+				this.getAttribute = functionGetAttribute;
+				this.refresh = functionRefresh ();
+		
+				// Initialize
+				construct ();
+				
+				// ------------------------------------
+				// Private functions
+				// ------------------------------------
+				function construct ()
+				{
+					_elements["container"] = SNDK.tools.newElement ("div", {className: "Panel", appendTo: _attributes.appendTo});
+					
+					
+					if (_attributes.hidden)
+					{
+						_elements["container"].style.display = "none";
+					}
+											
+					if (_attributes.canScroll)
+					{
+					
+						_elements["container"].style.overflow = "auto";		
+					}		
+					else
+					{
+						//_elements["container"].style.overflow = "hidden";		
+					}
+				}
+				
+				function refresh ()
+				{
+					if (_attributes.hidden)
+					{
+						_elements["container"].style.display = "none";
+					}
+					else
+					{
+						_elements["container"].style.display = "block";							
+					}	
+				}
+				
+				// ------------------------------------
+				// setAttributes
+				// ------------------------------------																
+				function setAttributes ()
+				{
+					if (!_attributes.hidden) 
+						_attributes.hidden = false;
+						
+					if (!_attributes.size) 
+						_attributes.size = "*";	
+		
+					if (_attributes.size != "*")
+					{							
+						if (_attributes.size.substring (_attributes.size.length - 1) == "%")
+						{
+							_attributes.sizeType = "percent";
+							_attributes.size = parseInt (_attributes.size.substring (0, _attributes.size.length - 1));	
+						}
+						else
+						{
+							_attributes.sizeType = "pixel";
+							_attributes.size = parseInt (_attributes.size.substring (0, _attributes.size.length - 2));
+						}									
+					}
+					else
+					{
+						_attributes.sizeType = "dynamic";
+					}
+				}
+		
+				// ------------------------------------
+				// Public functions
+				// ------------------------------------				
+				// ------------------------------------
+				// addUIElement
+				// ------------------------------------																
+				function functionAddUIElement (element)
+				{
+					var count = _temp.uiElements.length;
+		
+				 	_temp.uiElements[count] = element;
+		 	
+				 	element.setAttribute ("managed", true);
+				 	element.setAttribute ("appendTo", _elements["container"]);
+				 	
+				 	_temp.contentHeight += parseInt (element.height); 		 	
+									 	
+				//  SNDK.SUI.refresh ();		 			 	 
+				}	
+				
+				function functionGetContentElement ()
+				{
+					return _elements["container"];		
+				}
+				
+				// ------------------------------------
+				// getAttribute
+				// ------------------------------------						
+				function functionGetAttribute (attribute)
+				{
+					switch (attribute)
+					{			
+						case "tag":
+						{
+							return _attributes[attribute];
+						}
+						
+						case "hidden":
+						{
+							return _attributes[attribute];				
+						}
+				
+						default:
+						{
+							throw "No attribute with the name '"+ attribute +"' exist in this object";
+						}
+					}	
+				}
+		
+				// ------------------------------------
+				// setAttribute
+				// ------------------------------------						
+				function functionSetAttribute (attribute, value)
+				{
+					switch (attribute)
+					{			
+						case "tag":
+						{
+							_attributes[attribute] = value;
+							break;
+						}
+						
+						case "hidden":
+						{
+							_attributes[attribute] = value;				
+							refresh ();
+							break;
+						}
+				
+						default:
+						{
+							throw "No attribute with the name '"+ attribute +"' exist in this object";
+						}
+					}	
+				}								
+			}
+			
+			// ------------------------------------
+			// addPanel
+			// ------------------------------------						
+			function functionAddPanel (attributes)
+			{
+				var count = _attributes.panels.length;
+				attributes.appendTo = _elements["container"];
+				attributes.parent = this;
+		
+				_attributes.panels[count] = new newPanel (attributes);
+											
+				refresh ();	
+				
+				return _attributes.panels[count];
+			}
+			
+			// ------------------------------------
+			// getPanel
+			// ------------------------------------						
+			function functionGetPanel (tag)
+			{
+				for (index in _attributes.panels)
+				{		
+					if (_attributes.panels[index].getAttribute ("tag") == tag)
+					{
+						return _attributes.panels[index];
+					}
+				}
+			}
+			
+			// ------------------------------------
+			// getAttribute
+			// ------------------------------------						
+			function functionGetAttribute (attribute)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						return _attributes[attribute];
+					}			
+		
+					case "tag":
+					{
+						return _attributes[attribute];
+					}			
+					
+					case "width":
+					{
+						if (_attributes.widthType == "percent")
+						{
+							return _attributes.width + "%";
+						}
+		
+						if (_attributes.widthType == "pixel")
+						{
+							return _attributes.width + "px";
+						}
+					}
+					
+					case "height":
+					{
+						if (_attributes.heightType == "percent")
+						{
+							return _attributes.height + "%";
+						}
+		
+						if (_attributes.heightType == "pixel")
+						{
+							return _attributes.height + "px";
+						}
+					}	
+					
+					case "appendTo":
+					{
+						return _attributes[attribute];			
+					}			
+					
+					case "managed":
+					{
+						return _attributes[attribute];			
+					}
+				
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}
+			}
+			
+			// ------------------------------------
+			// setAttribute
+			// ------------------------------------						
+			function functionSetAttribute (attribute, value)
+			{
+				switch (attribute)
+				{
+					case "id":
+					{
+						throw "Attribute with name ID is ready only.";
+						break;
+					}
+					
+					case "tag":
+					{
+						_attributes[attribute] = value;
+						break;
+					}
+					
+					case "stylesheet":
+					{
+						_attributes[attribute] = value;
+						break;				
+					}
+					
+					case "width":
+					{
+						if (value.substring (value.width.length, 3) == "%")
+						{
+							_attributes.widthType = "percent";
+							_attributes.width = value.width.substring (0, value.width.length - 1)			
+						}
+						else
+						{
+							_attributes.widthType = "pixel";
+							_attributes.width = value.width.substring (0, value.width.length - 2)
+						}	
+						break;			
+					}
+		
+					case "height":
+					{
+						if (value.substring (value.height.length, 3) == "%")
+						{
+							_attributes.heightType = "percent";
+							_attributes.height = value.height.substring (0, value.height.length - 1)			
+						}
+						else
+						{
+							_attributes.heightType = "pixel";
+							_attributes.height = value.height.substring (0, value.height.length - 2)
+						}	
+						break;			
+					}
+					
+					case "appendTo":
+					{
+						_attributes[attribute] = value;	
+						_attributes.appendTo.appendChild (_elements["container"]);			
+						break;
+					}			
+					
+					case "managed":
+					{
+						_attributes[attribute] = value;
+						
+						if (value)
+						{
+							window.removeEvent (window, 'SUIREFRESH', refresh);		
+						}
+						else
+						{
+							window.addEvent (window, 'SUIREFRESH', refresh);
+						}
+						
+						break;
+					}
+										
+					default:
+					{
+						throw "No attribute with the name '"+ attribute +"' exist in this object";
+					}
+				}	
+			}										
+							
+			// ------------------------------------
+			// Events
+			// ------------------------------------					
+		},
+	
+		// -------------------------------------------------------------------------------------------------------------------------
 		// button ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
@@ -6095,40 +7819,34 @@ var SNDK =
 				updateCache ();
 		
 				_attributes.heightType = "pixel";
-				_attributes.height = _temp.cache["containerPadding"]["vertical"] + _temp.cache["containerHeight"] +"px";		
+				_attributes.height = _temp.cache["containerBoxSize"]["vertical"] + _temp.cache["containerHeight"] +"px";
 			}
 			
 			// ------------------------------------
 			// construct
 			// ------------------------------------	
 			function construct ()
-			{								
-				// Container
-				_elements["container"] = SNDK.tools.newElement ("div", {});
-				_elements["container"].setAttribute ("id", _attributes.id);		
-				_elements["container"].className = _attributes.stylesheet;	
-					
-				// Left	
-				_elements["left"] = SNDK.tools.newElement ("div", {className: "Left", appendTo: _elements["container"]});
-		
-				// Center
-				_elements["center"] = SNDK.tools.newElement ("div", {className: "Center", appendTo: _elements["container"]});
-				SNDK.tools.textSelectionDisable (_elements["center"]);
-		
-				// Right
-				_elements["right"] = SNDK.tools.newElement ("div", {className: "Right", appendTo: _elements["container"]});	
+			{					
+				// Container					
+				_elements["container"] = SNDK.tools.newElement ("button", {});
+				_elements["container"].className = _attributes.stylesheet;
 				
-				// Clear
-				SNDK.tools.newElement ("div", {className: "Clear", appendTo: _elements["container"]});																						
-																			
+				// Icon
+				if (_attributes.icon)
+				{						
+					_elements["button-icon"] = SNDK.tools.newElement ("span", {appendTo: _elements["container"]});
+					
+					_elements["button-icon"].className = "button-icon "+ _attributes.iconColor;
+					_elements["button-icon"].style.cssFloat = "left";
+				
+					_elements["icon"] = SNDK.tools.newElement ("span", {appendTo: _elements["button-icon"]});
+					_elements["icon"].className = "icon-"+ _attributes.iconName;
+				}	
+																					
 				// Hook events	
 				_elements["container"].onfocus = eventOnFocus;
 				_elements["container"].onblur = eventOnBlur;
-				_elements["container"].onmousedown = eventOnMouseDown;
-				_elements["container"].onmouseup = eventOnMouseUp;			
-				_elements["container"].onmouseover = eventOnMouseOver;
-				_elements["container"].onmouseout = eventOnMouseOut;
-				_elements["container"].onkeyup = eventOnKeyUp;
+				_elements["container"].onclick = eventOnClick;				
 				_elements["container"].onkeydown = eventOnKeyDown;
 				
 				window.addEvent (window, 'SUIREFRESH', refresh);			
@@ -6141,46 +7859,40 @@ var SNDK =
 			{
 				if (_temp.initialized)
 				{
+					var style = _attributes.stylesheet;
+							
 					if (_attributes.disabled)
 					{
-						_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Disabled";
-						_elements["container"].removeAttribute("tabIndex");
+						_elements["container"].disabled = true;
 						_attributes.focus = false;
 						eventOnBlur ();				
 					}
 					else
-					{
-						//_elements["container"].setAttribute("tabIndex", 0);	
-						
+					{				
+						_elements["container"].disabled = false;
+					
+						if (_attributes.active)
+						{	
+							style += " active";						
+							_attributes.active = false;
+							setTimeout (refresh, 100);					
+						}				
+														
 						if (_attributes.focus)
-						{
-							if (_temp.mouseDown)
-							{
-								_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Focus "+ _attributes.stylesheet+"LeftClicked";
-							}
-							else
-							{
-								_elements["container"].className = _attributes.stylesheet +" "+ _attributes.stylesheet +"Focus";
-							}								
-							
+						{	
+							style += " focus";								
 							setFocus ();			
-						}
-						else
-						{
-							_elements["container"].className = _attributes.stylesheet;
 						}
 						
 						_elements["container"].tabIndex = _attributes.tabIndex;
 					}	
-						
-					_elements["center"].innerHTML = _attributes.label;
+								
+					SNDK.tools.setButtonLabel (_elements["container"], _attributes.label);						
 					
-					//console.log (_attributes.tabIndex)
-					
-					
-				}
+					_elements["container"].className = style;
 				
-				setDimensions ();
+					setDimensions ();
+				}		
 			}	
 			
 			// ------------------------------------
@@ -6198,9 +7910,8 @@ var SNDK =
 			{
 				if (!_temp.cacheUpdated)
 				{
-					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
-					_temp.cache["containerWidth"] = (SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]));
-					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["left"]);
+					_temp.cache["containerBoxSize"] = SNDK.tools.getElementStyledBoxSize (_elements["container"]);			
+					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["container"]);
 				}
 				
 				_temp.cacheUpdated = true;	
@@ -6213,7 +7924,7 @@ var SNDK =
 			{					
 				// Stylesheet
 				if (!_attributes.stylesheet)
-					_attributes.stylesheet = "SUIButton";			
+					_attributes.stylesheet = "button white-gradient glossy";			
 					
 				// Managed
 				if (!_attributes.managed)
@@ -6234,6 +7945,21 @@ var SNDK =
 					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
 				}						
 										
+				// Icon
+				if (!_attributes.icon)
+				{
+					_attributes.icon = false;
+				}
+				else
+				{
+					_attributes.iconName = _attributes.icon;
+					_attributes.icon = true;
+				}	
+					
+				// IconColor
+				if (!_attributes.iconColor)
+					_attributes.iconColor = "";	
+										
 				// Label
 				if (!_attributes.label)
 					_attributes.label = "BUTTON";	
@@ -6245,6 +7971,10 @@ var SNDK =
 				// Focus	
 				if (!_attributes.focus)
 					_attributes.focus = false;
+					
+				// Active
+				if (!_attributes.active)
+					_attributes.active = false;
 					
 				// TabIndex
 				if (!_attributes.tabIndex)
@@ -6258,63 +7988,37 @@ var SNDK =
 			{
 				if (_temp.initialized)
 				{
-					var width = {};
-					
-					if (!_attributes.managed && _attributes.widthType != "pixel")
-					{					
-						width.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
+					var width = 0;
+				
+					//if (!_attributes.managed && _attributes.widthType != "pixel")
+					if (_attributes.widthType != "pixel")
+					{
+					//	console.log (SNDK.tools.getElementInnerWidth (_elements["container"].parentNode))
+						
+																													
+						width = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100);
+						
+					//	console.log (width)
 					}
 					else
-					{			
-						if (_attributes.managed && _attributes.widthType == "percent")
-						{
-							width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
-						}
-						else
-						{
-							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
-						}			
+					{	
+						width = _attributes.width ;
 					}	
 					
-					width.center = width.container - _temp.cache.containerWidth;
-		
-					_elements["container"].style.width = width.container +"px";
-					_elements["center"].style.width = width.center +"px";		
+					_elements["container"].style.width = width - _temp.cache.containerBoxSize["horizontal"] +"px";
+					
+					//console.log (_temp.cache.containerBoxSize["horizontal"])
+					
 				}
 			}
-				
-		//	function setDimensions2 ()
-		//	{
-		//		if (_temp.initialized)
-		//		{
-		//			var containerwidth = SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]);
-				
-		//			if (_attributes.widthType == "percent")
-		//			{								
-			//			setTimeout (	function () 
-			//					{	
-		//							var parentwidth = SNDK.tools.getElementInnerWidth (_elements["container"].parentNode);							
-		//							var width = parentwidth - SNDK.tools.getElementStyledPadding (_elements["container"])["horizontal"] - containerwidth +"px";
-															
-		//							_elements["center"].style.width = width;
-			//					}, 0);						
-		//			}
-		//			else
-		//			{
-		//				var width = _attributes.width  - containerwidth +"px";
-		//
-		//				_elements["container"].style.width = _attributes.width +"px";
-		//				_elements["center"].style.width = width;
-		//			}		
-		//		}
-		//	}
 			
 			// ------------------------------------
 			// setFocus
 			// ------------------------------------				
 			function setFocus ()
 			{
-				setTimeout ( function () { _elements["container"].focus (); }, 2);	
+				_elements["container"].focus ()
+				//setTimeout ( function () { _elements["container"].focus (); }, 2);	
 			}	
 			
 			// ------------------------------------
@@ -6619,20 +8323,8 @@ var SNDK =
 			{	
 				if (!attributes.disabled)
 				{
-					if (_temp.enterDown)
-					{
-						_temp.enterDown = false;
-						_temp.mouseDown = false;
-						refresh ();
-					}
-					else
-					{
-						_temp.enterDown = true;
-						_temp.mouseDown = true;
-						refresh ();
-						
-						eventOnClick ();
-					}				
+					_attributes.active = true;
+					refresh ();		
 				}	
 			}
 		
@@ -6738,7 +8430,7 @@ var SNDK =
 			// onClick
 			// ------------------------------------	
 			function eventOnClick ()
-			{
+			{		
 				if (_attributes.onClick != null)
 				{
 					setTimeout( function () { _attributes.onClick (_attributes.name); }, 1);
@@ -10485,7 +12177,7 @@ var SNDK =
 		
 					case "value":
 					{
-						return _attributes[attribute];			
+						return getValue ();
 					}
 					
 					case "tabIndex":
@@ -10682,11 +12374,35 @@ var SNDK =
 			{
 				_attributes.value = _elements["input"].value;			
 										
+				
+			}
+			
+			function getValue ()
+			{
+				var result = _attributes.value;
+			
+				switch (_attributes.textTransform.toLowerCase ())
+				{
+					case "uppercase":
+					{				
+						result = result.toUpperCase ();
+						break;
+					}
+				}				
+				
+				return result;
+			}
+			
+			function transform ()
+			{
+			
 				switch (_attributes.textTransform.toLowerCase ())
 				{
 					case "uppercase":
 					{
-						_elements["input"].value = _attributes.value.toUpperCase ();
+						//_attributes.value = _attributes.value.toUpperCase ();
+						return _attributes.value.toUpperCase ();
+						//_elements["input"].value = _attributes.value.toUpperCase ();
 						break;
 					}
 				}				
@@ -10718,6 +12434,8 @@ var SNDK =
 						setTimeout( function () { _attributes.onEnter (_attributes.tag); }, 1);
 					}	
 				}
+				
+			
 				
 				eventOnChange ();
 									
@@ -10917,10 +12635,10 @@ var SNDK =
 				{
 					_elements["input"].style.right = '0px';
 				}
-				else if ( client.ie ) 
-				{			
+			//	else if ( client.ie ) 
+			//	{			
 					//_elements["input"].style.width = '0';
-				}							
+			//	}							
 																			
 				// Hook events	
 				_elements["input"].onfocus = eventOnFocus;
@@ -11028,7 +12746,7 @@ var SNDK =
 					width.textCenter = width.container - _temp.cache.containerWidth;
 					width.legacy = _temp.cache.buttonWidth;
 		
-					SNDK.tools.getElementStyledWidth (_elements["buttonleft"]) + SNDK.tools.getElementStyledWidth (_elements["buttoncenter"]) + SNDK.tools.getElementStyledWidth (_elements["buttonright"]) +"px";
+					//SNDK.tools.getElementStyledWidth (_elements["buttonleft"]) + SNDK.tools.getElementStyledWidth (_elements["buttoncenter"]) + SNDK.tools.getElementStyledWidth (_elements["buttonright"]) +"px";
 		
 					_elements["container"].style.width = width.container +"px";
 					_elements["textcenter"].style.width = width.textCenter +"px";
@@ -11460,1314 +13178,6 @@ var SNDK =
 		},
 	
 		// -------------------------------------------------------------------------------------------------------------------------
-		// Container ([attributes])
-		// -------------------------------------------------------------------------------------------------------------------------
-		//
-		// .addUIElement (element)
-		//
-		// .getAttribute (string)
-		// .setAttribute (string, string)
-		//	
-		// 		id 				get
-		//		tag				get/set
-		//		stylesheet		get/set
-		//		width			get/set
-		//		height			get/set
-		//		appendTo		get/set
-		//		managed			get/set
-		//		canScroll		get/set
-		//		title			get/set
-		//		icon			get/set
-		//
-		/**
-		 * @constructor
-		 */
-		container : function (attributes)
-		{
-			var _elements = new Array ();
-			var _attributes = attributes;				
-			var _temp = 	{ initialized: false,
-					  uiElements: new Array (),
-					  cache: new Array ()		 
-					};
-			
-			_attributes.id = SNDK.tools.newGuid ();
-			
-			setAttributes ();	
-			
-			// Private functions
-			this._attributes = _attributes;
-			this._elements = _elements;
-			this._temp = _temp;	
-			this._init = init;
-			
-			// Functions				
-			this.refresh = functionRefresh;
-			this.dispose = functionDispose;
-			this.addTitleBarUIElement = functionAddTitleBarUIElement;
-			//this.getTitleBarUIElement = funcitonGetTitleBarUIElement;
-			this.addUIElement = functionAddUIElement;
-			this.setAttribute = functionSetAttribute;
-			this.getAttribute = functionGetAttribute;
-		
-			// Construct
-			construct ();
-										
-			// Initialize
-			SNDK.SUI.addInit (this);
-		
-			// ------------------------------------
-			// Private functions
-			// ------------------------------------
-			// ------------------------------------
-			// init
-			// ------------------------------------	
-			function init ()
-			{
-				updateCache ();
-			}
-		
-			// ------------------------------------
-			// construct
-			// ------------------------------------	
-			function construct ()
-			{
-				// Container
-				_elements["container"] = SNDK.tools.newElement ("div", {});
-				_elements["container"].setAttribute ("id", _attributes.id);		
-				_elements["container"].className = _attributes.stylesheet;		
-															
-				// Top
-				_elements["top"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
-		
-				// TopLeft
-				_elements["topleft"] = SNDK.tools.newElement ("div", {className: "TopLeft", appendTo: _elements["top"]});
-					
-				// TopCenter
-				_elements["topcenter"] = SNDK.tools.newElement ("div", {className: "TopCenter", appendTo: _elements["top"]});
-				_elements["topcenter"].style.overflow = "hidden";
-				
-				// Titlebar
-				_elements["titlebar"] = SNDK.tools.newElement ("div", {className: "TitleBar", appendTo: _elements["topcenter"]});
-									
-				// TopRight
-				_elements["topright"] = SNDK.tools.newElement ("div", {className: "TopRight", appendTo: _elements["top"]});
-													
-				// Content
-				_elements["content"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
-				_elements["content"].style.clear = "both";			
-					
-				// ContentLeft
-				_elements["contentleft"] = SNDK.tools.newElement ("div", {className: "ContentLeft", appendTo: _elements["content"]});
-							
-				// ContentCenter
-				_elements["contentcenter"] = SNDK.tools.newElement ("div", {className: "ContentCenter", appendTo: _elements["content"]});		
-				if (_attributes.canScroll)
-				{
-					_elements["contentcenter"].style.overflow = "auto";		
-				}		
-				else
-				{
-					_elements["contentcenter"].style.overflow = "hidden";		
-				}		
-																														
-				// ContentRight
-				_elements["contentright"] = SNDK.tools.newElement ("div", {className: "ContentRight", appendTo: _elements["content"]});
-				
-				// Bottom	
-				_elements["bottom"] = SNDK.tools.newElement ("div", {appendTo: _elements["container"]});
-				_elements["bottom"].style.clear = "both";		
-								
-				// BottomLeft
-				_elements["bottomleft"] = SNDK.tools.newElement ("div", {className: "BottomLeft", appendTo: _elements["bottom"]});	
-		
-				// BottomCenter
-				_elements["bottomcenter"] = SNDK.tools.newElement ("div", {className: "BottomCenter", appendTo: _elements["bottom"]});
-					
-				// BottomRight
-				_elements["bottomright"] = SNDK.tools.newElement ("div", {className: "BottomRight", appendTo: _elements["bottom"]});
-		
-				// Icon	
-				_elements["icon"] = SNDK.tools.newElement ("div", {className: "Icon", appendTo: _elements["topcenter"]});
-								
-				// Title	
-				_elements["title"] = SNDK.tools.newElement ("div", {className: "Title", appendTo: _elements["topcenter"]});	
-				SNDK.tools.textSelectionDisable (_elements["title"]);													
-				
-				// Hook Events
-				window.addEvent (window, 'SUIREFRESH', refresh);			
-			}	
-			
-			// ------------------------------------
-			// refresh
-			// ------------------------------------		
-			function refresh ()
-			{	
-				// Only refresh if control has been initalized.	
-				if (_temp.initialized)
-				{
-					_elements["container"].className = _attributes.stylesheet;
-					if (_attributes.icon != "")
-					{
-						_elements["icon"].className = "Icon "+ _attributes.icon;
-						_elements["icon"].style.display = "block";
-					}
-					else			
-					{
-						_elements["icon"].style.display = "none";
-					}
-					
-					_elements["title"].innerHTML = _attributes.title;		
-				}
-				
-				setDimensions ();
-			}			
-			
-			// ------------------------------------
-			// refresh
-			// ------------------------------------			
-			function dispose ()
-			{
-				window.removeEvent (window, 'SUIREFRESH', refresh);				
-			}
-			
-			function addTitleBarUIElement (type, attributes)
-			{
-				if (!attributes)
-					attributes = new Array ();
-					
-				attributes.appendTo = _elements["titlebar"];
-			
-				switch (type.toUpperCase ())
-				{
-					case "BUTTON":
-					{
-						var count = _temp.uiElements.length;
-				
-			 			_temp.uiElements[count] = new SNDK.SUI.button (attributes);
-			 				 			
-			 			return _temp.uiElements[count];
-			 		 		 			
-						break;
-					}						
-				}
-			}
-			
-			
-			function getTitleBarUIElement (tag)
-			{
-			
-			}
-			
-			// ------------------------------------
-			// updateCache
-			// ------------------------------------		
-			function updateCache ()
-			{
-				if (!_temp.cacheUpdated)
-				{
-					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
-					_temp.cache["containerWidth"] = SNDK.tools.getElementStyledWidth (_elements["topleft"]) + SNDK.tools.getElementStyledWidth (_elements["topright"]);
-					_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["topleft"]) + SNDK.tools.getElementStyledHeight (_elements["bottomleft"]);
-				}
-				
-				_temp.cacheUpdated = true;	
-			}			
-						
-			// ------------------------------------
-			// setAttributes
-			// ------------------------------------					
-			function setAttributes ()
-			{
-				// Stylesheet
-				if (!_attributes.stylesheet) 
-					_attributes.stylesheet = "SUIContainer";	
-					
-				// Managed
-				if (!_attributes.managed) 
-					_attributes.managed = false;	
-						
-				// Width
-				if (!_attributes.width) 
-					_attributes.width = "100%";				
-					
-				if (_attributes.width.substring (_attributes.width.length - 1) == "%")
-				{
-					_attributes.widthType = "percent";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
-				}
-				else
-				{
-					_attributes.widthType = "pixel";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
-				}				
-				
-				// Height
-				if (!_attributes.height) 
-					_attributes.height = "100%";				
-					
-				if (_attributes.height.substring (_attributes.height.length - 1) == "%")
-				{
-					_attributes.heightType = "percent";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
-				}
-				else
-				{
-					_attributes.heightType = "pixel";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
-				}				
-		
-				// canScroll
-				if (!_attributes.canScroll) 
-					_attributes.canScroll = false;
-						
-				// Icon
-				if (!_attributes.icon) 
-					_attributes.icon = "";
-						
-				// Title
-				if (!_attributes.title) 
-					_attributes.title = "";
-			}		
-						
-			// ------------------------------------	
-			// setDimensions
-			// ------------------------------------			
-			function setDimensions ()
-			{
-				if (_temp.initialized)
-				{	
-					var width = {};
-					var height = {};
-					var combinedheightofchildren = 0;
-		
-					if (!_attributes.managed && _attributes.widthType != "pixel")
-					{					
-						width.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
-					}
-					else
-					{			
-						if (_attributes.managed && _attributes.widthType == "percent")
-						{
-		
-							width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
-						}
-						else
-						{
-							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
-						}			
-					}	
-		
-		
-					if (!_attributes.managed && _attributes.heightType != "pixel")
-					{					
-						height.container = ((SNDK.tools.getElementInnerHeight (_elements["container"].parentNode) * _attributes.height) / 100) - _temp.cache.containerPadding["vertical"];
-					}
-					else
-					{			
-						if (_attributes.managed && _attributes.heightType == "percent")
-						{
-							height.container = _attributes.managedHeight - _temp.cache.containerPadding["vertical"];				
-						}
-						else
-						{
-							height.container = _attributes.height - _temp.cache.containerPadding["vertical"];
-						}			
-					}	
-		
-					width.topCenter = width.container - _temp.cache.containerWidth;
-					width.contentCenter = width.container - _temp.cache.containerWidth;
-					width.bottomCenter = width.container - _temp.cache.containerWidth; 
-					width.child = width.container - _temp.cache.containerWidth;
-		
-					height.contentLeft = height.container - _temp.cache.containerHeight;
-					height.contentCenter = height.container - _temp.cache.containerHeight;
-					height.contentRight = height.container - _temp.cache.containerHeight; 
-					height.child = height.container - _temp.cache.containerHeight;
-					
-					_elements["container"].style.width = width.container + "px";
-					_elements["topcenter"].style.width = width.topCenter + "px";
-					_elements["contentcenter"].style.width = width.contentCenter + "px";
-					_elements["bottomcenter"].style.width = width.bottomCenter +"px";							
-					
-					_elements["container"].style.height = height.container +"px";
-					_elements["contentleft"].style.height = height.contentLeft +"px";
-					_elements["contentcenter"].style.height = height.contentCenter +"px";			
-					_elements["contentright"].style.height = height.contentRight +"px";			
-								
-					if (_attributes.canScroll)
-					{
-						for (index in _temp.uiElements)
-						{		
-							if (_temp.uiElements[index]._attributes.heightType == "pixel")
-							{									
-								combinedheightofchildren += parseInt (_temp.uiElements[index]._attributes.height);
-							}
-						}						
-					
-						if (combinedheightofchildren > height.child)
-						{
-							width.child = width.child - window.scrollbarWidth;
-						}			
-					}	
-								
-					for (index in _temp.uiElements)
-					{
-						if (_temp.uiElements[index]._attributes.widthType == "percent")
-						{
-							_temp.uiElements[index]._attributes.managedWidth = (width.child * _temp.uiElements[index]._attributes.width) / 100;
-						}
-						
-						if (_temp.uiElements[index]._attributes.heightType == "percent")
-						{
-							_temp.uiElements[index]._attributes.managedHeight = (height.child * _temp.uiElements[index]._attributes.height) / 100;
-						}
-						
-						_temp.uiElements[index].refresh ();
-					}			
-				}
-			}			
-														
-			// ------------------------------------
-			// Public functions
-			// ------------------------------------		
-			// ------------------------------------
-			// refresh
-			// ------------------------------------				
-			function functionRefresh ()
-			{
-				refresh ();
-			}		
-			
-			// ------------------------------------
-			// dispose
-			// ------------------------------------				
-			function functionDispose ()
-			{
-				dispose ();
-			}				
-			
-			function functionAddTitleBarUIElement (type, attributes)
-			{
-				return addTitleBarUIElement (type, attributes)
-			}
-			
-			function functionGetTitleBarUIElement (tag)
-			{
-				return getTitleBarUIElement (tag);
-			}
-			
-			// ------------------------------------
-			// content
-			// ------------------------------------				
-			function functionContent ()
-			{
-				return _elements["contentcenter"];
-			}
-			
-			// ------------------------------------
-			// addUIElement
-			// ------------------------------------							
-			function functionAddUIElement (element)
-			{
-				var count = _temp.uiElements.length;
-				
-			 	_temp.uiElements[count] = element;
-			 		 	
-			 	element.setAttribute ("managed", true);
-			 	element.setAttribute ("appendTo", _elements["contentcenter"]);
-			}		
-			
-			// ------------------------------------
-			// getAttribute
-			// ------------------------------------						
-			function functionGetAttribute (attribute)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "tag":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "stylesheet":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "width":
-					{
-						if (_attributes.widthType == "percent")
-						{
-							return _attributes.width + "%";
-						}
-		
-						if (_attributes.widthType == "pixel")
-						{
-							return _attributes.width + "px";
-						}
-					}
-					
-					case "height":
-					{
-						if (_attributes.heightType == "percent")
-						{
-							return _attributes.height + "%";
-						}
-		
-						if (_attributes.heightType == "pixel")
-						{
-							return _attributes.height + "px";
-						}
-					}
-					
-					case "appendTo":
-					{
-						return _attributes[attribute];			
-					}			
-					
-					case "managed":
-					{
-						return _attributes[attribute];			
-					}
-					
-					case "canScroll":
-					{
-						return _attributes[attribute];
-					}
-		
-					case "title":
-					{
-						return _attributes[attribute];			
-					}
-					
-					case "icon":
-					{
-						return _attributes[attribute];			
-					}
-							
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}	
-			}
-			
-			// ------------------------------------
-			// setAttribute
-			// ------------------------------------						
-			function functionSetAttribute (attribute, value)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						throw "Attribute with name ID is ready only.";
-						break;
-					}
-					
-					case "tag":
-					{
-						_attributes[attribute] = value;
-						break;
-					}
-					
-					case "stylesheet":
-					{
-						_attributes[attribute] = value;
-						break;				
-					}
-					
-					case "width":
-					{
-						if (value.substring (value.width.length, 3) == "%")
-						{
-							_attributes.widthType = "percent";
-							_attributes.width = value.width.substring (0, value.width.length - 1)			
-						}
-						else
-						{
-							_attributes.widthType = "pixel";
-							_attributes.width = value.width.substring (0, value.width.length - 2)
-						}	
-						break;			
-					}
-					
-					case "appendTo":
-					{
-						_attributes[attribute] = value;	
-						_attributes.appendTo.appendChild (_elements["container"]);			
-						break;
-					}			
-					
-					case "managed":
-					{
-						_attributes[attribute] = value;
-		
-						if (value)
-						{
-							window.removeEvent (window, 'SUIREFRESH', refresh);		
-						}
-						else
-						{
-							window.addEvent (window, 'SUIREFRESH', refresh);
-						}
-		
-						break;
-					}
-					
-					case "canScroll":
-					{
-						_attributes[attribute] = value;
-					}
-		
-					case "title":
-					{
-						_attributes[attribute] = value;
-						refresh ();
-						break;
-					}
-		
-					case "icon":
-					{
-						_attributes[attribute] = value;
-						break;
-					}
-							
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}	
-			}										
-							
-			// ------------------------------------
-			// Events
-			// ------------------------------------					
-		},
-	
-		// -------------------------------------------------------------------------------------------------------------------------
-		// layoutbox ([attributes])
-		// -------------------------------------------------------------------------------------------------------------------------
-		//
-		// .addPanel ({tag, size})
-		// .getPanel (tag)
-		//
-		//	.addUIElement (uielement)
-		//	.getAttribute (string)
-		//	.setAttribute (string, string)
-		//
-		//		tag		get/set
-		//
-		// .getAttribute (string)
-		// .setAttribute (string, string)
-		//	
-		//	id		get
-		//	tag		get/set
-		//	stylesheet	get/set
-		//	width		get/set
-		//	height		get/set
-		//	appendTo	get/set			
-		//	managed		get/set
-		//
-		// CHANGELOG:
-		//
-		// v1.01:
-		//	- Added managed mode.
-		//	- Fixed panel render, should now be more accurate and faster.
-		//
-		// v1.00:
-		//	- Initial release.
-		
-		/**
-		 * @constructor
-		 */
-		layoutbox : function (attributes)
-		{
-			var _elements = new Array ();
-			var _attributes = attributes;
-			var _temp = 	{ initialized: false,
-				 	  cache: new Array ()		 
-					};
-		
-			_attributes.id = SNDK.tools.newGuid ();
-			
-			setAttributes ();	
-			
-			// Private functions
-			this._attributes = _attributes;
-			this._elements = _elements;
-			this._temp = _temp;	
-			this._init = init;	
-			
-			// Functions		
-			this.refresh = functionRefresh;	
-			this.dispose = functionDispose;
-			this.addPanel = functionAddPanel;
-			this.getPanel = functionGetPanel;		
-			this.setAttribute = functionSetAttribute;
-			this.getAttribute = functionGetAttribute;
-		
-			// Construct
-			construct ();
-										
-			// Initialize
-			SNDK.SUI.addInit (this);
-				
-			// ------------------------------------
-			// Private functions
-			// ------------------------------------
-			// ------------------------------------
-			// init
-			// ------------------------------------		
-			function init ()
-			{
-				updateCache ();
-			}
-			
-			// ------------------------------------
-			// construct
-			// ------------------------------------	
-			function construct ()
-			{
-				// Container
-				_elements["container"] = SNDK.tools.newElement ("div", {});
-				_elements["container"].setAttribute ("id", _attributes.id);
-																	
-				// Hook Events
-				window.addEvent (window, 'SUIREFRESH', refresh);				
-			}	
-				
-			// ------------------------------------
-			// refresh
-			// ------------------------------------		
-			function refresh ()
-			{	
-				// Only refresh if control has been initalized.	
-				if (_temp.initialized)
-				{		
-					_elements["container"].className = _attributes.stylesheet;	
-				}
-				
-				setDimensions ();
-			}
-			
-			// ------------------------------------
-			// dispose
-			// ------------------------------------			
-			function dispose ()
-			{
-				window.removeEvent (window, 'SUIREFRESH', refresh);				
-			}
-			
-			// ------------------------------------
-			// updateCache
-			// ------------------------------------		
-			function updateCache ()
-			{
-				if (!_temp.cacheUpdated)
-				{
-					_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
-					//_temp.cache["panelPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
-				}
-				
-				_temp.cacheUpdated = true;	
-			}	
-						
-			// ------------------------------------
-			// setDefaultAttributes
-			// ------------------------------------					
-			function setAttributes ()
-			{
-				// Stylesheet
-				if (!_attributes.stylesheet) 
-					_attributes.stylesheet = "SUILayoutbox";	
-		
-				// Managed
-				if (!_attributes.managed)
-					_attributes.managed = false;				
-			
-				// Width
-				if (!_attributes.width) 
-					_attributes.width = "100%";				
-					
-				if (_attributes.width.substring (_attributes.width.length - 1) == "%")
-				{
-					_attributes.widthType = "percent";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
-				}
-				else
-				{
-					_attributes.widthType = "pixel";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
-				}		
-				
-				// Height
-				if (!_attributes.height) 
-					_attributes.height = "100%";
-					
-				if (_attributes.height.substring (_attributes.height.length - 1) == "%")
-				{
-					_attributes.heightType = "percent";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
-				}
-				else
-				{
-					_attributes.heightType = "pixel";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
-				}								
-								
-				_attributes.panels = new Array ();							
-			}		
-								
-			// ------------------------------------
-			// setDimensions
-			// ------------------------------------
-			function setDimensions ()
-			{		
-				if (_temp.initialized)
-				{			
-					var width = {};	
-					var height = {};
-					var combinedheightofchildren = 0;
-		
-					if (!_attributes.managed && _attributes.widthType != "pixel")
-					{					
-						width.container = ((SNDK.tools.getElementInnerWidth (_elements["container"].parentNode) * _attributes.width) / 100) - _temp.cache.containerPadding["horizontal"];
-					}
-					else
-					{			
-						if (_attributes.managed && _attributes.widthType == "percent")
-						{
-		
-							width.container = _attributes.managedWidth - _temp.cache.containerPadding["horizontal"];
-						}
-						else
-						{
-							width.container = _attributes.width - _temp.cache.containerPadding["horizontal"];
-						}			
-					}	
-		
-					if (!_attributes.managed && _attributes.heightType != "pixel")
-					{					
-						height.container = ((SNDK.tools.getElementInnerHeight (_elements["container"].parentNode) * _attributes.height) / 100) - _temp.cache.containerPadding["vertical"];
-					}
-					else
-					{			
-						if (_attributes.managed && _attributes.heightType == "percent")
-						{
-							height.container = _attributes.managedHeight - _temp.cache.containerPadding["vertical"];				
-						}
-						else
-						{
-							height.container = _attributes.height - _temp.cache.containerPadding["vertical"];
-						}			
-					}	
-					
-					_elements["container"].style.width = width.container +"px";				
-					_elements["container"].style.height = height.container +"px"; 				
-					
-					var dynamics = new Array ();
-					var combinedsize = 0;						
-		
-					for (index in _attributes.panels)
-					{
-						if (_attributes.panels[index]._attributes.hidden)
-						{
-							continue;
-						}
-						
-						var size = 0;
-						var panel = _attributes.panels[index];
-										
-						switch (_attributes.panels[index]._attributes.sizeType)
-						{
-							case "percent":
-							{					
-								if (_attributes.type == "horizontal")
-								{
-									size =  Math.floor ((height.container * panel._attributes.size) / 100);
-								}
-								else if (_attributes.type == "vertical")
-								{
-									size =  Math.floor ((width.container * panel._attributes.size) / 100);
-								}											
-								combinedsize += size;							
-								break;
-							}
-							
-							case "pixel":
-							{
-								size = panel._attributes.size;					
-								combinedsize += size;					
-								break;
-							}				
-							
-							case "dynamic":
-							{
-								dynamics[dynamics.length] = index;
-		
-								continue;
-							}						
-						}
-		
-						_attributes.panels[index]._attributes.calculatedSize = size;											
-					}
-					
-					if (_attributes.type == "horizontal")
-					{	
-						dynamicsize = Math.floor ((height.container - combinedsize) / dynamics.length);
-					}
-					else if (_attributes.type == "vertical")
-					{
-						dynamicsize = Math.floor ((width.container - combinedsize) / dynamics.length);
-					}				
-													
-					for (index in dynamics)
-					{
-						_attributes.panels[dynamics[index]]._attributes.calculatedSize = dynamicsize;	
-					}		
-								
-					for (index in _attributes.panels)
-					{
-						if (_attributes.panels[index]._attributes.hidden)
-						{
-							continue;
-						}
-					
-						var panel = _attributes.panels[index];
-						var dimensions = {};
-						
-						var e = _attributes.panels[index]._elements["container"];
-		
-		
-						if (_attributes.type == "horizontal")
-						{
-							dimensions.width = width.container - SNDK.tools.getElementStyledPadding (e)["horizontal"];
-							dimensions.height = _attributes.panels[index]._attributes.calculatedSize - SNDK.tools.getElementStyledPadding (e)["vertical"];
-							dimensions.cssfloat = "none";
-						}
-						else if (_attributes.type == "vertical")
-						{
-							dimensions.width = _attributes.panels[index]._attributes.calculatedSize - SNDK.tools.getElementStyledPadding (e)["horizontal"];
-							dimensions.height = height.container - SNDK.tools.getElementStyledPadding (e)["vertical"];
-							dimensions.cssfloat = "left";				
-						}	
-						
-						e.style.width = dimensions.width +"px";
-						e.style.height = dimensions.height +"px";
-						e.style.cssFloat = dimensions.cssfloat;
-						
-						var combinedheightofchildren = 0;
-								
-						if (panel._attributes.canScroll)
-						{
-							for (index in panel._temp.uiElements)
-							{		
-								if (panel._temp.uiElements[index]._attributes.heightType == "pixel")
-								{									
-									combinedheightofchildren += parseInt (panel._temp.uiElements[index]._attributes.height);
-								}
-							}						
-						
-							if (combinedheightofchildren > dimensions.height)
-							{
-								dimensions.width = dimensions.width - window.scrollbarWidth;
-							}													
-						}					
-													
-						for (index in panel._temp.uiElements)
-						{
-							//console.log (panel._elements["container"].scrollTop)
-											
-							var scroll = panel._elements["container"].scrollTop;
-						
-							if (panel._temp.uiElements[index]._attributes.widthType == "percent")
-							{
-								panel._temp.uiElements[index]._attributes.managedWidth = (dimensions.width * panel._temp.uiElements[index]._attributes.width) / 100;
-							}
-					
-							if (panel._temp.uiElements[index]._attributes.heightType == "percent")
-							{
-								panel._temp.uiElements[index]._attributes.managedHeight = (dimensions.height * panel._temp.uiElements[index]._attributes.height) / 100;
-							}
-						
-							panel._temp.uiElements[index].refresh ();
-							
-							panel._elements["container"].scrollTop = scroll;
-						}								
-					}		
-				}
-			}				
-								
-			// ------------------------------------
-			// Public functions
-			// ------------------------------------		
-			// ------------------------------------
-			// refresh
-			// ------------------------------------				
-			function functionRefresh ()
-			{
-				refresh ();
-			}		
-			
-			// ------------------------------------
-			// dispose
-			// ------------------------------------				
-			function functionDispose ()
-			{
-				dispose ();
-			}	
-			
-			function newPanel (attributes)
-			{
-				var _attributes = attributes;
-				var _elements = new Array ();
-				var _temp =	{ uiElements: new Array ()
-						}
-		
-				setAttributes ();
-				
-				// Private functions		
-				this._attributes = _attributes;
-				this._elements = _elements;
-				this._temp = _temp;
-		
-				// Functions						
-				this.addUIElement = functionAddUIElement;
-				this.getContentElement = functionGetContentElement;	
-				this.setAttribute = functionSetAttribute;
-				this.getAttribute = functionGetAttribute;
-				this.refresh = functionRefresh ();
-		
-				// Initialize
-				construct ();
-				
-				// ------------------------------------
-				// Private functions
-				// ------------------------------------
-				function construct ()
-				{
-					_elements["container"] = SNDK.tools.newElement ("div", {className: "Panel", appendTo: _attributes.appendTo});
-					
-					
-					if (_attributes.hidden)
-					{
-						_elements["container"].style.display = "none";
-					}
-											
-					if (_attributes.canScroll)
-					{
-					
-						_elements["container"].style.overflow = "auto";		
-					}		
-					else
-					{
-						//_elements["container"].style.overflow = "hidden";		
-					}
-				}
-				
-				function refresh ()
-				{
-					if (_attributes.hidden)
-					{
-						_elements["container"].style.display = "none";
-					}
-					else
-					{
-						_elements["container"].style.display = "block";							
-					}	
-				}
-				
-				// ------------------------------------
-				// setAttributes
-				// ------------------------------------																
-				function setAttributes ()
-				{
-					if (!_attributes.hidden) 
-						_attributes.hidden = false;
-						
-					if (!_attributes.size) 
-						_attributes.size = "*";	
-		
-					if (_attributes.size != "*")
-					{							
-						if (_attributes.size.substring (_attributes.size.length - 1) == "%")
-						{
-							_attributes.sizeType = "percent";
-							_attributes.size = parseInt (_attributes.size.substring (0, _attributes.size.length - 1));	
-						}
-						else
-						{
-							_attributes.sizeType = "pixel";
-							_attributes.size = parseInt (_attributes.size.substring (0, _attributes.size.length - 2));
-						}									
-					}
-					else
-					{
-						_attributes.sizeType = "dynamic";
-					}
-				}
-		
-				// ------------------------------------
-				// Public functions
-				// ------------------------------------				
-				// ------------------------------------
-				// addUIElement
-				// ------------------------------------																
-				function functionAddUIElement (element)
-				{
-					var count = _temp.uiElements.length;
-		
-				 	_temp.uiElements[count] = element;
-		 	
-				 	element.setAttribute ("managed", true);
-				 	element.setAttribute ("appendTo", _elements["container"]);
-				 	
-				//  SNDK.SUI.refresh ();		 			 	 
-				}	
-				
-				function functionGetContentElement ()
-				{
-					return _elements["container"];		
-				}
-				
-				// ------------------------------------
-				// getAttribute
-				// ------------------------------------						
-				function functionGetAttribute (attribute)
-				{
-					switch (attribute)
-					{			
-						case "tag":
-						{
-							return _attributes[attribute];
-						}
-						
-						case "hidden":
-						{
-							return _attributes[attribute];				
-						}
-				
-						default:
-						{
-							throw "No attribute with the name '"+ attribute +"' exist in this object";
-						}
-					}	
-				}
-		
-				// ------------------------------------
-				// setAttribute
-				// ------------------------------------						
-				function functionSetAttribute (attribute, value)
-				{
-					switch (attribute)
-					{			
-						case "tag":
-						{
-							_attributes[attribute] = value;
-							break;
-						}
-						
-						case "hidden":
-						{
-							_attributes[attribute] = value;				
-							refresh ();
-							break;
-						}
-				
-						default:
-						{
-							throw "No attribute with the name '"+ attribute +"' exist in this object";
-						}
-					}	
-				}								
-			}
-			
-			// ------------------------------------
-			// addPanel
-			// ------------------------------------						
-			function functionAddPanel (attributes)
-			{
-				var count = _attributes.panels.length;
-				attributes.appendTo = _elements["container"];
-				attributes.parent = this;
-		
-				_attributes.panels[count] = new newPanel (attributes);
-											
-				refresh ();	
-			}
-			
-			// ------------------------------------
-			// getPanel
-			// ------------------------------------						
-			function functionGetPanel (tag)
-			{
-				for (index in _attributes.panels)
-				{		
-					if (_attributes.panels[index].getAttribute ("tag") == tag)
-					{
-						return _attributes.panels[index];
-					}
-				}
-			}
-			
-			// ------------------------------------
-			// getAttribute
-			// ------------------------------------						
-			function functionGetAttribute (attribute)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						return _attributes[attribute];
-					}			
-		
-					case "tag":
-					{
-						return _attributes[attribute];
-					}			
-					
-					case "width":
-					{
-						if (_attributes.widthType == "percent")
-						{
-							return _attributes.width + "%";
-						}
-		
-						if (_attributes.widthType == "pixel")
-						{
-							return _attributes.width + "px";
-						}
-					}
-					
-					case "height":
-					{
-						if (_attributes.heightType == "percent")
-						{
-							return _attributes.height + "%";
-						}
-		
-						if (_attributes.heightType == "pixel")
-						{
-							return _attributes.height + "px";
-						}
-					}	
-					
-					case "appendTo":
-					{
-						return _attributes[attribute];			
-					}			
-					
-					case "managed":
-					{
-						return _attributes[attribute];			
-					}
-				
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}
-			}
-			
-			// ------------------------------------
-			// setAttribute
-			// ------------------------------------						
-			function functionSetAttribute (attribute, value)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						throw "Attribute with name ID is ready only.";
-						break;
-					}
-					
-					case "tag":
-					{
-						_attributes[attribute] = value;
-						break;
-					}
-					
-					case "stylesheet":
-					{
-						_attributes[attribute] = value;
-						break;				
-					}
-					
-					case "width":
-					{
-						if (value.substring (value.width.length, 3) == "%")
-						{
-							_attributes.widthType = "percent";
-							_attributes.width = value.width.substring (0, value.width.length - 1)			
-						}
-						else
-						{
-							_attributes.widthType = "pixel";
-							_attributes.width = value.width.substring (0, value.width.length - 2)
-						}	
-						break;			
-					}
-		
-					case "height":
-					{
-						if (value.substring (value.height.length, 3) == "%")
-						{
-							_attributes.heightType = "percent";
-							_attributes.height = value.height.substring (0, value.height.length - 1)			
-						}
-						else
-						{
-							_attributes.heightType = "pixel";
-							_attributes.height = value.height.substring (0, value.height.length - 2)
-						}	
-						break;			
-					}
-					
-					case "appendTo":
-					{
-						_attributes[attribute] = value;	
-						_attributes.appendTo.appendChild (_elements["container"]);			
-						break;
-					}			
-					
-					case "managed":
-					{
-						_attributes[attribute] = value;
-						
-						if (value)
-						{
-							window.removeEvent (window, 'SUIREFRESH', refresh);		
-						}
-						else
-						{
-							window.addEvent (window, 'SUIREFRESH', refresh);
-						}
-						
-						break;
-					}
-										
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}	
-			}										
-							
-			// ------------------------------------
-			// Events
-			// ------------------------------------					
-		},
-	
-		// -------------------------------------------------------------------------------------------------------------------------
 		// label ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
@@ -12884,12 +13294,13 @@ var SNDK =
 			// ------------------------------------		
 			function updateCache ()
 			{
-				if (!_temp.cacheUpdated)
-				{
+		//		if (!_temp.cacheUpdated)
+				
+		//		{
 		//			_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
 		//			_temp.cache["containerWidth"] = (SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]));
 		//			_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["center"]);			
-				}
+		//		}
 				
 				_temp.cacheUpdated = true;	
 			}
@@ -13957,12 +14368,12 @@ var SNDK =
 			// ------------------------------------		
 			function updateCache ()
 			{
-				if (!_temp.cacheUpdated)
-				{
+		//		if (!_temp.cacheUpdated)
+		//		{
 		//			_temp.cache["containerPadding"] = SNDK.tools.getElementStyledPadding (_elements["container"]);
 		//			_temp.cache["containerWidth"] = (SNDK.tools.getElementStyledWidth (_elements["left"]) + SNDK.tools.getElementStyledWidth (_elements["right"]));
 		//			_temp.cache["containerHeight"] = SNDK.tools.getElementStyledHeight (_elements["center"]);			
-				}
+		//		}
 				
 				_temp.cacheUpdated = true;	
 			}
@@ -14227,462 +14638,6 @@ var SNDK =
 			// ------------------------------------
 			// Events
 			// ------------------------------------
-		},
-	
-		// -------------------------------------------------------------------------------------------------------------------------
-		// Canvas ([attributes])
-		// -------------------------------------------------------------------------------------------------------------------------
-		//
-		// .refresh ()
-		// .dispose ()
-		// .addUIElement (uiElement);
-		// .getAttribute (string)
-		// .setAttribute (string, string)
-		//	
-		// 	id 			get
-		//	tag			get/set
-		//	stylesheet	get/set
-		//	width		get/set
-		//	height		get/set
-		//	canScroll	get/set
-		//
-		/**
-		 * @constructor
-		 */
-		canvas : function (attributes)
-		{
-			var _elements = new Array ();
-			var _attributes = attributes;				
-			
-			var _temp = 	{ 
-								initialized: false,
-					  			uiElements: new Array ()
-							};
-			
-			_attributes.id = SNDK.tools.newGuid ();
-			
-			setAttributes ();	
-			
-			// Private functions
-			this._attributes = _attributes;
-			this._elements = _elements;
-			this._temp = _temp;	
-			this._init = init;
-			
-			// Functions		
-			this.refresh = functionRefresh;			
-			this.dispose = functionDispose;
-			this.addUIElement = functionAddUIElement;
-			this.getUIElement = functionGetUIElement;
-			this.setAttribute = functionSetAttribute;
-			this.getAttribute = functionGetAttribute;	
-			
-			// Construct
-			construct ();
-										
-			// Initialize
-			SNDK.SUI.addInit (this);
-				
-			// ------------------------------------
-			// Private functions
-			// ------------------------------------
-			// ------------------------------------
-			// init
-			// ------------------------------------	
-			function init ()
-			{
-			}
-			
-			// ------------------------------------
-			// construct
-			// ------------------------------------	
-			function construct ()
-			{
-				// Container
-				_elements["container"] = SNDK.tools.newElement ("div", {});
-				_elements["container"].setAttribute ("id", _attributes.id);
-				
-				if (_attributes.canScroll)
-				{
-					_elements["container"].style.overflow = "auto";		
-				}		
-				else
-				{
-					_elements["container"].style.overflow = "hidden";		
-				}
-																			
-				// Hook Events
-				window.addEvent (window, 'SUIREFRESH', refresh);	
-			}	
-				
-			// ------------------------------------
-			// refresh
-			// ------------------------------------		
-			function refresh ()
-			{	
-				// Only refresh if control has been initalized.	
-				if (_temp.initialized)
-				{
-					_elements["container"].className = _attributes.stylesheet;
-				}
-				
-				setDimensions ();
-			}
-			
-			// ------------------------------------
-			// refresh
-			// ------------------------------------			
-			function dispose ()
-			{
-				window.removeEvent (window, 'SUIREFRESH', refresh);				
-			}
-						
-			// ------------------------------------
-			// setDefaultAttributes
-			// ------------------------------------					
-			function setAttributes ()
-			{
-				// Stylesheet
-				if (!_attributes.stylesheet) _attributes.stylesheet = "SUICanvas";	
-				
-				// Managed
-				if (!_attributes.managed)
-					_attributes.managed = false;				
-			
-				// Width
-				if (!_attributes.width) 
-					_attributes.width = "100%";				
-					
-				if (_attributes.width.substring (_attributes.width.length - 1) == "%")
-				{
-					_attributes.widthType = "percent";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
-				}
-				else
-				{
-					_attributes.widthType = "pixel";
-					_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
-				}		
-				
-				// Height
-				if (!_attributes.height) 
-					_attributes.height = "100%";
-					
-				if (_attributes.height.substring (_attributes.height.length - 1) == "%")
-				{
-					_attributes.heightType = "percent";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
-				}
-				else
-				{
-					_attributes.heightType = "pixel";
-					_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
-				}
-						
-			
-				// Width
-		//		if (_attributes.width.substring (_attributes.width.length - 1) == "%")
-		//		{
-		//			_attributes.widthType = "percent";
-		//			_attributes.width = _attributes.width.substring (0, _attributes.width.length - 1)			
-		//		}
-		//		else
-		//		{
-		//			_attributes.widthType = "pixel";
-		//			_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
-		//		}						
-				
-				// Height
-		//		if (_attributes.height.substring (_attributes.height.length - 1) == "%")
-		//		{
-		//			_attributes.heightType = "percent";
-		//			_attributes.height = _attributes.height.substring (0, _attributes.height.length - 1)			
-		//		}
-		//		else
-		//		{
-		//			_attributes.heightType = "pixel";
-		//			_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
-		//		}		
-				
-				if (!_attributes.canScroll) 
-					_attributes.canScroll = false;
-			}		
-								
-			// ------------------------------------
-			// setDimensions
-			// ------------------------------------
-			function setDimensions ()
-			{		
-				// Only set dimensions if control has been initalized.	
-				if (_temp.initialized)
-				{	
-					var parent = _elements["container"].parentNode;			
-					var width = 0;
-					var height = 0;
-					var combinedheightofchildren = 0;
-								
-					if (_attributes.widthType == "percent")
-					{
-						width = (SNDK.tools.getElementInnerWidth (parent) * _attributes.width) / 100;
-					}
-					else
-					{
-						width = _attributes.width;
-					}
-							
-					if (_attributes.heightType == "percent")
-					{	
-						height = (SNDK.tools.getElementInnerHeight (parent) * _attributes.height) / 100;
-					}
-					else
-					{					
-						height = _attributes.height;
-					}
-					
-					_elements["container"].style.width = width +"px";
-					_elements["container"].style.height = height +"px";
-		
-					if (_attributes.canScroll)
-					{
-						for (index in _temp.uiElements)
-						{		
-							if (_temp.uiElements[index]._attributes.heightType == "pixel")
-							{									
-								combinedheightofchildren += parseInt (_temp.uiElements[index]._attributes.height);
-							}
-						}						
-					
-						if (combinedheightofchildren > height)
-						{
-							width = width - window.scrollbarWidth;
-						}			
-					}						
-					
-					for (index in _temp.uiElements)
-					{
-						if (_temp.uiElements[index]._attributes.widthType == "percent")
-						{
-							_temp.uiElements[index]._attributes.managedWidth = (width * _temp.uiElements[index]._attributes.width) / 100;
-						}
-						
-						if (_temp.uiElements[index]._attributes.heightType == "percent")
-						{
-							_temp.uiElements[index]._attributes.managedHeight = (height * _temp.uiElements[index]._attributes.height) / 100;
-						}
-						
-						_temp.uiElements[index].refresh ();
-					}
-				}
-			}	
-											
-			// ------------------------------------
-			// Public functions
-			// ------------------------------------
-			// ------------------------------------
-			// refresh
-			// ------------------------------------				
-			function functionRefresh ()
-			{
-				refresh ();
-			}			
-			
-			// ------------------------------------
-			// dispose
-			// ------------------------------------				
-			function functionDispose ()
-			{
-				dispose ();
-			}			
-							
-			// ------------------------------------
-			// addUIElement
-			// ------------------------------------							
-			function functionAddUIElement (element)
-			{
-				var count = _temp.uiElements.length;
-				
-			 	_temp.uiElements[count] = element;
-			 		 	
-			 	element.setAttribute ("managed", true);
-			 	element.setAttribute ("appendTo", _elements["container"]);
-			}
-			
-			function functionGetUIElement (tag)
-			{
-				for (index in _temp.uiElements)
-				{
-					if (_temp.uiElements[index].getAttribute ("tag") == tag)
-					{
-						
-					}
-				}
-			}
-										
-			// ------------------------------------
-			// getAttribute
-			// ------------------------------------								
-			function functionGetAttribute (attribute)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "tag":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "stylesheet":
-					{
-						return _attributes[attribute];
-					}
-					
-					case "width":
-					{
-						if (_attributes.widthType == "percent")
-						{
-							return _attributes.width + "%";
-						}
-		
-						if (_attributes.widthType == "pixel")
-						{
-							return _attributes.width + "px";
-						}
-					}
-					
-					case "height":
-					{
-						if (_attributes.heightType == "percent")
-						{
-							return _attributes.height + "%";
-						}
-		
-						if (_attributes.heightType == "pixel")
-						{
-							return _attributes.height + "px";
-						}						
-					}
-					
-					case "canScroll":
-					{
-						return _attributes[attribute];			
-					}			
-										
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}	
-			}	
-			
-			// ------------------------------------
-			// setAttribute
-			// ------------------------------------						
-			function functionSetAttribute (attribute, value)
-			{
-				if (!_attributes[attribute])
-				{
-					// Some attributes is readonly.
-					if (attribute == "id")
-					{
-						throw "Attribute with name '"+ attribute +"' is ready only.";
-					}
-						
-					_attributes[attribute] == value;
-					
-					// Some attributes needs special threatment.						
-					if (attribute == "width" || attribute == "height" || attribute == "stylesheet" || attribute == "title" || attribute == "icon")
-					{
-						setAttributes ();
-						refresh ()
-					}
-				}
-				else
-				{
-					throw "No attribute with the name '"+ attribute +"' exist in this object";
-				}
-			}	
-			
-			// ------------------------------------
-			// setAttribute
-			// ------------------------------------						
-			function functionSetAttribute (attribute, value)
-			{
-				switch (attribute)
-				{
-					case "id":
-					{
-						throw "Attribute with name ID is ready only.";
-						break;
-					}
-					
-					case "tag":
-					{
-						_attributes[attribute] = value;
-						break;
-					}
-					
-					case "stylesheet":
-					{
-						_attributes[attribute] = value;
-						break;				
-					}
-					
-					case "width":
-					{
-						if (value.substring (value.length, 3) == "%")
-						{
-							_attributes.widthType = "percent";
-							_attributes.width = value.substring (0, value.length - 1)			
-						}
-						else
-						{
-							_attributes.widthType = "pixel";
-							_attributes.width = value.substring (0, value.length - 2)
-						}	
-						
-						refresh ();
-						
-						break;			
-					}
-		
-					case "height":
-					{
-						if (value.substring (value.length, 3) == "%")
-						{
-							_attributes.heightType = "percent";
-							_attributes.height = value.substring (0, value.length - 1)			
-						}
-						else
-						{
-							_attributes.heightType = "pixel";
-							_attributes.height = value.substring (0, value.length - 2)
-						}	
-						
-						refresh ();
-						
-						break;			
-					}
-					
-					case "canScroll":
-					{
-						_attributes[attribute] = value;					
-						break;
-					}			
-										
-					default:
-					{
-						throw "No attribute with the name '"+ attribute +"' exist in this object";
-					}
-				}	
-			}					
-		
-			// ------------------------------------
-			// Events
-			// ------------------------------------		
 		},
 	
 		// -------------------------------------------------------------------------------------------------------------------------
@@ -15917,7 +15872,7 @@ var SNDK =
 			var _elements = new Array ();
 			var _attributes = attributes;
 			var _elements = new Array ();	
-			var _temp = 	{ initialized: false,
+			var _temp = 	{ initialized: false
 							};
 							
 			setAttributes ();
@@ -16093,7 +16048,7 @@ var SNDK =
 										};
 									};
 						
-					sConsole.modal.chooser.media ({type: "image", subType: "upload", path: "/media/scms/%%FILENAME%%%%EXTENSION%%", mediatransformations: _attributes.options.mediatransformationids, onDone: onDone});
+					sConsole.modal.chooser.media ({type: "image", subType: "upload", path: "/media/scms/%%FILENAME%%%%EXTENSION%%", mediatransformations: _attributes.options.mediatransformations, onDone: onDone});
 				},
 				
 				onChange : function ()
@@ -16350,9 +16305,9 @@ var SNDK =
 				if (!_attributes.options)
 					_attributes.options = new Array ();
 					
-				// OPTIONS.MEDIATRANSFORMATIONIDS
-				if (!_attributes.options.mediatransformationids)
-					_attributes.options.mediatransformationids = "";
+				// OPTIONS.MEDIATRANSFORMATIONS
+				if (!_attributes.options.mediatransformations)
+					_attributes.options.mediatransformations = "";
 			}	
 			
 			// ------------------------------------
@@ -17386,20 +17341,24 @@ String.prototype.trimEnd = function (character)
 // -------------------------------------------------------------------------------------------------------------------------
 // Client
 // -------------------------------------------------------------------------------------------------------------------------
-var client = {
-	init: function () {
+var client = 
+{
+	init: function () 
+	{
 		this.browser = this.searchString(this.dataBrowser) || "An unknown browser";
-		this.version = this.searchVersion(navigator.userAgent)
-			|| this.searchVersion(navigator.appVersion)
-			|| "an unknown version";
+		this.version = this.searchVersion(navigator.userAgent)	|| this.searchVersion(navigator.appVersion)	 || "an unknown version";
 		this.OS = this.searchString(this.dataOS) || "an unknown OS";
 	},
-	searchString: function (data) {
-		for (var i=0;i<data.length;i++)	{
+	
+	searchString: function (data) 
+	{
+		for (var i=0;i<data.length;i++)	
+		{
 			var dataString = data[i].string;
 			var dataProp = data[i].prop;
 			this.versionSearchString = data[i].versionSearch || data[i].identity;
-			if (dataString) {
+			if (dataString) 
+			{
 				if (dataString.indexOf(data[i].subString) != -1)
 					return data[i].identity;
 			}
@@ -17407,11 +17366,14 @@ var client = {
 				return data[i].identity;
 		}
 	},
-	searchVersion: function (dataString) {
+	
+	searchVersion: function (dataString) 
+	{
 		var index = dataString.indexOf(this.versionSearchString);
 		if (index == -1) return;
 		return parseFloat(dataString.substring(index+this.versionSearchString.length+1));
 	},
+	
 	dataBrowser: [
 		{
 			string: navigator.userAgent,
@@ -17477,6 +17439,7 @@ var client = {
 			versionSearch: "Mozilla"
 		}
 	],
+	
 	dataOS : [
 		{
 			string: navigator.platform,
@@ -17910,14 +17873,14 @@ window.onDomReady (bla);
 
 
 
-var test = function ()
-{
+//var test = function ()
+//{
 	
 
-}
+//}
 
 
-window.onDomReady (test);
+//window.onDomReady (test);
 
 
 SNDK.page.init ();

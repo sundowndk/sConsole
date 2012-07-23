@@ -469,7 +469,7 @@ var sConsole =
 				var onUploadComplete =	function ()
 										{
 											var mediaupload = chooser.getUIElement ("uploadframe").getAttribute ("content").mediaUpload;
-										
+																	
 											if (mediaupload != null)
 											{
 												if (mediaupload.success)
@@ -498,12 +498,20 @@ var sConsole =
 												}
 												else
 												{
-													sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
+													//sConsole.modal.question ({title: "Delete page", text: "Do you really want to delete this page ?", button1Label: "Yes", button2Label: "No"});
+												//	sConsole.modal.error ({title: "Upload error", text: mediaupload.errorMessage, buttonLabel: "Ok"});
+												//sConsole.modal.info ({title: "Info", text: "Fields has been deleted from this pages template. Page has been autosaved to remove redundant data.", buttonLabel: "Ok"});
+												
+												
 												}
 											}
-											
+										
+										//console.log (chooser)
+											//console.log (chooser)
+													
 											chooser.getUIElement ("mediaupload").setAttribute ("disabled", false);
 											chooser.getUIElement ("button2").setAttribute ("disabled", false);
+				
 											
 											onChange ();
 										};
@@ -670,8 +678,27 @@ var sConsole =
 		
 			mediaTransformation : function (attributes)
 			{
-				var onButton1 =	function ()
+				// SET			
+				var set =		function ()
 								{
+									chooser.getUIElement ("mediatransformations").setItems (sorentoLib.mediaTransformation.list ());										
+								};
+			
+				// ONINIT					
+				var onInit =	function ()
+								{				
+									chooser.getUIElement ("mediatransformations").setAttribute ("onChange", onChange);
+							
+									// SET
+									set ();
+							
+									// SHOW
+									chooser.show ();							
+								};
+			
+				// ONBUTTON1
+				var onButton1 =	function ()
+								{	
 									chooser.dispose ();
 									
 									if (attributes.onDone != null)
@@ -679,7 +706,8 @@ var sConsole =
 										setTimeout( function ()	{ attributes.onDone (chooser.getUIElement ("mediatransformations").getItem ().id); }, 1);
 									}
 								};
-								
+							
+				// ONBUTTON2	
 				var onButton2 =	function ()
 								{
 									chooser.dispose ();
@@ -690,6 +718,7 @@ var sConsole =
 									}						
 								};
 								
+				// ONCHANGE	
 				var onChange = 	function ()
 								{
 									if (chooser.getUIElement ("mediatransformations").getItem ())
@@ -701,33 +730,25 @@ var sConsole =
 										chooser.getUIElement ("button1").setAttribute ("disabled", true);
 									}
 								};					
-			
+								
 				var suixml = "";
 				suixml += '<sui>';
-				suixml += '	<layoutbox type="horizontal">';
-				suixml += '		<panel size="*">';
-				suixml += '			<layoutbox type="vertical">';
-				suixml += '				<panel size="*">';
+			//	suixml += '	<layoutbox type="horizontal">';
+			//	suixml += '		<panel size="*">';
+			//	suixml += '			<layoutbox type="vertical">';
+			//	suixml += '				<panel size="*">';
 				suixml += '					<listview tag="mediatransformations" width="100%" height="100%" focus="true">';
 				suixml += '						<column tag="id" />';
 				suixml += '						<column tag="title" label="Title" width="200px" visible="true" />';	
 				suixml += '					</listview>';
-				suixml += '				</panel>';
-				suixml += '			</layoutbox>';
-				suixml += '		</panel>';
-				suixml += '	</layoutbox>';
+			//	suixml += '				</panel>';
+			//	suixml += '			</layoutbox>';
+			//	suixml += '		</panel>';
+			//	suixml += '	</layoutbox>';
 				suixml += '</sui>';
 			
-				var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: "Choose mediatransformation", buttonLabel: "Ok|Cancel", onClickButton1: onButton1, onClickButton2: onButton2});
-				
-				chooser.getUIElement ("mediatransformations").setItems (sorentoLib.mediaTransformation.list ());
-				chooser.getUIElement ("mediatransformations").setAttribute ("onChange", onChange);
-							
-				chooser.show ();			
-			}	
-			
-			
-			
+				var chooser = new sConsole.modal.chooser.base ({suiXML: suixml, title: "Choose mediatransformation", button1Label: "Select", button2Label: "Close", onClickButton1: onButton1, onClickButton2: onButton2, onInit: onInit});
+			}
 		},
 	
 		// ---------------------------------------------------------------------------------------------------------------
@@ -744,7 +765,8 @@ var sConsole =
 										{
 											sConsole.modal.edit.changePassword ({userid: user["id"]});					
 										};
-										
+								
+				// SAVE		
 				var save =				function ()
 										{
 											var item = get ();
@@ -793,23 +815,34 @@ var sConsole =
 									
 											return item;
 										};
-															
+										
+				// DISPOSE
+				var dispose =			function ()
+										{	
+											
+										};
+										
+				
+				// ONINIT
+				var onInit =			function ()
+										{
+											modal.getUIElement ("realname").setAttribute ("onChange", onChange);
+											modal.getUIElement ("email").setAttribute ("onChange", onChange);
+												
+											modal.getUIElement ("changepassword").setAttribute ("onClick", changePassword);
+										
+											modal.getUIElement ("save").setAttribute ("onClick", save);	
+											modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+																
+											// SET
+											set ();						
+												
+											// SHOW
+											modal.show ();							
+										}
+																
 				// INIT				
-				var modal = new sConsole.modal.window ({SUIXML: "/console/xml/modal/edit/profile.xml"});
-																																											
-				modal.getUIElement ("realname").setAttribute ("onChange", onChange);
-				modal.getUIElement ("email").setAttribute ("onChange", onChange);
-					
-				modal.getUIElement ("changepassword").setAttribute ("onClick", changePassword);
-			
-				modal.getUIElement ("save").setAttribute ("onClick", save);	
-				modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
-									
-				// SET
-				set ();						
-					
-				// SHOW
-				modal.show ();	
+				var modal = new sConsole.modal.window ({width: "450px", height: "500px", titleBarUI: [{type: "button", attributes: {tag: "save", label: "Save"}}, {type: "button", attributes: {tag: "close", label: "Close"}}], busy: true, SUIXML: sConsole.runtime.URL +"xml/modal/edit/profile.xml", onInit: onInit});	
 			}
 			
 			,
@@ -834,8 +867,8 @@ var sConsole =
 					case "sessionuser":
 					{
 						suixml += '<sui elementheight="50px">';
-						suixml += '<canvas width="600px" height="290px" canScroll="false">';
-						suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
+			//			suixml += '<canvas width="600px" height="290px" canScroll="false">';
+			//			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
 						suixml += '			<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">';
 				
 						suixml += '				<panel size="%elementheight%">';
@@ -855,8 +888,8 @@ var sConsole =
 					case "nonsessionuser":
 					{
 						suixml += '<sui elementheight="50px">';
-						suixml += '<canvas width="600px" height="230px" canScroll="false">';
-						suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
+			//			suixml += '<canvas width="600px" height="230px" canScroll="false">';
+			//			suixml += '		<container title="Change password" icon="Icon32Edit"  stylesheet="SUIContainerModal">';
 						suixml += '			<layoutbox type="horizontal" stylesheet="LayoutboxNoborder">';		
 					}
 				}
@@ -881,21 +914,21 @@ var sConsole =
 				suixml += '						</panel>';				
 				suixml += '					</layoutbox>';
 				suixml += '				</panel>';
-				suixml += '				<panel size="*">';
-				suixml += '				</panel>';
-				suixml += '				<panel size="45px">';
-				suixml += '					<layoutbox type="vertical">';
-				suixml += '						<panel size="*">';
-				suixml += '						</panel>';
-				suixml += '						<panel size="210px">';
-				suixml += '							<button tag="change" label="Change" width="100px" disabled="true"/>';
-				suixml += '							<button tag="close" label="Close" width="100px" />';
-				suixml += '						</panel>';					
-				suixml += '					</layoutbox>';
-				suixml += '				</panel>';
+			//	suixml += '				<panel size="*">';
+			//	suixml += '				</panel>';
+			//	suixml += '				<panel size="45px">';
+			//	suixml += '					<layoutbox type="vertical">';
+			//	suixml += '						<panel size="*">';
+			//	suixml += '						</panel>';
+			//	suixml += '						<panel size="210px">';
+			//	suixml += '							<button tag="change" label="Change" width="100px" disabled="true"/>';
+			//	suixml += '							<button tag="close" label="Close" width="100px" />';
+			//	suixml += '						</panel>';					
+			//	suixml += '					</layoutbox>';
+			//	suixml += '				</panel>';
 				suixml += '			</layoutbox>';
-				suixml += '		</container>';
-				suixml += '	</canvas>';
+			//	suixml += '		</container>';
+			//	suixml += '	</canvas>';
 				suixml += '</sui>';
 																																																															
 				// CHANGEPASSWORD
@@ -957,28 +990,33 @@ var sConsole =
 												modal.getUIElement ("change").setAttribute ("disabled", true);
 											}
 										};		
-																									
-				// INIT				
-				var modal = new sConsole.modal.window ({XML: suixml});
 				
-				if (attributes.mode == "sessionuser")
-				{
-					modal.getUIElement ("current").setAttribute ("focus", true);
-					modal.getUIElement ("current").setAttribute ("onChange", onChange);
-				}
-				else
-				{
-					modal.getUIElement ("new").setAttribute ("focus", true);
-				}
-				
-				modal.getUIElement ("new").setAttribute ("onChange", onChange);
-				modal.getUIElement ("repeat").setAttribute ("onChange", onChange);
-			
-				modal.getUIElement ("change").setAttribute ("onClick", change);	
-				modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+				var onInit = 			function ()
+										{
+											if (attributes.mode == "sessionuser")
+											{
+												modal.getUIElement ("current").setAttribute ("focus", true);
+												modal.getUIElement ("current").setAttribute ("onChange", onChange);
+											}
+											else
+											{
+												modal.getUIElement ("new").setAttribute ("focus", true);
+											}
 											
-				// SHOW
-				modal.show ();	
+											modal.getUIElement ("new").setAttribute ("onChange", onChange);
+											modal.getUIElement ("repeat").setAttribute ("onChange", onChange);
+										
+											modal.getUIElement ("change").setAttribute ("onClick", change);	
+											modal.getUIElement ("close").setAttribute ("onClick", modal.dispose);	
+																		
+											// SHOW
+											modal.show ();								
+										}
+																																																																			
+				// INIT				
+			//	var modal = new sConsole.modal.window ({XML: suixml});
+				
+				var modal = new sConsole.modal.window ({width: "600px", height: "240px", titleBarUI: [{type: "button", attributes: {tag: "change", label: "Change"}}, {type: "button", attributes: {tag: "close", label: "Close"}}], busy: true, XML: suixml, onInit: onInit});	
 			}
 			
 			
@@ -1086,9 +1124,63 @@ var sConsole =
 		
 				_elements["container"].style.display = "none";
 				_elements["busy"].style.display = "none";
+						
+				var width = {};
+				var height = {};		
+				
+				switch (_attributes.widthType.toLowerCase ())
+				{
+					case "content":
+					{
+						width.canvas = "content";
+						width.container = "content";
+						break;
+					}
+					
+					case "pixel":
+					{
+						width.canvas = _attributes.width +"px";
+						width.container = "100%";
+						break;
+					}
+					
+					case "percent":
+					{
+						width.canvas = "100%";
+						width.container = "100%";
+						break;
+					}
+				}
+				
+				switch (_attributes.heightType.toLowerCase ())
+				{
+					case "content":
+					{
+						height.canvas = "content";
+						height.container = "content";
+						break;
+					}
+					
+					case "pixel":
+					{
+						height.canvas = _attributes.height +"px";
+						height.container = "100%";
+						break;
+					}
+					
+					case "percent":
+					{
+						height.canvas = "100%";
+						height.container = "100%";
+						break;
+					}
+				}		
+						
+				_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: width.canvas, height: height.canvas});				
+				_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: width.container, height: height.container});
 		
-				_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"]});				
-				_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal"});
+		//		_elements["canvas"] = new SNDK.SUI.canvas ({canScroll: false, appendTo: _elements["content"],  width: _attributes.width, height: _attributes.height});				
+		//		_elements["container1"] = new SNDK.SUI.container ({tag: "container", title: "Edit page", stylesheet: "SUIContainerModal", width: _attributes.width, height: _attributes.height});
 				
 				_elements["canvas"].addUIElement (_elements["container1"]);
 			
@@ -1106,7 +1198,9 @@ var sConsole =
 				if (_attributes.XML)
 				{
 					//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content"] });			
-					_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+					//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["content1"] });
+					_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, appendTo: _elements["container1"] });	
+					
 					//_elements["ui"] = SNDK.SUI.builder.construct ({XML: _attributes.XML, parent: _elements["container1"] });
 				}
 				
@@ -1231,37 +1325,47 @@ var sConsole =
 					_attributes.dimensions = "content";
 			
 				if ((!_attributes.width) && (!_attributes.height))
-				{ 
+				{ 				
+					switch (_attributes.dimensions.toLowerCase ())
+					{
+						case "content":
+						{
+							_attributes.width = "content";	
+							_attributes.height = "content";	
+							break;
+						}
 						
-				switch (_attributes.dimensions.toLowerCase ())
-				{
-					case "content":
-					{
-						_attributes.width = "content";	
-						_attributes.height = "content";	
-						break;
-					}
-					
-					case "auto":
-					{
-						_attributes.width = "85%";	
-						_attributes.height = "85%";	
-						break;
-					}
-					
-					default:
-					{
-						_attributes.width = _attributes.dimensions;	
-						_attributes.height = _attributes.dimensions;
-						break;
+						case "auto":
+						{
+							_attributes.width = "85%";	
+							_attributes.height = "85%";	
+							break;
+						}
+						
+						case "full":
+						{
+							_attributes.width = "85%";	
+							_attributes.height = "85%";	
+							break;			
+						}
+						
+						default:
+						{
+							_attributes.width = _attributes.dimensions;	
+							_attributes.height = _attributes.dimensions;
+							break;
+						}
 					}
 				}
-				}
-			
-			
+				
 				// Width
 				if (!_attributes.width) 
 					_attributes.width = "content";	
+					
+				if (_attributes.width == "full")
+				{
+					_attributes.width = "85%";
+				}
 					
 				if (_attributes.width != "content")
 				{
@@ -1276,10 +1380,19 @@ var sConsole =
 						_attributes.width = _attributes.width.substring (0, _attributes.width.length - 2)
 					}
 				}
+				else
+				{
+					_attributes.widthType = "content";		
+				}
 				
 				// Height
 				if (!_attributes.height) 
 					_attributes.height = "content";
+					
+				if (_attributes.height == "full")
+				{
+					_attributes.height = "85%";
+				}
 				
 				if (_attributes.height != "content")
 				{
@@ -1293,6 +1406,10 @@ var sConsole =
 						_attributes.heightType = "pixel";
 						_attributes.height = _attributes.height.substring (0, _attributes.height.length - 2)
 					}	
+				}
+				else
+				{
+					_attributes.heightType = "content";		
 				}
 			}
 				
@@ -1315,50 +1432,49 @@ var sConsole =
 				var height = 0;
 				var width = 0;
 				
-				if (_attributes.width != "content")
-				{
-					switch (_attributes.widthType)
-					{
-						case "percent":
-						{
-							width = ((pagesize[0] * _attributes.width) / 100);
-							break;
-						}
-						
-						case "pixel":
-						{
-							width = _attributes.width;
-							break; 
-						}
-					}		
-				}
-				else
-				{
-					width = _elements["container"].offsetWidth;
-				}
+				SNDK.SUI.refresh ();
 				
-				if (_attributes.height != "content")
+				switch (_attributes.widthType)
 				{
-					switch (_attributes.heightType)
+					case "content":
+					{				
+						width = _elements["canvas"]._elements["container"].offsetWidth;
+						break;
+					}
+												
+					case "pixel":
 					{
-						case "percent":
-						{
-							height = ((pagesize[1] * _attributes.height) / 100);
-							break;
-						}
-						
-						case "pixel":
-						{
-							height = _attributes.height;
-							break; 
-						}
-					}				
-				}
-				else
+						width = _attributes.width;
+						break; 
+					}
+					
+					case "percent":
+					{
+						width = ((pagesize[0] * _attributes.width) / 100);
+						break;
+					}
+				}		
+				
+				switch (_attributes.heightType)
 				{
-					height = _elements["container"].offsetHeight;
-				}
-			
+					case "content":
+					{
+						height = _elements["canvas"]._elements["container"].offsetHeight;
+						break;
+					}
+					
+					case "pixel":
+					{
+						height = _attributes.height;
+						break; 
+					}
+		
+					case "percent":
+					{
+						height = ((pagesize[1] * _attributes.height) / 100);
+						break;
+					}
+				}				
 				//var width = ((pagesize[0] * 85) / 100);
 				//var height = ((pagesize[1] * 85) / 100);
 				
@@ -1387,8 +1503,14 @@ var sConsole =
 		//			var top = test[1] + (test2[1] / 5);
 		//			var left = ((pagesize[0]/2) - (width/2));
 		
+			
+			
+		
 				var top = (test2[1] - height) / 2;
 				var left = (test2[0] - width) / 2;
+				
+		//		console.log (height)
+		//		console.log (width)
 				
 				_temp.top = top;
 				_temp.left = left;
@@ -1457,7 +1579,7 @@ var sConsole =
 		
 			function functionGetUIElement (tag)
 			{
-			//console.log (tag);
+			
 				if (_elements.ui[tag] != null)
 				{
 					return _elements.ui[tag];
@@ -1968,7 +2090,7 @@ var sConsole =
 		}	,
 	
 		// -------------------------------------------------------------------------------------------------------------------------
-		// error ([attributes])
+		// warning ([attributes])
 		// -------------------------------------------------------------------------------------------------------------------------
 		//
 		//		title 			init
@@ -1996,6 +2118,102 @@ var sConsole =
 			// ------------------------------------	
 			function init ()
 			{	
+		
+			}
+			
+			// ------------------------------------
+			// construct
+			// ------------------------------------		
+			function construct ()
+			{
+			
+				var onInit =	function ()
+								{									
+									var layoutbox1 = new SNDK.SUI.layoutbox ({type: "horizontal", stylesheet: "SUILayoutBoxNoBorder"});
+									layoutbox1.addPanel ({tag: "panel3", size: "15px"});
+									layoutbox1.addPanel ({tag: "panel1", size: "*"});
+									layoutbox1.addPanel ({tag: "panel2", size: "48px"});
+									_temp.modal.getUIElement ("container").addUIElement (layoutbox1);
+																						
+									_temp.modal.getUIElement ("container").setAttribute ("title", _attributes.title);
+																												
+									layoutbox1.getPanel ("panel1").addUIElement (new SNDK.SUI.text ({text: attributes.text}));
+						
+									_temp.modal.getUIElement ("button1").setAttribute ("onClick", eventOnClickButton);
+									_temp.modal.getUIElement ("button1").setAttribute ("label", _attributes.buttonLabel);							
+									_temp.modal.getUIElement ("button1").setAttribute ("focus", true);							
+													
+									SNDK.SUI.init ();
+									init ();
+			
+									_temp.modal.show ();					
+								};
+			
+				_temp.modal = new sConsole.modal.window ({width: "800px", height: "200px", titleBarUI: [{type: "button", attributes: {tag: "button1"}}], busy: true, onInit: onInit});
+			}	
+						
+			// ------------------------------------
+			// setDefaultAttributes
+			// ------------------------------------					
+			function setAttributes ()
+			{
+				if (!_attributes) 
+					_attributes = new Array ();
+				
+				if (!_attributes.title) 
+					_attributes.title = "";
+				
+				if (!_attributes.buttonLabel) 
+					_attributes.buttonLabel = "BUTTON";			
+			}	
+			
+			// ------------------------------------
+			// Events
+			// ------------------------------------
+			// ------------------------------------
+			// onClickButton
+			// ------------------------------------
+			function eventOnClickButton ()
+			{
+				_temp.modal.dispose ();
+			
+				if (_attributes.onDone != null)
+				{
+					setTimeout( function ()	{ _attributes.onDone (1); }, 1);
+				}
+			}	
+		}	,
+	
+		// -------------------------------------------------------------------------------------------------------------------------
+		// warning ([attributes])
+		// -------------------------------------------------------------------------------------------------------------------------
+		//
+		//		title 			init
+		//		buttonLabel		init
+		//		onDone			init
+		//
+		/**
+		 * @constructor
+		 */
+		info : function (attributes)
+		{
+			_attributes = attributes;
+			_temp = { initialized: false,
+					  modal: null,
+					  elements: new Array };
+						
+			setAttributes ();
+			construct ();
+				
+			// ------------------------------------
+			// Private functions
+			// ------------------------------------
+			// ------------------------------------
+			// init
+			// ------------------------------------	
+			function init ()
+			{	
+		
 			}
 			
 			// ------------------------------------
@@ -2060,7 +2278,6 @@ var sConsole =
 				}
 			}	
 		}	
-		
 		
 	},
 
