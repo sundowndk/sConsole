@@ -104,12 +104,18 @@ Login
 
 .Login .UI
 {
-	margin-top: 				30px;
-	margin-left: 				auto;
-	margin-right: 				auto;
 	
 	width:						350px;
 	height:  					180px;
+}
+
+.Login .Bla
+{
+	margin-top: 				30px;
+	margin-left: 				auto;
+	margin-right: 				auto;
+
+	width:						350px;
 }
 
 .Login .Browsers

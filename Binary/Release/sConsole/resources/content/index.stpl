@@ -8,6 +8,10 @@
 <html>			
 	<%Include ($header)%>
 	
+	
+	
+
+	
 	<%Include ("index_script.stpl")%>
 
 	<body class="Login">	
@@ -30,8 +34,9 @@
 				<input type="password" name="password" autocomplete="on">
 			</div>																		
 		</form>
-
+		<div class="Bla">
 		<div id="ui" class="UI">
+		</div>
 		</div>
 		
 		<div class="Browsers">
