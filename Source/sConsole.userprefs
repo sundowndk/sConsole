@@ -1,6 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/engine/settings/index.stpl">
+  <MonoDevelop.Ide.Workbench ActiveDocument="sConsole/resources/content/index_script.stpl">
     <Files>
       <File FileName="sConsole/resources/content/includes/body.stpl" Line="1" Column="1" />
       <File FileName="sConsole/resources/content/includes/header.stpl" Line="51" Column="83" />
@@ -9,6 +9,8 @@
       <File FileName="sConsole/resources/content/includes/meta.stpl" Line="1" Column="1" />
       <File FileName="sConsole/resources/content/includes/upload.stpl" Line="1" Column="1" />
       <File FileName="sConsole/resources/content/engine/settings/index.stpl" Line="11" Column="1" />
+      <File FileName="sConsole/resources/content/index.stpl" Line="1" Column="1" />
+      <File FileName="sConsole/resources/content/index_script.stpl" Line="101" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
