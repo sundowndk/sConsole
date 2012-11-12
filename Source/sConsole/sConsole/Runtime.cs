@@ -4,7 +4,7 @@
 // Author:
 //   Rasmus Pedersen (rasmus@akvaservice.dk)
 //
-// Copyright (C) 2009 Rasmus Pedersen
+// Copyright (C) 2009 - 2012 Rasmus Pedersen
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -36,12 +36,6 @@ namespace sConsole
 {
 	public static class Runtime
 	{
-		#region Private Static Fields				
-		#endregion
-
-		#region Public Static Fields		
-		#endregion
-
 		#region Public Static Methods
 		public static void Initialize ()
 		{	
@@ -87,7 +81,6 @@ namespace sConsole
 				
 				// Create symlinks				
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/content", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_content) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
-				SorentoLib.Services.Logging.LogDebug (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/htdocs", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_html) + Path.GetDirectoryName (SorentoLib.Services.Config.Get<string> (Enums.ConfigKey.sconsole_url)));
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/scripts", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_script) + "sconsole");							
 				SNDK.IO.CreateSymlink (SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "Core/resources/htdocs", SorentoLib.Services.Config.Get<string> (SorentoLib.Enums.ConfigKey.path_addins) + "sConsole/resources/includes/sorentolib");
@@ -117,7 +110,6 @@ namespace sConsole
 		public static string GetJSInclude ()
 		{
 			string result = string.Empty;
-			
 			
 			return result;
 		}
@@ -239,9 +231,6 @@ namespace sConsole
 //			#endregion
 //						
 //			return result;
-			
-			
-				
 		}			
 		#endregion
 	}
