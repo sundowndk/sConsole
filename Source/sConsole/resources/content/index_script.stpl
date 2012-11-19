@@ -83,15 +83,15 @@
 					{
 						attributes.elements = SNDK.SUI.builder.construct ({URL: sConsole.runtime.URL + "xml/index.xml"});
 												
-						attributes.elements.usernameDUMMY.setAttribute ("onChange", onChange);
-						attributes.elements.usernameDUMMY.setAttribute ("onEnter", login);							
-						attributes.elements.passwordDUMMY.setAttribute ("onChange", onChange);
-						attributes.elements.passwordDUMMY.setAttribute ("onEnter", login);		
+//						attributes.elements.usernameDUMMY.setAttribute ("onChange", onChange);
+//						attributes.elements.usernameDUMMY.setAttribute ("onEnter", login);							
+//						attributes.elements.passwordDUMMY.setAttribute ("onChange", onChange);
+//						attributes.elements.passwordDUMMY.setAttribute ("onEnter", login);		
 						attributes.elements.login.setAttribute ("onClick", login);
 						
 						attributes.elements.form = document.getElementById ("FormLogin");
 												
-						set ();
+//						set ();
 						
 						onError ();
 																			 	
