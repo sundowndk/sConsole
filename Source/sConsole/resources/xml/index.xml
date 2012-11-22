@@ -2,16 +2,10 @@
 	<canvas width="100%" height="100%" canScroll="false">	
 		<layoutbox type="horizontal" width="100%" height="100%">
 			<panel size="*">
-				<credentials tag="Credentials" color="black" width="100%"/>				
+				<credentials tag="Credentials" color="black" width="100%" size="large"/>				
 			</panel>			
 			<panel size="55px">
-				<layoutbox type="vertical" width="100%" height="*">
-					<panel size="*">							
-					</panel>
-					<panel size="110px">
-						<button tag="login" label="Login" stylesheet="button gray-gradient green-active glossy" width="100%" />
-					</panel>
-				</layoutbox>								
+				<button tag="login" label="Login" width="100%" size="huge"/>				
 			</panel>
 		</layoutbox>				
 	</canvas>
